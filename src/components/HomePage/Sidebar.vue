@@ -4,12 +4,61 @@
   <v-container>
 
     <div class='sidebar'>
-      <div class=links>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
-      </div>
+
+
+      <v-tabs vertical fixed centered background-color="#1d4647"
+                                      color="white" center-active>
+
+
+        <v-tab>
+          <div class=imgpos>
+            <v-img position="right" height=25 max-width=25 class="ml-auto">
+              <img src="https://vectorified.com/images/monitor-icon-6.jpg" alt="">
+            </v-img>
+          </div>
+          Monitory
+        </v-tab>
+        <v-tab>
+          <div class=imgpos>
+            <v-img position="right" height=25 max-width=25 class="ml-auto">
+              <img src="https://vectorified.com/images/monitor-icon-6.jpg" alt="">
+            </v-img>
+          </div>
+          Procesory
+        </v-tab>
+        <v-tab>
+          <div class=imgpos>
+            <v-img position="right" height=25 max-width=25 class="ml-auto">
+              <img src="https://vectorified.com/images/monitor-icon-6.jpg" alt="">
+            </v-img>
+          </div>
+          Pamięci RAM
+        </v-tab>
+        <v-tab>
+          <div class=imgpos>
+            <v-img position="right" height=25 max-width=25 class="ml-auto">
+              <img src="https://vectorified.com/images/monitor-icon-6.jpg" alt="">
+            </v-img>
+          </div>
+          Dyski twarde
+        </v-tab>
+        <v-tab>
+          <div class=imgpos>
+            <v-img position="right" height=25 max-width=25 class="ml-auto">
+              <img src="https://vectorified.com/images/monitor-icon-6.jpg" alt="">
+            </v-img>
+          </div>
+          Myszki
+        </v-tab>
+        <v-tab>
+          <v-icon left>
+            mdi-access-point
+          </v-icon>
+          Klawiatury
+        </v-tab>
+
+      </v-tabs>
+
 
     </div>
 
@@ -47,25 +96,27 @@ export default {
 <style>
 
 .sidebar {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
+  height: auto; /* Full-height: remove this if you want "auto" height */
+  width: auto; /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
   left: 0;
-  background-color: yellow; /* Black */
   overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 20px;
-  color: black;
+  padding-top: 62px;
 }
 
-.sidebar a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
+
+.v-image {
+  display: inline-block;
 }
+
+
+.imgpos {
+  margin:auto;
+}
+
+
 
 </style>
 

@@ -6,6 +6,7 @@
 
                            height="14px"
                            title="BASE-PC"
+                           elevation=0.2
 
                            dark>
       <template v-slot:extension>

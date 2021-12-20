@@ -13,6 +13,12 @@
     "make:view": "vue-cli-service make:view"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^2.0.6",
+    "@mdi/font": "^6.5.95",
     "@vee-validate/rules": "^4.5.7",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
@@ -21,6 +27,7 @@
     "vue": "^2.6.11",
     "vue-axios": "^3.3.7",
     "vue-google-login": "^2.0.5",
+    "vue-ico": "^1.0.15",
     "vuetify": "^2.4.0"
   },
   "devDependencies": {

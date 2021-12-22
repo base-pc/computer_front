@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { ValidationProvider } from 'vee-validate/dist/vee-validate.full.esm';
-import {ValidationObserver} from 'vee-validate'
+import { ValidationObserver} from 'vee-validate'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'

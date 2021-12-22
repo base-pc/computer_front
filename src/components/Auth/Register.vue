@@ -1,13 +1,13 @@
 <template>
 
-  <v-dialog v-model="dialog" max-width="600px" overlay-color="white" persistent>
+  <v-dialog v-model="dialog" max-width="600px" persistent>
     <template v-slot:activator="{ on }">
-      <v-btn  v-on="on" class="success">Rejestracja</v-btn>
+      <v-btn v-on="on" >Rejestracja</v-btn>
     </template>
     <v-card>
 
       <div class="close">
-        <fa icon="times" size="1x" @click="close()"
+        <fa icon="times" size="2x" @click="close()"
 
                          />
       </div>
@@ -92,6 +92,10 @@ export default {
 .register_form {
   margin-left:30px;
   margin-right:30px;
+}
+
+.v-btn::before {
+  background-color: red;
 }
 
 </style>

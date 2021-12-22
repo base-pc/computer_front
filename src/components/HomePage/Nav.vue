@@ -3,22 +3,24 @@
     <v-app-bar
       fixed
       dense
-      color="#1d4647"
+      color="##B57614"
+
+
       height="14px"
       title="BASE-PC"
-      elevation="0.2"
+      elevation="0"
       dark
       >
       <template v-slot:extension>
         <v-app-title class="title"> BASE-PC </v-app-title>
 
         <div class="search">
-          <v-text-field
-            fixed
-            dense
-            background-color="yellow"
-            color="black"
-            ></v-text-field>
+          <v-text-field id="s"
+                        fixed
+                        dense
+                        background-color="white"
+                        color="black"
+                        ></v-text-field>
         </div>
 
         <v-tabs optional>
@@ -46,6 +48,16 @@ export default {
 .title {
   width: 200px !important;
 }
+#s {
+  width: 400px;
+  color:black;
+}
+
+.search {
+  padding-top:20px;
+  padding-left:10px
+}
+
 </style>
 
 <style lang="scss">

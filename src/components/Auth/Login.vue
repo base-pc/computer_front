@@ -1,13 +1,13 @@
 <template>
 
-  <v-dialog v-model="dialog" max-width="400px" overlay-color="white" persistent>
+  <v-dialog v-model="dialog" max-width="400px" persistent>
     <template v-slot:activator="{ on }">
-      <v-btn  v-on="on" class="success">Logowanie</v-btn>
+      <v-btn  v-on="on">Logowanie</v-btn>
     </template>
     <v-card>
 
       <div class="close">
-        <fa icon="times" size="1x" @click="close()"/>
+        <fa icon="times" size="2x" @click="close()"/>
       </div>
 
       <v-card-title class="justify-center">

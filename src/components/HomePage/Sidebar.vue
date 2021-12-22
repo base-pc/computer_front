@@ -1,64 +1,23 @@
 <template>
   <v-container>
     <div class="sidebar">
-      <v-tabs vertical fixed centered background-color="#1d4647" color="white">
+      <v-tabs vertical fixed background-color="white" color="black">
         <v-tab>
-          <div class="imgpos">
-            <v-img position="right" height="25" max-width="25" class="ml-auto">
-              <img
-                src="https://vectorified.com/images/monitor-icon-6.jpg"
-                alt=""
-              />
-            </v-img>
-          </div>
           Monitory
         </v-tab>
         <v-tab>
-          <div class="imgpos">
-            <v-img position="right" height="25" max-width="25" class="ml-auto">
-              <img
-                src="https://vectorified.com/images/monitor-icon-6.jpg"
-                alt=""
-              />
-            </v-img>
-          </div>
           Procesory
         </v-tab>
         <v-tab>
-          <div class="imgpos">
-            <v-img position="right" height="25" max-width="25" class="ml-auto">
-              <img
-                src="https://vectorified.com/images/monitor-icon-6.jpg"
-                alt=""
-              />
-            </v-img>
-          </div>
           Pamięci RAM
         </v-tab>
         <v-tab>
-          <div class="imgpos">
-            <v-img position="right" height="25" max-width="25" class="ml-auto">
-              <img
-                src="https://vectorified.com/images/monitor-icon-6.jpg"
-                alt=""
-              />
-            </v-img>
-          </div>
           Dyski twarde
         </v-tab>
         <v-tab>
-          <div class="imgpos">
-            <v-img position="right" height="25" max-width="25" class="ml-auto">
-              <img
-                src="https://vectorified.com/images/monitor-icon-6.jpg"
-                alt=""
-              />
-            </v-img>
-          </div>
           Myszki
         </v-tab>
         <v-tab>
-          <v-icon left> mdi-access-point </v-icon>
           Klawiatury
         </v-tab>
       </v-tabs>
@@ -76,24 +35,19 @@ export default {
 
 <style>
 .sidebar {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: auto; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%;
+  width: auto;
+  position: fixed;
+  z-index: 1;
+  top: 0;
   left: 0;
-  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-x: hidden;
   padding-top: 63px;
-  background-color: yellow;
+  margin-top: 10px;
+  background-color: white;
+  border: 3px black solid;
 }
 
-.v-image {
-  display: inline-block;
-}
-
-.imgpos {
-  margin: auto;
-}
 </style>
 
 

@@ -7,9 +7,11 @@ import {ValidationObserver} from 'vee-validate'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 
-library.add(fas)
+
+library.add(fas, faGoogle)
 Vue.component('fa', FontAwesomeIcon)
 
 

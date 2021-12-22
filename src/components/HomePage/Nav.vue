@@ -8,7 +8,7 @@
       title="BASE-PC"
       elevation="0.2"
       dark
-    >
+      >
       <template v-slot:extension>
         <v-app-title class="title"> BASE-PC </v-app-title>
 
@@ -18,13 +18,13 @@
             dense
             background-color="yellow"
             color="black"
-          ></v-text-field>
+            ></v-text-field>
         </div>
 
-        <v-tabs>
+        <v-tabs optional>
           <v-spacer></v-spacer>
-          <v-tab>Rejestracja</v-tab>
-          <v-tab>Logowanie</v-tab>
+          <v-tab><Register /></v-tab>
+          <v-tab><Login /></v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -32,9 +32,13 @@
 </template>
 
 <script>
+
+import Register from "../Auth/Register.vue";
+import Login from "../Auth/Login.vue";
+
 export default {
   name: "Nav",
-  components: {},
+  components: {Register, Login},
 };
 </script>
 

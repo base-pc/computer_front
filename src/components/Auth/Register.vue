@@ -2,7 +2,7 @@
 
   <v-dialog v-model="dialog" max-width="600px" persistent>
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on" >Rejestracja</v-btn>
+      <v-button v-on="on" >Rejestracja</v-button>
     </template>
     <v-card>
 

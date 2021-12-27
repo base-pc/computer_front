@@ -34,7 +34,7 @@
 
                   <div class="addToCart">
                     <v-btn
-                      color="primary" x-small>Dodaj</v-btn>
+                      color="primary" :disabled=!logged x-small>Dodaj</v-btn>
 
                   </div>
                 </div>
@@ -56,9 +56,17 @@ export default {
   data: () => ({
     rating: 4.5,
     times_rate: 15,
+    logged: true,
   }),
+
   components: {},
-};
+
+  methods: {
+
+  },
+}
+
+
 </script>
 
 <style scoped>
@@ -71,7 +79,6 @@ export default {
   text-align: left;
   margin-left: 20px;
   padding-top: 20px;
-  border: 1px black solid;
 }
 
 .product_name {

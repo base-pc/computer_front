@@ -4,8 +4,6 @@
       fixed
       dense
       color="##B57614"
-
-
       height="14px"
       title="BASE-PC"
       elevation="0"

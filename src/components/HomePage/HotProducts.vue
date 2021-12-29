@@ -3,38 +3,42 @@
     <v-item-group align="center">
       <v-container>
         <v-row justify="center">
-          <v-col align-self="center" v-for="n in 9" :key="n" cols="12" md="10">
+          <!--<v-btn-->
+          <!--color="primary" :disabled=!logged x-small-->
+          <!--@click="getHotPorducts()">Dodaj</v-btn>-->
+
+          <v-col align-self="center" v-for="hot in hots" :key="hot.id" cols="12" md="10">
             <v-item v-slot="{ toggle }">
               <v-card class="d-flex justify-center flex-row" light height="150"
                                                                    width="900px" @click="toggle">
                 <div class="img">
                   <v-img
-                    lazy-src="https://picsum.photos/id/11/10/6"
                     max-height="150"
                     max-width="179"
-                    src="https://picsum.photos/id/11/500/300"
+                    :src="hot.photo_url"
                     ></v-img>
                 </div>
-                <div class="product_name">Procesor AMD Ryzen 5 5600G AM4</div>
+                <div class="product_name">{{hot.name}}</div>
 
                 <div class="rating">
                   <v-rating v-model="rating" readonly background-color="black"
                                                       half-increments
                                                       color="black" x-small></v-rating>
 
-                                                    {{rating}}({{times_rate}})
+                                                    {{hot.rate}}({{hot.rates_time}})
 
                 </div>
 
                 <div class="cart">
                   <div class="price">
-                    <p>768 zł</p>
+                    <p>{{hot.price}} PLN</p>
                   </div>
                   <fa icon="shopping-cart" size="2x"/>
 
                   <div class="addToCart">
                     <v-btn
-                      color="primary" :disabled=!logged x-small>Dodaj</v-btn>
+                      color="primary" :disabled=!logged x-small
+                      @click="getHotPorducts()">Dodaj</v-btn>
 
                   </div>
                 </div>
@@ -51,18 +55,37 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
   name: "HotProducts",
   data: () => ({
     rating: 4.5,
     times_rate: 15,
     logged: true,
+    hots: [],
   }),
 
   components: {},
 
   methods: {
 
+    async getHotPorducts()
+    {
+
+      axios
+        .get("https://icnav.online/api/product/hot")
+        .then(res => {
+          this.hots = res.data;
+        })
+
+      console.log(this.hots);
+
+    }
+  },
+
+  beforeMount(){
+    this.getHotPorducts()
   },
 }
 

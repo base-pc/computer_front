@@ -4,8 +4,6 @@
       fixed
       dense
       color="##B57614"
-
-
       height="14px"
       title="BASE-PC"
       elevation="0"
@@ -18,9 +16,13 @@
           <v-text-field id="s"
                         fixed
                         dense
-                        background-color="white"
-                        color="black"
-                        append-outer-icon="fa-search"
+                        background-color="#5c7067"
+                        color="white"
+                        prepend-inner-icon="fa-search"
+                        outlined
+                        persistent-hint
+                        solo
+                        label="Szukaj"
                         ></v-text-field>
         </div>
 
@@ -51,7 +53,7 @@ export default {
 }
 #s {
   width: 400px;
-  color:black;
+  color:white;
 }
 
 .search {

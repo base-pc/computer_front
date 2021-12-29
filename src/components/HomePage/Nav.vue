@@ -20,6 +20,7 @@
                         dense
                         background-color="white"
                         color="black"
+                        append-outer-icon="fa-search"
                         ></v-text-field>
         </div>
 
@@ -59,8 +60,3 @@ export default {
 }
 
 </style>
-
-<style lang="scss">
-$input-font-size: 72px;
-</style>
-

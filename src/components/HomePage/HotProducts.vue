@@ -6,7 +6,7 @@
           <v-col align-self="center" v-for="n in 9" :key="n" cols="12" md="10">
             <v-item v-slot="{ toggle }">
               <v-card class="d-flex justify-center flex-row" light height="150"
-                                                                   width="900px" @click="toggle" title="ELOMORDO">
+                                                                   width="900px" @click="toggle">
                 <div class="img">
                   <v-img
                     lazy-src="https://picsum.photos/id/11/10/6"

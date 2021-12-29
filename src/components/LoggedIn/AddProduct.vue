@@ -15,10 +15,51 @@
       <div class="add_product_form">
         <v-form>
           <v-text-field
-            label="Nazwa kategorii"
+            label="Nazwa produktu"
             type="text"
             required
             ></v-text-field>
+          <v-text-field
+            label="Producent"
+            type="text"
+            required
+            ></v-text-field>
+          <v-text-field
+            label="Opis"
+            type="text"
+            required
+            ></v-text-field>
+          <v-text-field
+            label="Cena"
+            type="text"
+            required
+            ></v-text-field>
+          <v-text-field
+            label="Ilość"
+            type="text"
+            required
+            ></v-text-field>
+
+          <v-file-input
+            :rules="rules"
+            accept="image/png, image/jpeg, image/bmp"
+            placeholder="Dodaj zdjęcie"
+            prepend-icon="fa-camera"
+            label="Zdjęcie poglądowe"
+            ></v-file-input>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         </v-form>
       </div>

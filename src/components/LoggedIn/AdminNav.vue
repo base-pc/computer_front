@@ -19,8 +19,13 @@
           <v-text-field id="s"
                         fixed
                         dense
-                        background-color="white"
-                        color="black"
+                        background-color="#5c7067"
+                        color="white"
+                        prepend-inner-icon="fa-search"
+                        outlined
+                        persistent-hint
+                        solo
+                        label="Szukaj"
                         ></v-text-field>
         </div>
 
@@ -36,7 +41,8 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
-                  >
+                  ><i class="arrow down"></i>
+
                   Zarządzaj
                 </v-btn>
               </template>
@@ -46,8 +52,9 @@
 
                   v-for="(item, id) in items"
                   :key="id"
+                  @click="handleSelectItem(item)"
 
-                  @click.stop="handleSelectItem(item), toggleCategory(),
+                  @click.stop="toggleCategory(),
                   toggleProduct()"
                   >
 
@@ -88,8 +95,6 @@
               </v-avatar>
             </v-tab>
           </div>
-
-
 
 
         </v-tabs>
@@ -148,9 +153,6 @@ export default {
   }
 };
 
-
-
-
 </script>
 
 <style>
@@ -159,7 +161,7 @@ export default {
 }
 #s {
   width: 400px;
-  color:black;
+  color:white;
 }
 
 .search {
@@ -183,9 +185,20 @@ export default {
   padding-top:4px;
 }
 
+.arrow {
+  border: solid yellow;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.down {
+  transform: rotate(45deg);
+  margin-right:10px;
+
+  -webkit-transform: rotate(45deg);
+}
+
 </style>
 
-<style lang="scss">
-$input-font-size: 72px;
-</style>
 

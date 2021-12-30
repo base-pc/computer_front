@@ -14,6 +14,10 @@
 
       <div class="add_product_form">
         <v-form>
+          <v-select
+            :items="items"
+            label="Kategoria"
+            ></v-select>
           <v-text-field
             label="Nazwa produktu"
             type="text"
@@ -48,19 +52,6 @@
             label="Zdjęcie poglądowe"
             ></v-file-input>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         </v-form>
       </div>
 
@@ -87,6 +78,9 @@ export default {
     return {
       switch1: false,
       show: this.showDialog,
+
+      items: ['Karty graficzne', 'Procesory', 'Pamięci RAM'],
+
     }
   },
 

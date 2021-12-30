@@ -1,19 +1,18 @@
 <template>
   <v-app>
     <div id="app">
-      <Home></Home>
+      <router-view></router-view>
     </div>
   </v-app>
 </template>
 
 <script>
-import Home from './components/HomePage/Home.vue'
 
 export default {
   name: 'App',
   components: {
-    Home
   },
+
 }
 </script>
 

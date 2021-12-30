@@ -103,8 +103,8 @@
 
 <script>
 
-import Category from "../LoggedIn/AddCategory.vue";
-import Product from "../LoggedIn/AddProduct.vue";
+import Category from "../Admin/AddCategory.vue";
+import Product from "../Admin/AddProduct.vue";
 
 
 

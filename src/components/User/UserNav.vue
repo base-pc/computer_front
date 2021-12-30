@@ -19,14 +19,22 @@
           <v-text-field id="s"
                         fixed
                         dense
-                        background-color="white"
-                        color="black"
+                        background-color="#5c7067"
+                        color="white"
+                        prepend-inner-icon="fa-search"
+                        outlined
+                        presistent-hint
+                        solo
+                        label="Szukan"
                         ></v-text-field>
         </div>
 
         <v-tabs optional>
+
           <v-spacer></v-spacer>
-          <v-tab><v-btn>Wyloguj</v-btn>
+
+          <v-tab>
+            <v-btn>Wyloguj</v-btn>
           </v-tab>
 
           <div class="cart">
@@ -50,11 +58,6 @@
 
 
             </v-tab>
-
-
-
-
-
 
           </div>
         </v-tabs>

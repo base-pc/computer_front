@@ -1,7 +1,6 @@
 <template>
   <v-container>
-    <!--<UserNav></UserNav>-->
-    <!--<AdminNav></AdminNav>-->
+    <AdminNav></AdminNav>
     <Nav></Nav>
     <Sidebar></Sidebar>
     <HotProducts></HotProducts>
@@ -9,20 +8,16 @@
 </template>
 
 <script>
-import Nav from "../HomePage/Nav.vue";
 import Sidebar from "../HomePage/Sidebar.vue";
 import HotProducts from "../HomePage/HotProducts.vue";
-//import UserNav from "../User/UserNav.vue";
-//import AdminNav from "../Admin/AdminNav.vue";
+import AdminNav from "../Admin/AdminNav.vue";
 
 export default {
   name: "Home",
   components: {
     Sidebar,
-    Nav,
     HotProducts,
-    // UserNav,
-    //    AdminNav,
+    AdminNav,
   },
 };
 </script>

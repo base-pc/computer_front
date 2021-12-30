@@ -6,11 +6,10 @@ import UserMain from './components/User/UserMain.vue';
 
 export default [
 
-  { path: '/', component: Home },
-  { path: '/register', component: Register },
+  { path: '/home',         name: 'home',     component: Home },
+  { path: '/register', name: 'register', component: Register },
 
-  { path: '/admin', component: AdminMain },
-  { path: '/user', component: UserMain },
-
+  { path: '/admin', name:'admin',  component: AdminMain },
+  { path: '/user',  name: 'user',  component: UserMain },
 
 ]

@@ -3,9 +3,8 @@
     <v-item-group align="center">
       <v-container>
         <v-row justify="center">
-          <!--<v-btn-->
-          <!--color="primary" :disabled=!logged x-small-->
-          <!--@click="getHotPorducts()">Dodaj</v-btn>-->
+
+          <p v-if="loading">Ładowanie strony...</p>
 
           <v-col align-self="center" v-for="hot in hots" :key="hot.id" cols="12" md="10">
             <v-item v-slot="{ toggle }">
@@ -64,6 +63,7 @@ export default {
     times_rate: 15,
     logged: true,
     hots: [],
+    loading: false,
   }),
 
   components: {},
@@ -76,6 +76,7 @@ export default {
       axios
         .get("https://icnav.online/api/product/hot")
         .then(res => {
+          this.loading = false;
           this.hots = res.data;
         })
 

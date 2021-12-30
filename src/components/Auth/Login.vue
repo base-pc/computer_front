@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog v-model="dialog" max-width="400px" persistent>
+  <v-dialog v-model="login_dialog" max-width="400px" persistent>
     <template v-slot:activator="{ on }">
       <v-btn  v-on="on">Logowanie</v-btn>
     </template>
@@ -47,16 +47,19 @@
 
 export default {
 
+  name: 'Login',
+
   data() {
     return {
-      switch1: false
+      login_dialog: null
     }
   },
 
   props: ["dialog"],
+
   methods: {
     close() {
-      this.dialog=false;
+      this.login_dialog=this.dialog;
     },
   },
 };

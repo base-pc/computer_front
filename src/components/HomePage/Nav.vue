@@ -43,6 +43,7 @@ import Login from "../Auth/Login.vue";
 
 export default {
   name: "Nav",
+
   components: {Register, Login},
 };
 </script>

@@ -1,8 +1,8 @@
 <template>
 
-  <v-dialog v-model="dialog" max-width="600px" persistent>
+  <v-dialog v-model="register_dialog" max-width="600px" persistent>
     <template v-slot:activator="{ on }">
-      <v-button v-on="on" >Rejestracja</v-button>
+      <v-btn v-on="on" >Rejestracja</v-btn>
     </template>
     <v-card>
 
@@ -19,29 +19,33 @@
       <div class="register_form">
         <v-form>
           <v-text-field
+            v-model="form.email"
             label="Adres email"
             type="email"
             required
             ></v-text-field>
 
           <v-text-field
+            v-model="form.fullname"
             label="Imię i nazwisko"
             required
             ></v-text-field>
 
           <v-text-field
+            v-model="form.password"
             label="Hasło"
             type="password"
             required
             ></v-text-field>
 
           <v-text-field
+            v-model="form.password_confirmation"
             label="Powtórz hasło"
             type="password"
             required
             ></v-text-field>
           <v-switch
-            v-model="switch1"
+            v-model="form.is_admin"
             :label="`Uprawniania administratora`"
             ></v-switch>
         </v-form>
@@ -49,8 +53,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center" color="primary"
-                                      @click="close()">Rejestracja</v-btn>
+        <v-btn class="justify-center" type="submit" color="primary"
+                                                    @click="submitForm()">Rejestracja</v-btn>
       </v-card-actions>
 
     </v-card>
@@ -60,21 +64,49 @@
 
 <script>
 
+import axios from 'axios';
+
 export default {
+
+  name: 'Register',
 
   data() {
     return {
-      switch1: false
+      register_dialog: null,
+
+      form: {
+        email                 : '',
+        fullname              : '',
+        password              : '',
+        password_confirmation : '',
+        is_admin              : false,
+
+      },
     }
   },
 
-
-
   props: ["dialog"],
+
   methods: {
     close() {
-      this.dialog=false;
+      this.register_dialog=this.dialog;
     },
+
+    submitForm()
+    {
+      axios.post('https://icnav.online/api/auth/register', this.form)
+        .then(() => {
+
+          this.dialog=false
+          this.$router.push(this.$route.query.redirect || '/home')
+
+        })
+
+    }
+
+
+
+
   },
 };
 

@@ -26,6 +26,7 @@
     "vee-validate": "^3.4.14",
     "vue": "^2.6.11",
     "vue-axios": "^3.3.7",
+    "vue-cookie": "^1.1.4",
     "vue-google-login": "^2.0.5",
     "vue-ico": "^1.0.15",
     "vue-router": "^3.5.3",

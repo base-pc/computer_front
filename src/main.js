@@ -4,6 +4,7 @@ import vuetify from './plugins/vuetify'
 
 import VueRouter from 'vue-router'
 import Routes from './routes'
+import VueCookie from 'vue-cookie'
 
 import { ValidationProvider } from 'vee-validate/dist/vee-validate.full.esm';
 import { ValidationObserver} from 'vee-validate'
@@ -25,6 +26,7 @@ Vue.component('ValidationObserver', ValidationObserver);
 Vue.config.productionTip = false
 
 Vue.use(VueRouter);
+Vue.use(VueCookie);
 
 const router = new VueRouter({
 

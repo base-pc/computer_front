@@ -10,13 +10,12 @@
       </div>
 
       <v-card-title class="justify-center">
-        <p>Dodaj kategorię</p>
+        <p>Informacje o produkcie</p>
       </v-card-title>
 
       <div class="add_category_form">
         <v-form>
           <v-text-field
-            v-model="category.name"
             label="Nazwa kategorii"
             type="text"
             required
@@ -30,6 +29,7 @@
         <v-btn class="justify-center" color="primary"
                                       @click="close()">Dodaj</v-btn>
       </v-card-actions>
+      <p>{{name}}</p>
 
     </v-card>
   </v-dialog>
@@ -41,16 +41,21 @@
 export default {
 
   props: {
-    showDialog: Boolean,
+    showDialog          : Boolean,
+    productName         : String,
+    productManufacturer : String,
+    productPrice        : String,
+    productDesc         : Text,
+    productRate         : Number,
+    productRatesTime    : Number,
+    productPhoto        : String,
   },
 
   data() {
     return {
-      show    : this.showDialog,
-
-      category: {
-        name: '',
-      },
+      switch1: false,
+      show: this.showDialog,
+      name: this.productName,
     }
   },
 
@@ -60,10 +65,12 @@ export default {
       this.show=false;
     },
 
+
   },
 }
 
 </script>
+
 
 <style>
 

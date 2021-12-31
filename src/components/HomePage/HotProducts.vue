@@ -4,57 +4,77 @@
       <v-container>
         <v-row justify="center">
 
-          <p v-if="loading">Ładowanie strony...</p>
-
           <v-col align-self="center" v-for="hot in hots" :key="hot.id" cols="12" md="10">
-            <v-item v-slot="{ toggle }">
+            <v-item
+              >
+
               <v-card class="d-flex justify-center flex-row" light height="150"
-                                                                   width="900px" @click="toggle">
-                <div class="img">
-                  <v-img
-                    max-height="150"
-                    max-width="179"
-                    :src="hot.photo_url"
-                    ></v-img>
-                </div>
-                <div class="product_name">{{hot.name}}</div>
+                                                                   width="900px"
+                                                                   @click="handleSelectItem(hot)"
+                                                                   @click.native.stop="
+                                                                   toggleProduct()"
+                                                                   >
 
-                <div class="rating">
-                  <v-rating v-model="rating" readonly background-color="black"
-                                                      half-increments
-                                                      color="black" x-small></v-rating>
+                                                                   <div class="img">
+                                                                     <v-img
+                                                                       max-height="150"
+                                                                       max-width="179"
+                                                                       :src="hot.photo_url"
+                                                                       ></v-img>
+                                                                   </div>
+                                                                   <div class="product_name">{{hot.name}}</div>
 
-                                                    {{hot.rate}}({{hot.rates_time}})
+                                                                   <div class="rating">
+                                                                     <v-rating v-model="rating" readonly background-color="black"
+                                                                                                         half-increments
+                                                                                                         color="black" x-small></v-rating>
 
-                </div>
+                                                                                                       {{hot.rate}}({{hot.rates_time}})
 
-                <div class="cart">
-                  <div class="price">
-                    <p>{{hot.price}} PLN</p>
-                  </div>
-                  <fa icon="shopping-cart" size="2x"/>
+                                                                   </div>
 
-                  <div class="addToCart">
-                    <v-btn
-                      color="primary" :disabled=!logged x-small
-                      @click="getHotPorducts()">Dodaj</v-btn>
+                                                                   <div class="cart">
+                                                                     <div class="price">
+                                                                       <p>{{hot.price}} PLN</p>
+                                                                     </div>
+                                                                     <fa icon="shopping-cart" size="2x"/>
 
-                  </div>
-                </div>
+                                                                     <div class="addToCart">
+                                                                       <v-btn
+                                                                         color="primary" :disabled=!logged x-small
+                                                                         @click="getHotPorducts()">Dodaj</v-btn>
 
-                <v-scroll-y-transition> </v-scroll-y-transition>
+                                                                     </div>
+
+                                                                   </div>
+                                                                   <v-scroll-y-transition> </v-scroll-y-transition>
               </v-card>
             </v-item>
+
           </v-col>
         </v-row>
       </v-container>
     </v-item-group>
+    <ProductInDetail
+      v-if="showProduct"
+      :show-dialog="true"
+      :product-name="form.name"
+      :product-manufacturer="form.manufacturer"
+      :product-price="form.price"
+      :product-desc="form.desc"
+      :product-rate="form.rate"
+      :product-rates-time="form.rates_time"
+      :product-photo="form.photo"
+
+      />
   </div>
 </template>
 
 <script>
 
 import axios from "axios";
+
+import ProductInDetail from '../HomePage/ProductInDetail.vue'
 
 export default {
   name: "HotProducts",
@@ -64,9 +84,23 @@ export default {
     logged: true,
     hots: [],
     loading: false,
+    showProduct: false,
+
+    form: {
+      id             : undefined,
+      name         : '',
+      manufacturer : '',
+      price        : '',
+      desc         : undefined,
+      rate         : 0,
+      rates_time   : 0,
+      photo        : ''
+
+    },
+
   }),
 
-  components: {},
+  components: {ProductInDetail},
 
   methods: {
 
@@ -82,14 +116,38 @@ export default {
 
       console.log(this.hots);
 
+    },
+
+    getHotName(hotName)
+    {
+      console.log(hotName);
+    },
+
+    toggleProduct()
+    {
+      this.showProduct = !this.showProduct;
+    },
+
+    toggle()
+    {
+      this.toggleProduct();
+    },
+
+    handleSelectItem(hot)
+    {
+      this.form.id = hot.id;
+      this.form.name = hot.name;
+      console.log(this.form.id);
+      console.log(this.form.name);
+
     }
+
   },
 
   beforeMount(){
     this.getHotPorducts()
   },
 }
-
 
 </script>
 

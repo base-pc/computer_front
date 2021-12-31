@@ -15,9 +15,13 @@
       <div class="add_product_form">
         <v-form>
           <v-select
-            :items="items"
+            :items="dbOptions"
+            v-model="selectedCategoryId"
+            item-text="name"
+            item-value="id"
             label="Kategoria"
-            ></v-select>
+            >
+          </v-select>
           <v-text-field
             label="Nazwa produktu"
             type="text"
@@ -68,6 +72,9 @@
 
 <script>
 
+import axios from "axios";
+
+
 export default {
 
   props: {
@@ -76,12 +83,24 @@ export default {
 
   data() {
     return {
-      switch1: false,
-      show: this.showDialog,
-
-      items: ['Karty graficzne', 'Procesory', 'Pamięci RAM'],
-
+      show               : this.showDialog,
+      selectedCategoryId : '',
+      dbOptions          : [],
     }
+  },
+
+  mounted()
+  {
+    axios.get('https://icnav.online/api/category/all')
+
+      .then(r => {
+        for (let i = 0; i < r.data.length; i++) {
+          this.dbOptions.push(r.data[i])
+        }
+      },
+        error => {
+          console.error(error)
+        })
   },
 
 

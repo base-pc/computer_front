@@ -2,15 +2,16 @@
   <div class="items">
     <v-item-group align="center">
       <v-container>
+        <!--<v-btn @click="getProducts()">Odpal Kategorie</v-btn>-->
         <v-row justify="center">
 
-          <v-col align-self="center" v-for="hot in hots" :key="hot.id" cols="12" md="10">
+          <v-col align-self="center" v-for="product in products" :key="product.id" cols="12" md="10">
             <v-item
               >
 
               <v-card class="d-flex justify-center flex-row" light height="150"
                                                                    width="900px"
-                                                                   @click="handleSelectItem(hot)"
+                                                                   @click="handleSelectItem(product)"
                                                                    @click.native.stop="
                                                                    toggleProduct()"
                                                                    >
@@ -19,30 +20,31 @@
                                                                      <v-img
                                                                        max-height="150"
                                                                        max-width="179"
-                                                                       :src="hot.photo_url"
+                                                                       :src="product.photo_url"
                                                                        ></v-img>
                                                                    </div>
-                                                                   <div class="product_name">{{hot.name}}</div>
+                                                                   <div
+                                                                     class="product_name">{{product.name}}</div>
 
                                                                    <div class="rating">
-                                                                     <v-rating  readonly background-color="black"
-                                                                                         half-increments
-                                                                                         color="black" x-small></v-rating>
+                                                                     <v-rating v-model="rating" readonly background-color="black"
+                                                                                                         half-increments
+                                                                                                         color="black" x-small></v-rating>
 
-                                                                                       {{hot.rate}}({{hot.rates_time}})
+                                                                                                       {{product.rate}}({{product.rates_time}})
 
                                                                    </div>
 
                                                                    <div class="cart">
                                                                      <div class="price">
-                                                                       <p>{{hot.price}} PLN</p>
+                                                                       <p>{{product.price}} PLN</p>
                                                                      </div>
                                                                      <fa icon="shopping-cart" size="2x"/>
 
                                                                      <div class="addToCart">
                                                                        <v-btn
                                                                          color="primary" :disabled=!logged x-small
-                                                                         @click="getHotPorducts()">Dodaj</v-btn>
+                                                                         @click="getProducts()">Dodaj</v-btn>
 
                                                                      </div>
 
@@ -56,15 +58,6 @@
       </v-container>
     </v-item-group>
     <ProductInDetail
-      v-if="showProduct"
-      :show-dialog="true"
-      :product-name="form.name"
-      :product-manufacturer="form.manufacturer"
-      :product-price="form.price"
-      :product-desc="form.desc"
-      :product-rate="form.rate"
-      :product-rates-time="form.rates_time"
-      :product-photo="form.photo"
 
       />
   </div>
@@ -77,12 +70,21 @@ import axios from "axios";
 import ProductInDetail from '../HomePage/ProductInDetail.vue'
 
 export default {
-  name: "HotProducts",
+
+  name: "CategoryProducts",
+
+  props:
+  {
+    categoryId : Number
+  },
+
+
   data: () => ({
     logged      : true,
-    hots        : [],
+    products    : [],
     loading     : false,
     showProduct : false,
+    elo: 3,
 
     form: {
       id           : undefined,
@@ -102,17 +104,16 @@ export default {
 
   methods: {
 
-    async getHotPorducts()
+    getProducts()
     {
 
       axios
-        .get("https://icnav.online/api/product/hot")
+        .get("https://icnav.online/api/category/show/" + this.categoryId)
         .then(res => {
-          this.loading = false;
-          this.hots    = res.data;
+          this.products    = res.data[0].products;
         })
 
-      console.log(this.hots);
+      console.log(this.products);
 
     },
 
@@ -131,21 +132,25 @@ export default {
       this.toggleProduct();
     },
 
-    handleSelectItem(hot)
+    handleSelectItem(product)
     {
-      this.form.id   = hot.id;
-      this.form.name = hot.name;
+      this.form.id   = product.id;
+      this.form.name = product.name;
 
       console.log(this.form.id);
       console.log(this.form.name);
 
-    }
+    },
+
+
+
 
   },
+  beforeMount()
+  {
+    this.getProducts();
+  }
 
-  beforeMount(){
-    this.getHotPorducts()
-  },
 }
 
 </script>

@@ -1,10 +1,8 @@
 <template>
   <v-container>
-    <!--<UserNav></UserNav>-->
-    <!--<AdminNav></AdminNav>-->
+    <component v-bind:is="component"></component>
     <Nav></Nav>
     <Sidebar></Sidebar>
-    <HotProducts></HotProducts>
   </v-container>
 </template>
 
@@ -12,17 +10,36 @@
 import Nav from "../HomePage/Nav.vue";
 import Sidebar from "../HomePage/Sidebar.vue";
 import HotProducts from "../HomePage/HotProducts.vue";
-//import UserNav from "../User/UserNav.vue";
-//import AdminNav from "../Admin/AdminNav.vue";
+import CategoryProducts from "../HomePage/CategoryProducts.vue";
 
 export default {
   name: "Home",
+
+  props: {
+    categoryProduct: Boolean,
+  },
+
+
   components: {
     Sidebar,
     Nav,
-    HotProducts,
-    // UserNav,
-    //    AdminNav,
+    'form-one' : HotProducts,
+    'elo' : CategoryProducts,
+  },
+
+  data(){
+    return {
+    }
+  },
+
+  computed: {
+    component() {
+      if(this.categoryProduct) {
+        return 'elo';
+      } else {
+        return 'form-one';
+      }
+    }
   },
 };
 </script>

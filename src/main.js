@@ -25,6 +25,8 @@ Vue.component('ValidationObserver', ValidationObserver);
 
 Vue.config.productionTip = false
 
+window.Event = new Vue();
+
 Vue.use(VueRouter);
 Vue.use(VueCookie);
 

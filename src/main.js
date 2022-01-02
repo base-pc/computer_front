@@ -19,9 +19,9 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 library.add(fas, faGoogle)
 Vue.component('fa', FontAwesomeIcon)
 
-
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+
 
 Vue.config.productionTip = false
 

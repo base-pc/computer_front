@@ -108,7 +108,7 @@ export default {
     {
 
       axios
-        .get("https://icnav.online/api/category/show/" + this.categoryId)
+        .get("https://icnav.online/api/category/show/" + this.elo)
         .then(res => {
           this.products    = res.data[0].products;
         })

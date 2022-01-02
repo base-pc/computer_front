@@ -6,26 +6,31 @@
                @click.stop="handleSelectCategory(category)"
                @click="toggleCategoryProduct"
 
-
                >
                {{category.name}}
 
         </v-tab>
+        <v-btn @click="showData()">EMIT</v-btn>
       </v-tabs>
+
       <CategoryProducts
         v-if="showCategoryProducts"
         :category-id="selectCategory"
 
         />
+
     </div>
+
   </v-container>
+
 </template>
 
 
 <script>
 
 import axios from "axios";
-import CategoryProducts from "../HomePage/CategoryProducts.vue"
+
+import CategoryProducts from "../HomePage/CategoryProducts.vue";
 
 
 export default {
@@ -35,10 +40,14 @@ export default {
     categories: [],
     showCategoryProducts: false,
     selectCategory: null,
+    showEmit: false,
 
   }),
 
-  components: {CategoryProducts},
+  components: {
+    CategoryProducts,
+
+  },
 
   methods: {
 
@@ -58,6 +67,12 @@ export default {
     {
       this.showCategoryProducts = !this.showCategoryProducts;
     },
+
+    showData()
+    {
+      this.$emit('showMsg', true);
+    },
+
 
     handleSelectCategory(category)
     {

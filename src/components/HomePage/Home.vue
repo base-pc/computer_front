@@ -2,7 +2,8 @@
   <v-container>
     <component v-bind:is="component"></component>
     <Nav></Nav>
-    <Sidebar></Sidebar>
+    <Sidebar @showMsg="getData($event)"></Sidebar>
+    <v-btn>{{result}}</v-btn>
   </v-container>
 </template>
 
@@ -13,34 +14,47 @@ import HotProducts from "../HomePage/HotProducts.vue";
 import CategoryProducts from "../HomePage/CategoryProducts.vue";
 
 export default {
-  name: "Home",
+
 
   props: {
-    categoryProduct: Boolean,
+    category: Boolean,
   },
 
-
+  name: 'Home',
   components: {
     Sidebar,
     Nav,
     'form-one' : HotProducts,
-    'elo' : CategoryProducts,
+    'elo'      : CategoryProducts,
   },
 
   data(){
     return {
+      test: false,
+      result: '',
     }
   },
 
   computed: {
     component() {
-      if(this.categoryProduct) {
+      if(this.result) {
         return 'elo';
       } else {
         return 'form-one';
       }
     }
   },
+
+  methods: {
+
+    getData(data)
+    {
+
+      this.result = data;
+
+
+    },
+  }
 };
 </script>
 

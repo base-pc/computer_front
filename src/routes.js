@@ -7,7 +7,7 @@ import CategoryProducts from './components/HomePage/CategoryProducts.vue';
 
 export default [
 
-  { path: '/',         name: 'home',     component: Home },
+  { path: '/',         name: 'Home',     component: Home },
 
   { path: '/admin', name: 'admin', component: AdminMain },
   { path: '/user',  name: 'user',  component: UserMain },

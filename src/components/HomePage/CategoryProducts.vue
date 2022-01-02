@@ -42,7 +42,8 @@
 
                                                                      <div class="addToCart">
                                                                        <v-btn
-                                                                         color="primary" :disabled=!logged x-small
+                                                                         color="primary"
+                                                                         :disabled=!cartPermissions x-small
                                                                          @click="getProducts()">Dodaj</v-btn>
 
                                                                      </div>
@@ -84,7 +85,8 @@ export default {
 
   props:
   {
-    categoryId : Number
+    categoryId : Number,
+    cartPermissions: Boolean,
   },
 
   watch : {

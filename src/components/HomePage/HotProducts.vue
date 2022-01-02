@@ -41,7 +41,8 @@
 
                                                                      <div class="addToCart">
                                                                        <v-btn
-                                                                         color="primary" :disabled=!logged x-small
+                                                                         color="primary"
+                                                                         :disabled=!cartPermissions x-small
                                                                          @click="getHotPorducts()">Dodaj</v-btn>
 
                                                                      </div>
@@ -79,6 +80,12 @@ import ProductInDetail from '../HomePage/ProductInDetail.vue'
 export default {
 
   name: "HotProducts",
+
+  props:
+  {
+    cartPermissions: Boolean,
+  },
+
 
   data: () => ({
     logged      : false,
@@ -154,7 +161,7 @@ export default {
 
 <style scoped>
 .items {
-  margin-top: -3%;
+  margin-top: -5%;
   margin-left:7%;
 }
 

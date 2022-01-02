@@ -25,7 +25,7 @@
                         outlined
                         presistent-hint
                         solo
-                        label="Szukan"
+                        label="Szukaj"
                         ></v-text-field>
         </div>
 

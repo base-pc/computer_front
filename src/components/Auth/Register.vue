@@ -53,10 +53,23 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center" type="submit" color="primary"
-                                                    @click="submitForm()">Rejestracja</v-btn>
+        <v-btn
+          class="ma-2"
+          :loading="loading"
+          :disabled="loading"
+          color="info"
+          @click="loader = 'loading', submitForm()"
+          >
+          Rejestracja
+          <template v-slot:loader>
+            <span class="custom-loader">
+              <fa icon="spinner" size="2x"/>
+            </span>
+          </template>
+        </v-btn>
       </v-card-actions>
 
+      <p v-if="loading">Trwa zakładanie konta...</p>
     </v-card>
   </v-dialog>
 
@@ -70,9 +83,13 @@ export default {
 
   name: 'Register',
 
+  props: ["dialog"],
+
   data() {
     return {
       register_dialog: null,
+      loader: null,
+      loading: false,
 
       form: {
         email                 : '',
@@ -85,7 +102,15 @@ export default {
     }
   },
 
-  props: ["dialog"],
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
+  },
 
   methods: {
     close() {
@@ -96,18 +121,15 @@ export default {
     {
       axios.post('https://icnav.online/api/auth/register', this.form)
         .then(() => {
-
-          this.dialog=false
-          this.$router.push(this.$route.query.redirect || '/home')
+          this.loading = false;
+          this.register_dialog=false
 
         })
-
     }
-
-
-
-
   },
+
+
+
 };
 
 </script>
@@ -129,6 +151,46 @@ export default {
 .v-btn::before {
   background-color: red;
 }
+
+
+
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 </style>
 

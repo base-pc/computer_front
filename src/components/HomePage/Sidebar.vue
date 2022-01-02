@@ -3,21 +3,13 @@
     <div class="sidebar">
       <v-tabs vertical fixed background-color="white" color="black">
         <v-tab v-for="category in categories" :key="category.id"
-               @click.stop="handleSelectCategory(category)"
-               @click="toggleCategoryProduct"
+               @click.stop="emitId(category)"
 
                >
                {{category.name}}
 
         </v-tab>
-        <v-btn @click="showData()">EMIT</v-btn>
       </v-tabs>
-
-      <CategoryProducts
-        v-if="showCategoryProducts"
-        :category-id="selectCategory"
-
-        />
 
     </div>
 
@@ -25,13 +17,9 @@
 
 </template>
 
-
 <script>
 
 import axios from "axios";
-
-import CategoryProducts from "../HomePage/CategoryProducts.vue";
-
 
 export default {
   name: "Sidebar",
@@ -40,14 +28,10 @@ export default {
     categories: [],
     showCategoryProducts: false,
     selectCategory: null,
-    showEmit: false,
 
   }),
 
-  components: {
-    CategoryProducts,
-
-  },
+  components: {},
 
   methods: {
 
@@ -63,29 +47,16 @@ export default {
 
     },
 
-    toggleCategoryProduct()
-    {
-      this.showCategoryProducts = !this.showCategoryProducts;
-    },
-
     showData()
     {
       this.$emit('showMsg', true);
     },
 
-
-    handleSelectCategory(category)
+    emitId(category)
     {
-      this.selectCategory = category.id;
-      console.log(this.selectCategory);
-
-    }
-
-
-
-
-
-
+      this.$emit('emitId', category.id);
+      this.showData();
+    },
   },
 
   beforeMount(){
@@ -111,5 +82,4 @@ export default {
 }
 
 </style>
-
 

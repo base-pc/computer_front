@@ -152,7 +152,7 @@ export default {
 
 <style scoped>
 .items {
-  margin-top: -10%;
+  margin-top: -3%;
   margin-left:7%;
 }
 

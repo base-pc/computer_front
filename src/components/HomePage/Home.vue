@@ -1,9 +1,13 @@
 <template>
   <v-container>
-    <component v-bind:is="component"></component>
+    <component v-bind:is="component"
+               :category-id="id"
+               ></component>
+
     <Nav></Nav>
-    <Sidebar @showMsg="getData($event)"></Sidebar>
-    <v-btn>{{result}}</v-btn>
+
+    <Sidebar @showMsg="getData($event)" @emitId="getId($event)"></Sidebar>
+
   </v-container>
 </template>
 
@@ -31,7 +35,8 @@ export default {
   data(){
     return {
       test: false,
-      result: '',
+      result: false,
+      id: null,
     }
   },
 
@@ -51,9 +56,12 @@ export default {
     {
 
       this.result = data;
-
-
     },
+
+    getId(data)
+    {
+      this.id = data;
+    }
   }
 };
 </script>

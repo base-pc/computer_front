@@ -2,7 +2,6 @@
   <div class="items">
     <v-item-group align="center">
       <v-container>
-        <!--<v-btn @click="getProducts()">Odpal Kategorie</v-btn>-->
         <v-row justify="center">
 
           <v-col align-self="center" v-for="product in products" :key="product.id" cols="12" md="10">
@@ -27,11 +26,11 @@
                                                                      class="product_name">{{product.name}}</div>
 
                                                                    <div class="rating">
-                                                                     <v-rating v-model="rating" readonly background-color="black"
-                                                                                                         half-increments
-                                                                                                         color="black" x-small></v-rating>
+                                                                     <v-rating readonly background-color="black"
+                                                                                        half-increments
+                                                                                        color="black" x-small></v-rating>
 
-                                                                                                       {{product.rate}}({{product.rates_time}})
+                                                                                      {{product.rate}}({{product.rates_time}})
 
                                                                    </div>
 
@@ -78,13 +77,21 @@ export default {
     categoryId : Number
   },
 
+  watch : {
+    categoryId() {
+
+      console.log('Zmiana wartosci');
+      this.getProducts();
+
+    }
+  },
+
 
   data: () => ({
     logged      : true,
     products    : [],
     loading     : false,
     showProduct : false,
-    elo: 3,
 
     form: {
       id           : undefined,
@@ -108,7 +115,7 @@ export default {
     {
 
       axios
-        .get("https://icnav.online/api/category/show/" + this.elo)
+        .get("https://icnav.online/api/category/show/" + this.categoryId)
         .then(res => {
           this.products    = res.data[0].products;
         })
@@ -141,11 +148,8 @@ export default {
       console.log(this.form.name);
 
     },
-
-
-
-
   },
+
   beforeMount()
   {
     this.getProducts();
@@ -157,7 +161,7 @@ export default {
 
 <style scoped>
 .items {
-  margin-top: -10%;
+  margin-top: -5%;
   margin-left:7%;
 }
 

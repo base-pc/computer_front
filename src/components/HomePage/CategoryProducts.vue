@@ -17,8 +17,8 @@
 
                                                                    <div class="img">
                                                                      <v-img
-                                                                       max-height="150"
-                                                                       max-width="179"
+                                                                       height="110"
+                                                                       width="179"
                                                                        :src="product.photo_url"
                                                                        ></v-img>
                                                                    </div>
@@ -57,6 +57,16 @@
       </v-container>
     </v-item-group>
     <ProductInDetail
+      v-if="showProduct"
+      :show-dialog="true"
+      :product-name="form.name"
+      :product-manufacturer="form.manufacturer"
+      :product-price="form.price"
+      :product-desc="form.desc"
+      :product-rate="form.rate"
+      :product-rates-time="form.rates_time"
+      :product-photo="form.photo"
+
 
       />
   </div>
@@ -88,7 +98,7 @@ export default {
 
 
   data: () => ({
-    logged      : true,
+    logged      : false,
     products    : [],
     loading     : false,
     showProduct : false,

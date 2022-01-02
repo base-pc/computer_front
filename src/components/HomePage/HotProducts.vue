@@ -77,9 +77,11 @@ import axios from "axios";
 import ProductInDetail from '../HomePage/ProductInDetail.vue'
 
 export default {
+
   name: "HotProducts",
+
   data: () => ({
-    logged      : true,
+    logged      : false,
     hots        : [],
     loading     : false,
     showProduct : false,

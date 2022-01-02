@@ -29,7 +29,6 @@
         <v-btn class="justify-center" color="primary"
                                       @click="close()">Dodaj</v-btn>
       </v-card-actions>
-      <p>{{name}}</p>
 
     </v-card>
   </v-dialog>
@@ -53,7 +52,6 @@ export default {
 
   data() {
     return {
-      switch1: false,
       show: this.showDialog,
       name: this.productName,
     }

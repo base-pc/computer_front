@@ -16,6 +16,8 @@
         <div class="search">
           <v-text-field id="s"
                         fixed
+                        v-model="search_product"
+                        @keyup.enter="getSearchInput(), clearSearchField()"
                         dense
                         background-color="#5c7067"
                         color="white"
@@ -104,17 +106,19 @@
 <script>
 
 import Category from "../Admin/AddCategory.vue";
-import Product from "../Admin/AddProduct.vue";
+import Product  from "../Admin/AddProduct.vue";
 
 
 
 export default {
 
   name: "AdminNav",
+
   data: () => ({
-    showCategory: false,
-    showProduct: false,
-    selectItem: null,
+    showCategory   : false,
+    showProduct    : false,
+    selectItem     : null,
+    search_product : '',
 
 
 
@@ -147,7 +151,21 @@ export default {
     {
       this.selectItem = item.id;
 
-    }
+    },
+
+    getSearchInput()
+    {
+      console.log(this.search_product);
+
+      this.$emit('searchPhase', this.search_product);
+      this.$emit('triggerSearch', true)
+    },
+
+    clearSearchField()
+    {
+      this.search_product = null;
+    },
+
   }
 };
 

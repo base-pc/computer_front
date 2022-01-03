@@ -1,12 +1,13 @@
 <template>
   <v-container>
 
-    <component v-bind:is="component"
-               :category-id="id"
-               :cart-permissions="false"
-               ></component>
+    <component :is="component"
+      :category-id="id"
+      :search-input = "search_input"
+      :cart-permissions="false" />
 
-    <AdminNav></AdminNav>
+    <AdminNav @searchPhase="getSearchInput($event)"
+      @triggerSearch="getSearch($event)"></AdminNav>
 
     <Sidebar @showMsg="getData($event)" @emitId="getId($event)"></Sidebar>
 
@@ -14,40 +15,43 @@
 </template>
 
 <script>
-import Sidebar from "../HomePage/Sidebar.vue";
-import HotProducts from "../HomePage/HotProducts.vue";
-import AdminNav from "../Admin/AdminNav.vue";
+
+import Sidebar          from "../HomePage/Sidebar.vue";
+import HotProducts      from "../HomePage/HotProducts.vue";
+import AdminNav         from "../Admin/AdminNav.vue";
 import CategoryProducts from "../HomePage/CategoryProducts.vue";
+import AdminSearchList  from "../Admin/AdminSearchList.vue";
 
 export default {
-
-  props: {
-    category: Boolean,
-  },
 
   name: "AdminMain",
 
   components: {
     Sidebar,
     AdminNav,
-    'form-one' : HotProducts,
-    'elo'      : CategoryProducts,
+    'hot-products'      : HotProducts,
+    'category-products' : CategoryProducts,
+    'search-list'       : AdminSearchList,
+
   },
 
   data(){
     return {
-      test: false,
-      result: false,
-      id: null,
+      result       : false,
+      search       : false,
+      id           : null,
+      search_input : null,
     }
   },
 
   computed: {
     component() {
-      if(this.result) {
-        return 'elo';
-      } else {
-        return 'form-one';
+      if(this.search) {
+        return 'search-list';
+      } else if(this.result){
+        return 'category-products';
+      }else {
+        return 'hot-products';
       }
     }
   },
@@ -63,7 +67,18 @@ export default {
     getId(data)
     {
       this.id = data;
+    },
+
+    getSearchInput(data)
+    {
+      this.search_input = data;
+    },
+
+    getSearch(data)
+    {
+      this.search = data;
     }
+
   }
 
 };

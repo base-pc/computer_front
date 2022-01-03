@@ -37,7 +37,6 @@
         </v-btn>
       </v-card-actions>
 
-
     </v-card>
   </v-dialog>
 
@@ -49,13 +48,13 @@ export default {
 
   name: 'Login',
 
+  props: ["dialog"],
+
   data() {
     return {
       login_dialog: null
     }
   },
-
-  props: ["dialog"],
 
   methods: {
     close() {

@@ -86,11 +86,9 @@ export default {
     cartPermissions: Boolean,
   },
 
-
   data: () => ({
     logged      : false,
     hots        : [],
-    loading     : false,
     showProduct : false,
 
     form: {
@@ -144,9 +142,6 @@ export default {
     {
       this.form.id   = hot.id;
       this.form.name = hot.name;
-
-      console.log(this.form.id);
-      console.log(this.form.name);
 
     }
 

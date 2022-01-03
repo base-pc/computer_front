@@ -2,6 +2,7 @@
   <div class="items">
     <v-item-group align="center">
       <v-container>
+
         <v-row justify="center">
 
           <v-col align-self="center" v-for="product in products" :key="product.id" cols="12" md="10">
@@ -80,27 +81,34 @@ import ProductInDetail from '../HomePage/ProductInDetail.vue'
 
 export default {
 
-  name: "CategoryProducts",
+  name: "UserSearchList",
 
   props:
   {
     categoryId      : Number,
     cartPermissions : Boolean,
+    searchInput     : String,
   },
 
   watch : {
+    searchInput() {
+
+      this.getSearchProducts();
+
+    },
+
     categoryId() {
 
-      console.log('Zmiana wartosci');
       this.getProducts();
 
     }
+
   },
 
   data: () => ({
     logged      : false,
-    products    : [],
     showProduct : false,
+    products    : [],
 
     form: {
       id           : undefined,
@@ -114,11 +122,29 @@ export default {
 
     },
 
+    searchform: {
+      search: ''
+    },
+
   }),
 
   components: {ProductInDetail},
 
   methods: {
+
+    getSearchProducts()
+    {
+
+      this.searchform.search = this.searchInput;
+
+      axios.post("https://icnav.online/api/product/search", this.searchform)
+
+        .then(res => {
+          this.products    = res.data;
+          console.log(this.searchform.search);
+        })
+
+    },
 
     getProducts()
     {
@@ -131,11 +157,6 @@ export default {
 
       console.log(this.products);
 
-    },
-
-    getHotName(hotName)
-    {
-      console.log(hotName);
     },
 
     toggleProduct()
@@ -154,11 +175,12 @@ export default {
       this.form.name = product.name;
 
     },
+
   },
 
   beforeMount()
   {
-    this.getProducts();
+    this.getSearchProducts();
   }
 
 }

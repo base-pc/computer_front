@@ -5,7 +5,6 @@
       dense
       color="##B57614"
 
-
       height="14px"
       title="BASE-PC"
       elevation="0"
@@ -17,6 +16,8 @@
 
         <div class="search">
           <v-text-field id="s"
+                        v-model="search_product"
+                        @keyup.enter="getSearchInput(), clearSearchField()"
                         fixed
                         dense
                         background-color="#5c7067"
@@ -56,7 +57,6 @@
 
               </v-avatar>
 
-
             </v-tab>
 
           </div>
@@ -68,10 +68,33 @@
 
 <script>
 
-
 export default {
   name: "UserNav",
+
+  data() {
+    return {
+      search_product : '',
+    }
+  },
+
+  methods: {
+
+    getSearchInput()
+    {
+      console.log(this.search_product);
+
+      this.$emit('searchPhase', this.search_product);
+      this.$emit('triggerSearch', true)
+    },
+
+    clearSearchField()
+    {
+      this.search_product = null;
+    },
+
+  },
 };
+
 </script>
 
 <style>

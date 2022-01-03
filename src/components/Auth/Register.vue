@@ -87,9 +87,9 @@ export default {
 
   data() {
     return {
-      register_dialog: null,
-      loader: null,
-      loading: false,
+      register_dialog : null,
+      loader          : null,
+      loading         : false,
 
       form: {
         email                 : '',
@@ -101,7 +101,6 @@ export default {
       },
     }
   },
-
 
   watch: {
     loader () {
@@ -121,19 +120,16 @@ export default {
     {
       axios.post('https://icnav.online/api/auth/register', this.form)
         .then(() => {
-          this.loading = false;
-          this.register_dialog=false
+          this.loading         = false;
+          this.register_dialog = false
 
         })
     }
   },
 
-
-
 };
 
 </script>
-
 
 <style>
 
@@ -151,8 +147,6 @@ export default {
 .v-btn::before {
   background-color: red;
 }
-
-
 
 .custom-loader {
   animation: loader 1s infinite;
@@ -190,7 +184,6 @@ export default {
     transform: rotate(360deg);
   }
 }
-
 
 </style>
 

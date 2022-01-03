@@ -1,10 +1,11 @@
 <template>
   <v-container>
-    <component v-bind:is="component"
-               :category-id="id"
-               ></component>
 
-    <Nav></Nav>
+    <component :is="component"
+      :category-id  = "id"
+      :search-input = "search_input"/>
+
+    <Nav @searchPhase="getSearchInput($event)" @triggerSearch="getSearch($event)"></Nav>
 
     <Sidebar @showMsg="getData($event)" @emitId="getId($event)"></Sidebar>
 
@@ -12,42 +13,48 @@
 </template>
 
 <script>
-import Nav from "../HomePage/Nav.vue";
-import Sidebar from "../HomePage/Sidebar.vue";
-import HotProducts from "../HomePage/HotProducts.vue";
+
+import Nav              from "../HomePage/Nav.vue";
+import Sidebar          from "../HomePage/Sidebar.vue";
+import HotProducts      from "../HomePage/HotProducts.vue";
 import CategoryProducts from "../HomePage/CategoryProducts.vue";
+import SearchList       from "../HomePage/SearchList.vue";
 
 export default {
 
-
-  props: {
-    category: Boolean,
-  },
-
   name: 'Home',
+
   components: {
     Sidebar,
     Nav,
-    'form-one' : HotProducts,
-    'elo'      : CategoryProducts,
+    'hot-products'      : HotProducts,
+    'category-products' : CategoryProducts,
+    'search-list'       : SearchList,
   },
 
   data(){
     return {
-      test: false,
-      result: false,
-      id: null,
+      result       : false,
+      search       : false,
+      id           : null,
+      search_input : null,
     }
   },
 
   computed: {
     component() {
-      if(this.result) {
-        return 'elo';
-      } else {
-        return 'form-one';
+
+      if(this.search) {
+        return 'search-list';
+
+      } else if(this.result) {
+        return 'category-products';
+
+      }else {
+        return 'hot-products';
       }
-    }
+    },
+
   },
 
   methods: {
@@ -61,6 +68,16 @@ export default {
     getId(data)
     {
       this.id = data;
+    },
+
+    getSearchInput(data)
+    {
+      this.search_input = data;
+    },
+
+    getSearch(data)
+    {
+      this.search = data;
     }
   }
 };

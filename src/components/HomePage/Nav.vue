@@ -14,6 +14,8 @@
 
         <div class="search">
           <v-text-field id="s"
+                        v-model="search_product"
+                        @keyup.enter="getSearchInput(), clearSearchField()"
                         fixed
                         dense
                         background-color="#5c7067"
@@ -39,16 +41,41 @@
 <script>
 
 import Register from "../Auth/Register.vue";
-import Login from "../Auth/Login.vue";
+import Login    from "../Auth/Login.vue";
 
 export default {
+
   name: "Nav",
 
+  data() {
+    return {
+      search_product : '',
+    }
+  },
+
   components: {Register, Login},
+
+  methods: {
+
+    getSearchInput()
+    {
+      console.log(this.search_product);
+
+      this.$emit('searchPhase', this.search_product);
+      this.$emit('triggerSearch', true)
+    },
+
+    clearSearchField()
+    {
+      this.search_product = null;
+    },
+
+  },
 };
 </script>
 
 <style>
+
 .title {
   width: 200px !important;
 }

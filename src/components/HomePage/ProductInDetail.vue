@@ -3,31 +3,23 @@
   <v-dialog v-model="show" max-width="1080" persistent>
     <v-card v-for="product in products" :key="product.id">
 
-
       <div class="close">
         <fa icon="times" size="2x" @click="close()"
 
                          />
       </div>
 
-      <!--<v-card-title class="justify-center">-->
-      <!--</v-card-title>-->
-
       <div class="title">
         <p>{{product.name}}</p>
       </div>
 
-
-
-
       <div class="flex-container">
-
 
         <div class="img">
           <v-img
-            max-height="250"
-            max-width="250"
-            src="https://img.pccomponentes.com/articles/8/83028/msi-geforce-gtx970-oc-4gb-gddr5-negra-blanca-4.jpg"
+            max-height="400"
+            max-width="400"
+            :src="product.photo_url"
             ></v-img>
         </div>
 
@@ -35,25 +27,24 @@
 
           <h2>Cena: {{product.price}} PLN</h2>
           <p style="font-weight:bold">Producent: {{product.manufacturer}}</p>
-          <p>Opis: GeForce GTX 970 to przedstawiciel najnowszej serii kart graficznych Nvidia. Karta dzięki nowemu rdzeniowi Maxwell cechuje się świetną relacją ceny do wydajności. Wysoka wydajność nie oznacza dużego poboru prądu i wyjącego wentylatora. Podobnie, jak inne najnowsze produkty firmy Nvidia, odznacza się niskim poborem prądu i sporymi możliwościami w podkręcaniu. Mały minus za poziom szumu powietrza pod obciążeniem. Karta wyposażona jest w najnowsze technologie: G-sync, DSR i DirectX 12 </p>
+          <p>{{product.description}}</p>
 
         </div>
       </div>
 
       <div class="flex-container2">
 
-
         <div class="datail-rating">
 
           <v-rating  readonly background-color="black"
                               half-increments
                               size="27"
+                              :value="product.rate"
                               color="black"></v-rating>
 
                             {{product.rate}}({{product.rates_time}})
 
         </div>
-
 
         <div class="cart-button">
 
@@ -61,11 +52,7 @@
 
         </div>
 
-
       </div>
-
-
-
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -79,7 +66,6 @@
 <script>
 
 import axios from "axios";
-
 
 export default {
 
@@ -123,12 +109,9 @@ export default {
     this.getProductById();
   },
 
-
-
 }
 
 </script>
-
 
 <style>
 
@@ -143,31 +126,31 @@ export default {
   margin-right:30px;
 }
 
+.product-detail {
+  margin-left:5%;
+  margin-top:10px;
+  margin-right:2%;
+  text-align:left;
+
+}
 
 .flex-container {
   display:flex;
-  border: 1px black solid;
 
 }
 
 .img {
-  border: 1px black solid;
   margin-left: 7%;
 }
 
-
 .title {
-  width: auto;
   margin:auto;
 
 }
 
-.title p {
-  border: 1px black solid;
-  font-size: 1.8em;
+p.title{
+  font-size: 1.3em;
 }
-
-
 
 .flex-container2 {
   display:flex;
@@ -175,14 +158,12 @@ export default {
 
 .datail-rating {
 
-  border: 1px black solid;
   padding-top: 10px;
-  margin-left:8%;
+  margin-left:15%;
 
 }
 
 .cart-button {
-  border: 1px black solid;
   margin:auto;
 }
 </style>

@@ -19,8 +19,8 @@
 
                                                                    <div class="img">
                                                                      <v-img
-                                                                       max-height="150"
-                                                                       max-width="179"
+                                                                       max-height="120"
+                                                                       max-width="120"
                                                                        :src="hot.photo_url"
                                                                        ></v-img>
                                                                    </div>
@@ -29,6 +29,7 @@
                                                                    <div class="rating">
                                                                      <v-rating  readonly background-color="black"
                                                                                          half-increments
+                                                                                         :value="hot.rate"
                                                                                          color="black" x-small></v-rating>
 
                                                                                        {{hot.rate}}({{hot.rates_time}})

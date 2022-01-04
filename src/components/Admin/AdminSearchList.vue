@@ -18,8 +18,8 @@
 
                                                                    <div class="img">
                                                                      <v-img
-                                                                       height="110"
-                                                                       width="179"
+                                                                       height="120"
+                                                                       width="120"
                                                                        :src="product.photo_url"
                                                                        ></v-img>
                                                                    </div>
@@ -29,6 +29,7 @@
                                                                    <div class="rating">
                                                                      <v-rating readonly background-color="black"
                                                                                         half-increments
+                                                                                        :value="product.rate"
                                                                                         color="black" x-small></v-rating>
 
                                                                                       {{product.rate}}({{product.rates_time}})
@@ -61,13 +62,7 @@
     <ProductInDetail
       v-if="showProduct"
       :show-dialog="true"
-      :product-name="form.name"
-      :product-manufacturer="form.manufacturer"
-      :product-price="form.price"
-      :product-desc="form.desc"
-      :product-rate="form.rate"
-      :product-rates-time="form.rates_time"
-      :product-photo="form.photo"
+      :product-id="form.id"
 
       />
   </div>
@@ -81,7 +76,7 @@ import ProductInDetail from '../HomePage/ProductInDetail.vue'
 
 export default {
 
-  name: "UserSearchList",
+  name: "AdminSearchList",
 
   props:
   {
@@ -112,14 +107,6 @@ export default {
 
     form: {
       id           : undefined,
-      name         : '',
-      manufacturer : '',
-      price        : '',
-      desc         : undefined,
-      rate         : 0,
-      rates_time   : 0,
-      photo        : ''
-
     },
 
     searchform: {

@@ -2,6 +2,8 @@
   <div class="items">
     <v-item-group align="center">
       <v-container>
+
+
         <v-row justify="center">
 
           <v-col align-self="center" v-for="hot in hots" :key="hot.id" cols="12" md="10">
@@ -59,13 +61,7 @@
     <ProductInDetail
       v-if="showProduct"
       :show-dialog="true"
-      :product-name="form.name"
-      :product-manufacturer="form.manufacturer"
-      :product-price="form.price"
-      :product-desc="form.desc"
-      :product-rate="form.rate"
-      :product-rates-time="form.rates_time"
-      :product-photo="form.photo"
+      :product-id="form.id"
 
       />
   </div>
@@ -93,14 +89,6 @@ export default {
 
     form: {
       id           : undefined,
-      name         : '',
-      manufacturer : '',
-      price        : '',
-      desc         : undefined,
-      rate         : 0,
-      rates_time   : 0,
-      photo        : ''
-
     },
 
   }),

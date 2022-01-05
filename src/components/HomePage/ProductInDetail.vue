@@ -25,7 +25,7 @@
 
         <div class="product-detail">
 
-          <h2>Cena: {{product.price}} PLN</h2>
+          <h2 style="color:red">Cena: {{product.price}} PLN</h2>
           <p style="font-weight:bold">Producent: {{product.manufacturer}}</p>
           <p>{{product.description}}</p>
 
@@ -48,15 +48,52 @@
 
         <div class="cart-button">
 
-          <v-btn> <i class="fab fa-shopping-cart fa-2x"></i> Dodaj do koszyka</v-btn>
+          <v-btn color="primary"> <i class="fab fa-shopping-cart fa-2x"></i> Dodaj do koszyka</v-btn>
 
         </div>
 
       </div>
+      <v-btn @click="loadComments()" color="normal" block>Załaduj komentarze</v-btn>
 
       <v-card-actions>
         <v-spacer></v-spacer>
       </v-card-actions>
+
+      <div v-if="toggle_comments" class="comment-main">
+
+        <div class="comment-form" v-for="comment in comments" :key="comment.id">
+
+          <div class="comment-avatar">
+
+            <v-avatar size="55">
+
+              <img
+                :src="comment.author_avatar"
+                alt="">
+
+            </v-avatar>
+
+          </div>
+
+          <div class="comment-content">
+
+            <h4>{{comment.comment_author}}</h4>
+
+            <p>Adipisicing voluptatibus explicabo ipsam voluptas iste exercitationem ex. Veritatis molestias consequuntur quas quos incidunt fugit. Reiciendis quos repellat eum est aliquid exercitationem neque. Exercitationem deserunt.</p>
+          </div>
+
+          <div class="my-rate">
+
+            <v-rating  readonly background-color="black"
+                                half-increments
+                                size="12"
+                                :value="product.rate"
+                                color="black"></v-rating>
+
+          </div>
+
+        </div>
+      </div>
 
     </v-card>
   </v-dialog>
@@ -78,7 +115,9 @@ export default {
     return {
       show     : this.showDialog,
       products : [],
+      comments :[],
       product_id : null,
+      toggle_comments: false,
     }
   },
 
@@ -97,11 +136,18 @@ export default {
         .then(res => {
           this.loading  = false;
           this.products = res.data;
+          this.comments = res.data[0].comments;
         })
 
-      console.log(this.products);
+      console.log(this.comments);
 
     },
+
+    loadComments()
+    {
+      this.toggle_comments = !this.toggle_comments;
+      this.getProductById();
+    }
 
   },
 
@@ -115,22 +161,48 @@ export default {
 
 <style>
 
+.comment-form {
+  display:flex;
+  text-align: left;
+  background-color:#FBF1C7;
+  border-bottom: 2px black solid;
+}
+
+.comment-avatar {
+  /*border: 2px black solid;*/
+  margin:auto;
+  padding-left:15px;
+
+}
+
+.comment-content {
+  font-style:italic;
+  text-align:left;
+  flex:2;
+  margin-left:2%;
+
+}
+
+.comment-content h4 {
+
+  font-style:normal;
+
+}
+
+.my-rate {
+  margin:auto;
+  padding-right:20px;
+}
+
 .close {
   text-align:right;
   padding-right:10px;
   padding-top:10px;
 }
 
-.add_category_form {
-  margin-left:30px;
-  margin-right:30px;
-}
-
 .product-detail {
-  margin-left:5%;
-  margin-top:10px;
-  margin-right:2%;
   text-align:left;
+  margin:auto;
 
 }
 
@@ -148,8 +220,9 @@ export default {
 
 }
 
-p.title{
-  font-size: 1.3em;
+.title p {
+  font-size: 1.7em;
+  color:black;
 }
 
 .flex-container2 {

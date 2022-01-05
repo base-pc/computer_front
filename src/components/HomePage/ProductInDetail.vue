@@ -53,7 +53,53 @@
         </div>
 
       </div>
-      <v-btn @click="loadComments()" color="normal" block>Załaduj komentarze</v-btn>
+
+      <div class="store-comment">
+
+        <div class="comment-input">
+
+          <v-form lazy-validation v-model="Valid" ref="Form">
+            <v-container class="text-center">
+              <v-textarea
+                filled
+                height=100
+                label="Dodaj komentarz i wystaw ocenę"
+                :min="0"
+                :counter="70"
+                :value="Field_1"
+                :rules="Rule_1"
+                ></v-textarea>
+
+            </v-container>
+          </v-form>
+        </div>
+
+        <div class="comment-submit">
+          <div class="set-rate">
+            <v-rating background-color="black"
+                      size="12"
+                      :value="0"
+                      color="black"></v-rating>
+
+          </div>
+
+          <v-btn
+            :disabled="!Valid"
+            color="success">Dodaj komentarz</v-btn>
+
+        </div>
+
+      </div>
+
+      <v-btn @click="checkIfCommentsExist() ,loadComments()" color="normal" block>Załaduj komentarze</v-btn>
+      <v-snackbar
+        v-model="snackbar"
+        :timeout="timeout"
+        light
+        centered
+        elevation
+        color="#FBF1C7"
+        >{{text}}</v-snackbar>
 
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -79,11 +125,10 @@
 
             <h4>{{comment.comment_author}}</h4>
 
-            <p>Adipisicing voluptatibus explicabo ipsam voluptas iste exercitationem ex. Veritatis molestias consequuntur quas quos incidunt fugit. Reiciendis quos repellat eum est aliquid exercitationem neque. Exercitationem deserunt.</p>
+            <p>Dolor porro blanditiis facere suscipit natus! Consequatur aut earum repudiandae dolores tempore deleniti, dolores. Modi culpa nostrum expedita quibusdam dolor! Assumenda dolorum doloribus earum voluptatum et Incidunt voluptate atque nisi iusto quos In adipisci aperiam aut voluptates assumenda Harum numquam eum necessitatibus voluptate necessitatibus ut non! Explicabo officia laboriosam veniam</p>
           </div>
 
           <div class="my-rate">
-
             <v-rating  readonly background-color="black"
                                 half-increments
                                 size="12"
@@ -113,11 +158,20 @@ export default {
 
   data() {
     return {
-      show     : this.showDialog,
-      products : [],
-      comments :[],
-      product_id : null,
-      toggle_comments: false,
+      show            : this.showDialog,
+      products        : [],
+      comments        : [],
+      comments_exist  : true,
+      snackbar        : false,
+      text            : 'Ten produkt nie posiada jeszcze komentarzy ( ◔ ʖ̯ ◔ )',
+      timeout         : 1500,
+      product_id      : null,
+      toggle_comments : false,
+      Valid           : true,
+      Field_1         : '',
+      Rule_1          : [ v => v.length <= 10 && v.length > 0 || "Możesz wpisać maksymalnie 70 "
+        + 'znaków i minimum 5',  ],
+
     }
   },
 
@@ -147,7 +201,17 @@ export default {
     {
       this.toggle_comments = !this.toggle_comments;
       this.getProductById();
-    }
+    },
+
+    checkIfCommentsExist()
+    {
+
+      if(this.comments.length == 0)
+      {
+        this.comments_exist = false;
+        this.snackbar = true;
+      }
+    },
 
   },
 
@@ -161,6 +225,27 @@ export default {
 
 <style>
 
+.store-comment {
+  display:flex;
+}
+
+.comment-input {
+
+  flex:1;
+
+}
+
+.comment-submit {
+  margin:auto;
+  padding-bottom:35px;
+  padding-right:20px;
+}
+
+.set-rate {
+  margin-bottom:5%;
+
+}
+
 .comment-form {
   display:flex;
   text-align: left;
@@ -169,7 +254,6 @@ export default {
 }
 
 .comment-avatar {
-  /*border: 2px black solid;*/
   margin:auto;
   padding-left:15px;
 
@@ -203,6 +287,8 @@ export default {
 .product-detail {
   text-align:left;
   margin:auto;
+  padding-right:20px;
+  text-align:justify;
 
 }
 

@@ -36,6 +36,14 @@ const router = new VueRouter({
 
 });
 
+export const globalStore = new Vue({
+  data: {
+    globalvar: 'global hello world',
+    user_avatar: '',
+    is_admin: '',
+  }
+});
+
 new Vue({
   vuetify,
   render: h => h(App),

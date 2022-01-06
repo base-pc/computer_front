@@ -6,7 +6,13 @@
       :search-input = "search_input"
       :cart-permissions="true" />
 
-    <UserNav @searchPhase="getSearchInput($event)" @triggerSearch="getSearch($event)"></UserNav>
+    <UserNav @searchPhase="getSearchInput($event)" @triggerSearch="getSearch($event)"
+
+      @user="getLoogedUserData($event)"
+
+
+
+      ></UserNav>
 
     <Sidebar @showMsg="getData($event)" @emitId="getId($event)"></Sidebar>
 
@@ -39,6 +45,7 @@ export default {
       search       : false,
       id           : null,
       search_input : null,
+      loggedUser   : [],
     }
   },
 
@@ -75,6 +82,11 @@ export default {
     getSearch(data)
     {
       this.search = data;
+    },
+
+    getLoogedUserData(data)
+    {
+      this.loggedUser = data;
     }
 
   }

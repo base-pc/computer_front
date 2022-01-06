@@ -81,16 +81,16 @@
 
 
           </v-tab>
-          <v-tab><v-btn>Wyloguj</v-btn>
+          <v-tab @click="logout()"><v-btn>Wyloguj</v-btn>
           </v-tab>
 
           <div class="avatar">
-            <v-tab disabled>
+            <v-tab>
 
               <v-avatar size="37">
 
                 <img
-                  src="https://f0.pngfuel.com/png/184/113/portrait-icon-user-profile-computer-icons-profile-png-clip-art.png"
+                  src="https://www.qatarliving.com/sites/all/themes/qatarliving_v3/images/avatar.jpeg"
                   alt="">
               </v-avatar>
             </v-tab>
@@ -165,6 +165,14 @@ export default {
     {
       this.search_product = null;
     },
+
+    logout()
+    {
+      this.$cookie.delete('token');
+      this.$router.push(this.$route.query.redirect || '/home')
+
+    }
+
 
   }
 };

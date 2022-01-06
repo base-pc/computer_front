@@ -35,7 +35,7 @@
           <v-spacer></v-spacer>
 
           <v-tab>
-            <v-btn>Wyloguj</v-btn>
+            <v-btn @click="logout()">Wyloguj</v-btn>
           </v-tab>
 
           <div class="cart">
@@ -47,12 +47,12 @@
           </div>
 
           <div class="avatar">
-            <v-tab disabled>
+            <v-tab  light readonly>
 
               <v-avatar size="37">
 
                 <img
-                  src="https://f0.pngfuel.com/png/184/113/portrait-icon-user-profile-computer-icons-profile-png-clip-art.png"
+                  :src="user_avatar"
                   alt="">
 
               </v-avatar>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import {globalStore} from '../../main.js'
 
 export default {
   name: "UserNav",
@@ -74,6 +75,7 @@ export default {
   data() {
     return {
       search_product : '',
+      user_avatar: globalStore.user_avatar,
     }
   },
 
@@ -91,6 +93,13 @@ export default {
     {
       this.search_product = null;
     },
+
+    logout()
+    {
+      this.$cookie.delete('token');
+      this.$router.push(this.$route.query.redirect || '/home')
+
+    }
 
   },
 };
@@ -124,8 +133,10 @@ export default {
 }
 
 .avatar {
+
   padding-top:4px;
 }
+
 
 </style>
 

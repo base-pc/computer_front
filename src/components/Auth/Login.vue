@@ -17,12 +17,14 @@
       <div class="login_form">
         <v-form>
           <v-text-field
+            v-model="form.email"
             label="Adres email"
             type="email"
             required
             ></v-text-field>
 
           <v-text-field
+            v-model="form.password"
             label="Hasło"
             type="password"
             required
@@ -31,10 +33,30 @@
       </div>
 
       <v-card-actions>
-        <v-btn> <i class="fab fa-google fa-2x"></i>Google</v-btn>
+        <v-btn @click="getGlobal()"> <i class="fab fa-google fa-2x"></i>Google</v-btn>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center" color="primary" @click="close()">Logowanie
+
+
+        <v-btn
+          class="justify-center"
+          :loading="loading"
+          :disabled="loading"
+          color="info"
+          @click="loader = 'loading', onSubmit()"
+          >
+          Logowanie
+          <template v-slot:loader>
+            <span class="custom-loader">
+              <fa icon="spinner" size="2x"/>
+            </span>
+          </template>
         </v-btn>
+
+
+
+
+
+
       </v-card-actions>
 
     </v-card>
@@ -44,6 +66,9 @@
 
 <script>
 
+import axios from 'axios';
+import {globalStore} from '../../main.js'
+
 export default {
 
   name: 'Login',
@@ -52,16 +77,63 @@ export default {
 
   data() {
     return {
-      login_dialog: null
+      login_dialog: null,
+      token: null,
+      loader:null,
+      loading:false,
+      localvar: globalStore.localvar,
+      is_admin : false,
+      user_avatar: '',
+
+      form: {
+        email    : '',
+        password : '',
+      },
     }
   },
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
+  },
+
+
 
   methods: {
     close() {
       this.login_dialog=this.dialog;
     },
+
+    onSubmit()
+    {
+      axios.post('https://icnav.online/api/auth/login', this.form)
+
+        .then((res) => {
+          this.loading         = false;
+          this.token       = this.$cookie.set('token', res.data.access_token)
+          this.is_admin    = res.data.is_admin;
+          this.user_avatar = res.data.user_avatar;
+
+          globalStore.user_avatar = this.user_avatar;
+
+          if(this.is_admin)
+          {
+            this.$router.push(this.$route.query.redirect || '/admin')
+
+          }else {
+            this.$router.push(this.$route.query.redirect || '/user')
+
+          }
+
+        })
+    },
+
   },
-};
+}
 
 </script>
 
@@ -82,5 +154,43 @@ i {
   margin-left:8px;
   padding-right:10px;
 }
+
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 
 </style>

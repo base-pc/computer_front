@@ -61,6 +61,7 @@
           <v-form lazy-validation v-model="Valid" ref="Form">
             <v-container class="text-center">
               <v-textarea
+                v-model="form.opinion"
                 filled
                 height=100
                 label="Dodaj komentarz i wystaw ocenę"
@@ -84,7 +85,10 @@
           </div>
 
           <v-btn
-            :disabled="!Valid"
+            :loading="loading"
+            :disabled="!Valid || loading"
+
+            @click="loader = 'loading', addComment()"
             color="success">Dodaj komentarz</v-btn>
 
         </div>
@@ -125,7 +129,7 @@
 
             <h4>{{comment.comment_author}}</h4>
 
-            <p>Dolor porro blanditiis facere suscipit natus! Consequatur aut earum repudiandae dolores tempore deleniti, dolores. Modi culpa nostrum expedita quibusdam dolor! Assumenda dolorum doloribus earum voluptatum et Incidunt voluptate atque nisi iusto quos In adipisci aperiam aut voluptates assumenda Harum numquam eum necessitatibus voluptate necessitatibus ut non! Explicabo officia laboriosam veniam</p>
+            <p>{{comment.opinion}}</p>
           </div>
 
           <div class="my-rate">
@@ -167,12 +171,28 @@ export default {
       timeout         : 1500,
       product_id      : null,
       toggle_comments : false,
+      loader          : null,
+      loading         : false,
       Valid           : true,
       Field_1         : '',
       Rule_1          : [ v => v.length <= 10 && v.length >= 2 || "Możesz wpisać maksymalnie 70 "
         + 'znaków i minimum 5',  ],
 
+      form: {
+        opinion         : '',
+
+      },
+
     }
+  },
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
   },
 
   methods: {
@@ -188,7 +208,6 @@ export default {
       axios
         .get("https://icnav.online/api/product/show/" + this.product_id)
         .then(res => {
-          this.loading  = false;
           this.products = res.data;
           this.comments = res.data[0].comments;
         })
@@ -212,6 +231,27 @@ export default {
         this.snackbar = true;
       }
     },
+
+    addComment()
+    {
+      const token = this.$cookie.get('token');
+
+      axios.post('https://icnav.online/api/product/comment/' +
+        this.product_id + '/' + 'store', this.form, {
+
+          headers: {
+            'Authorization' : `Bearer ${token}`,
+          }
+        })
+
+        .then(() => {
+
+          this.getProductById();
+          this.loading = false;
+
+        })
+
+    }
 
   },
 

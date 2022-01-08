@@ -64,7 +64,7 @@
                 filled
                 height=100
                 label="Dodaj komentarz i wystaw ocenę"
-                :min="0"
+                :min="2"
                 :counter="70"
                 :value="Field_1"
                 :rules="Rule_1"
@@ -169,7 +169,7 @@ export default {
       toggle_comments : false,
       Valid           : true,
       Field_1         : '',
-      Rule_1          : [ v => v.length <= 10 && v.length > 0 || "Możesz wpisać maksymalnie 70 "
+      Rule_1          : [ v => v.length <= 10 && v.length >= 2 || "Możesz wpisać maksymalnie 70 "
         + 'znaków i minimum 5',  ],
 
     }

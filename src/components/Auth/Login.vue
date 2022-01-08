@@ -77,13 +77,12 @@ export default {
 
   data() {
     return {
-      login_dialog: null,
-      token: null,
-      loader:null,
-      loading:false,
-      localvar: globalStore.localvar,
-      is_admin : false,
-      user_avatar: '',
+      login_dialog : null,
+      token        : null,
+      loader       : null,
+      loading      : false,
+      is_admin     : false,
+      user_avatar  : '',
 
       form: {
         email    : '',

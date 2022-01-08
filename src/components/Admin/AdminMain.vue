@@ -9,12 +9,16 @@
     <AdminNav @searchPhase="getSearchInput($event)"
       @triggerSearch="getSearch($event)"></AdminNav>
 
-    <Sidebar @showMsg="getData($event)" @emitId="getId($event)"></Sidebar>
+    <Sidebar @showMsg="getData($event)" @emitId="getId($event)"
+      ></Sidebar>
 
   </v-container>
 </template>
 
 <script>
+
+import {globalStore} from '../../main.js'
+
 
 import Sidebar          from "../HomePage/Sidebar.vue";
 import HotProducts      from "../HomePage/HotProducts.vue";
@@ -77,6 +81,13 @@ export default {
     getSearch(data)
     {
       this.search = data;
+    },
+
+    forceRerender() {
+
+      if(globalStore.refresh)
+
+        this.$forceUpdate();
     }
 
   }

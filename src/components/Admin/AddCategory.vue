@@ -14,10 +14,14 @@
       </v-card-title>
 
       <div class="add_category_form">
-        <v-form>
+        <v-form v-model="Valid" lazy-validation>
           <v-text-field
-            v-model="category.name"
+            v-model="form.name"
             label="Nazwa kategorii"
+            :min="3"
+            :counter="10"
+            :value="Field_1"
+            :rules="Rule_1"
             type="text"
             required
             ></v-text-field>
@@ -27,8 +31,23 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center" color="primary"
-                                      @click="close()">Dodaj</v-btn>
+
+        <v-btn
+          class="justify-center"
+          :loading="loading"
+          :disabled="!Valid || loading"
+
+          color="info"
+          @click="loader = 'loading', addCategory()"
+          >
+          Dodaj
+          <template v-slot:loader>
+            <span class="custom-loader">
+              <fa icon="spinner" size="2x"/>
+            </span>
+          </template>
+        </v-btn>
+
       </v-card-actions>
 
     </v-card>
@@ -38,6 +57,8 @@
 
 <script>
 
+import axios from 'axios';
+
 export default {
 
   props: {
@@ -46,18 +67,53 @@ export default {
 
   data() {
     return {
-      show    : this.showDialog,
+      show            : this.showDialog,
+      loader          : null,
+      loading         : false,
+      refresh_sidebar : 0,
+      Valid           : true,
+      Field_1         : '',
+      Rule_1          : [ v => v.length <= 10 && v.length >= 3 || "Możesz wpisać maksymalnie "
+        + '10 znaków i minimum 3',  ],
 
-      category: {
+      form: {
         name: '',
       },
     }
+  },
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
   },
 
   methods: {
 
     close() {
       this.show=false;
+    },
+
+    addCategory()
+    {
+      const token = this.$cookie.get('token');
+
+      axios.post('https://icnav.online/api/category/store', this.form, {
+
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+        .then(() => {
+          this.loading = false;
+          this.$root.$emit('myEvent', this.refresh_sidebar += 1);
+          this.loading        = false;
+
+        })
     },
 
   },

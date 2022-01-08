@@ -10,7 +10,6 @@
 
         </v-tab>
       </v-tabs>
-
     </div>
 
   </v-container>
@@ -26,10 +25,18 @@ export default {
 
   data: () => ({
     categories: [],
-    showCategoryProducts: false,
-    selectCategory: null,
+    showCategoryProducts : false,
+    selectCategory       : null,
+    refresh              : 0,
 
   }),
+
+  watch: {
+    refresh()
+    {
+      this.getCategories();
+    }
+  },
 
   components: {},
 
@@ -57,10 +64,17 @@ export default {
       this.$emit('emitId', category.id);
       this.showData();
     },
+
+  },
+
+  mounted: function () {
+    this.$root.$on('myEvent', (text) => {
+      this.refresh = text;
+    })
   },
 
   beforeMount(){
-    this.getCategories()
+    this.getCategories();
   },
 
 };

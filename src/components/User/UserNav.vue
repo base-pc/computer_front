@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import {globalStore} from '../../main.js'
 
 export default {
   name: "UserNav",
@@ -75,7 +74,7 @@ export default {
   data() {
     return {
       search_product : '',
-      user_avatar: globalStore.user_avatar,
+      user_avatar: localStorage.getItem('user'),
     }
   },
 
@@ -97,6 +96,7 @@ export default {
     logout()
     {
       this.$cookie.delete('token');
+      localStorage.removeItem('user');
       this.$router.push(this.$route.query.redirect || '/home')
 
     }

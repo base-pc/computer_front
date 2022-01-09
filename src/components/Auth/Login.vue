@@ -36,7 +36,6 @@
         <v-btn @click="getGlobal()"> <i class="fab fa-google fa-2x"></i>Google</v-btn>
         <v-spacer></v-spacer>
 
-
         <v-btn
           class="justify-center"
           :loading="loading"
@@ -51,11 +50,6 @@
             </span>
           </template>
         </v-btn>
-
-
-
-
-
 
       </v-card-actions>
 
@@ -100,8 +94,6 @@ export default {
     },
   },
 
-
-
   methods: {
     close() {
       this.login_dialog=this.dialog;
@@ -112,10 +104,12 @@ export default {
       axios.post('https://icnav.online/api/auth/login', this.form)
 
         .then((res) => {
-          this.loading         = false;
+          this.loading     = false;
           this.token       = this.$cookie.set('token', res.data.access_token)
           this.is_admin    = res.data.is_admin;
           this.user_avatar = res.data.user_avatar;
+
+          localStorage.setItem("user", res.data.user_avatar);
 
           globalStore.user_avatar = this.user_avatar;
 
@@ -190,6 +184,5 @@ i {
     transform: rotate(360deg);
   }
 }
-
 
 </style>

@@ -169,6 +169,7 @@ export default {
     logout()
     {
       this.$cookie.delete('token');
+      localStorage.removeItem('user');
       this.$router.push(this.$route.query.redirect || '/home')
 
     }

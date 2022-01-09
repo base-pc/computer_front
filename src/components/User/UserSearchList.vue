@@ -91,6 +91,11 @@ export default {
 
     },
 
+    refresh()
+    {
+      this.getProducts();
+    },
+
     categoryId() {
 
       this.getProducts();
@@ -103,6 +108,7 @@ export default {
     logged      : false,
     showProduct : false,
     products    : [],
+    refresh     : 0,
 
     form: {
       id           : undefined,
@@ -162,6 +168,12 @@ export default {
 
     },
 
+  },
+
+  mounted: function () {
+    this.$root.$on('refreshCategory', (text) => {
+      this.refresh = text;
+    })
   },
 
   beforeMount()

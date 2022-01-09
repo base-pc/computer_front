@@ -19,7 +19,7 @@
             v-model="form.name"
             label="Nazwa kategorii"
             :min="3"
-            :counter="10"
+            :counter="30"
             :value="Field_1"
             :rules="Rule_1"
             type="text"
@@ -73,7 +73,7 @@ export default {
       refresh_sidebar : 0,
       Valid           : true,
       Field_1         : '',
-      Rule_1          : [ v => v.length <= 10 && v.length >= 3 || "Możesz wpisać maksymalnie "
+      Rule_1          : [ v => v.length <= 30 && v.length >= 3 || "Możesz wpisać maksymalnie "
         + '10 znaków i minimum 3',  ],
 
       form: {
@@ -111,7 +111,6 @@ export default {
         .then(() => {
           this.loading = false;
           this.$root.$emit('myEvent', this.refresh_sidebar += 1);
-          this.loading        = false;
 
         })
     },

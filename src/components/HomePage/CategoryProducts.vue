@@ -89,6 +89,11 @@ export default {
       console.log('Zmiana wartosci');
       this.getProducts();
 
+    },
+
+    refresh()
+    {
+      this.getProducts();
     }
   },
 
@@ -96,6 +101,7 @@ export default {
     logged      : false,
     products    : [],
     showProduct : false,
+    refresh     : 0,
 
     form: {
       id           : undefined,
@@ -142,6 +148,13 @@ export default {
 
     },
   },
+
+  mounted: function () {
+    this.$root.$on('refreshCategory', (text) => {
+      this.refresh = text;
+    })
+  },
+
 
   beforeMount()
   {

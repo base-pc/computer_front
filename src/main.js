@@ -21,6 +21,7 @@ Vue.component('fa', FontAwesomeIcon)
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver', ValidationObserver);
+Vue.component('vuetify', vuetify);
 
 
 Vue.config.productionTip = false
@@ -42,6 +43,7 @@ export const globalStore = new Vue({
     is_admin: '',
   }
 });
+
 
 new Vue({
   vuetify,

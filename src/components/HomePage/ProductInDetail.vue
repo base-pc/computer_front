@@ -66,7 +66,7 @@
                 height=100
                 label="Dodaj komentarz i wystaw ocenę"
                 :min="2"
-                :counter="70"
+                :counter="250"
                 :value="Field_1"
                 :rules="Rule_1"
                 ></v-textarea>
@@ -77,10 +77,13 @@
 
         <div class="comment-submit">
           <div class="set-rate">
-            <v-rating background-color="black"
-                      size="12"
-                      :value="0"
-                      color="black"></v-rating>
+            <v-rating @click.stop="test()" background-color="black"
+                                           size="12"
+                                           clearable
+
+                                           hover
+                                           v-model="form1.rate"
+                                           color="black"></v-rating>
 
           </div>
 
@@ -88,7 +91,7 @@
             :loading="loading"
             :disabled="!Valid || loading"
 
-            @click="loader = 'loading', addComment()"
+            @click="loader = 'loading',addRate(), addComment()"
             color="success">Dodaj komentarz</v-btn>
 
         </div>
@@ -136,7 +139,7 @@
             <v-rating  readonly background-color="black"
                                 half-increments
                                 size="12"
-                                :value="product.rate"
+                                :value="comment.myrate"
                                 color="black"></v-rating>
 
           </div>
@@ -163,6 +166,7 @@ export default {
   data() {
     return {
       show            : this.showDialog,
+      refresh_category: 0,
       products        : [],
       comments        : [],
       comments_exist  : true,
@@ -175,12 +179,16 @@ export default {
       loading         : false,
       Valid           : true,
       Field_1         : '',
-      Rule_1          : [ v => v.length <= 10 && v.length >= 2 || "Możesz wpisać maksymalnie 70 "
-        + 'znaków i minimum 5',  ],
+      Rule_1          : [ v => v.length <= 250 && v.length >= 2 || "Możesz wpisać maksymalnie"
+        + ' 250 znaków i minimum 2',  ],
 
       form: {
         opinion         : '',
 
+      },
+
+      form1: {
+        rate: null,
       },
 
     }
@@ -197,8 +205,15 @@ export default {
 
   methods: {
 
+    test()
+    {
+      console.log('Elo');
+    },
+
     close() {
       this.show=false;
+      this.$root.$emit('refreshCategory', this.refresh_category += 1);
+
     },
 
     getProductById()
@@ -247,12 +262,43 @@ export default {
         .then(() => {
 
           this.getProductById();
-          this.loading = false;
+          this.form.opinion = "",
+            this.loading    = false;
 
         })
 
-    }
+    },
 
+    addRate()
+    {
+      const token = this.$cookie.get('token');
+
+      axios.post('https://icnav.online/api/product/rate/' +
+        this.product_id, this.form1, {
+
+          headers: {
+            'Authorization' : `Bearer ${token}`,
+          }
+        })
+
+        .then((res) => {
+
+          this.myrate     = res.rate;
+          this.form1.rate = null;
+
+        })
+
+        .catch(err => {
+          if (err.response.status == 422) {
+            alert('Wymagana ocena produktu')
+          } else if(err.response.status == 403)
+          {
+            alert('Oceniłeś ten produkt wcześniej')
+          }
+
+        })
+
+    },
   },
 
   beforeMount(){

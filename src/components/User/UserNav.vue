@@ -68,6 +68,9 @@
 
 <script>
 
+import {globalStore} from '../../main.js'
+
+
 export default {
   name: "UserNav",
 
@@ -97,6 +100,8 @@ export default {
     {
       this.$cookie.delete('token');
       localStorage.removeItem('user');
+      globalStore.is_admin = null;
+
       this.$router.push(this.$route.query.redirect || '/home')
 
     }

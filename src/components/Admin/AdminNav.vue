@@ -170,6 +170,7 @@ export default {
     {
       this.$cookie.delete('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('permissions');
       this.$router.push(this.$route.query.redirect || '/home')
 
     }

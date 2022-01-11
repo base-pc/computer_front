@@ -13,50 +13,71 @@
       </v-card-title>
 
       <div class="add_product_form">
-        <v-form>
+        <v-form v-model="Valid" lazy-validation>
           <v-select
             :items="dbOptions"
             v-model="selectedCategoryId"
+            :min="0"
+            :value="Field_1"
+            :rules="Rule_4"
+
             item-text="name"
             item-value="id"
             label="Kategoria"
             >
           </v-select>
+
           <v-text-field
-            v-model="form.name"
+            v-model="name"
+            :min="5"
+            :counter="20"
+            :value="Field_1"
+            :rules="Rule_1"
             label="Nazwa produktu"
             type="text"
-            required
             ></v-text-field>
           <v-text-field
-            v-model="form.manufacturer"
+            v-model="manufacturer"
+            :min="2"
+            :counter="20"
+            :value="Field_1"
+            :rules="Rule_2"
             label="Producent"
             type="text"
-            required
             ></v-text-field>
           <v-text-field
-            v-model="form.description"
+            v-model="description"
+            :min="2"
+            :counter="3000"
+            :value="Field_1"
+            :rules="Rule_3"
             label="Opis"
             type="text"
-            required
             ></v-text-field>
           <v-text-field
-            v-model="form.price"
+            v-model="price"
+            :min="1"
+            :value="Field_1"
+            :rules="Rule_4"
             label="Cena"
-            type="text"
-            required
+            type="numeric"
             ></v-text-field>
           <v-text-field
-            v-model="form.quantity"
+            v-model="quantity"
+            :min="1"
+            :value="Field_1"
+            :rules="Rule_4"
             label="Ilość"
             type="text"
-            required
             ></v-text-field>
 
           <v-file-input
+            :min="0"
+            :value="Field_1"
+            :rules="Rule_4"
             type="file"
-            @change="selectImage()"
-            v-model="form.photo"
+            @change="handleFileUpload()"
+            v-model="photo"
             placeholder="Dodaj zdjęcie"
             prepend-icon="fa-camera"
             label="Zdjęcie poglądowe"
@@ -67,8 +88,19 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center" color="primary"
-                                      @click.stop="addProduct()">Dodaj</v-btn>
+        <v-btn class="justify-center"
+               color="primary"
+               :loading="loading"
+               :disabled="!Valid || loading"
+               @click.stop=" loader='loading', addProduct()">Dodaj
+
+               <template v-slot:loader>
+                 <span class="custom-loader">
+                   <fa icon="spinner" size="2x"/>
+                 </span>
+               </template>
+
+        </v-btn>
       </v-card-actions>
 
     </v-card>
@@ -80,8 +112,9 @@
 
 import axios from "axios";
 
-
 export default {
+
+  name: 'AddProduct',
 
   props: {
     showDialog: Boolean,
@@ -93,18 +126,35 @@ export default {
       selectedCategoryId : '',
       dbOptions          : [],
       loading            : false,
+      loader             : null,
 
-      form: {
-        name         : '',
-        manufacturer : '',
-        description  : '',
-        price        : '',
-        quantity     : '',
-        photo        : '',
+      photo        : '',
+      name         : '',
+      manufacturer : '',
+      description  : '',
+      price        : '',
+      quantity     : '',
 
-      },
+      Valid           : true,
+      Field_1         : '',
+      Rule_1          : [ v => v.length <= 20 && v.length >= 5 || "Możesz wpisać maksymalnie "
+        + '20 znaków i minimum 5',  ],
+      Rule_2          : [ v => v.length <= 20 && v.length >= 2 || "Możesz wpisać maksymalnie "
+        + '20 znaków i minimum 2',  ],
+      Rule_3          : [ v => v.length <= 3000 && v.length >= 2 || "Możesz wpisać maksymalnie "
+        + '3000 znaków i minimum 2',  ],
+      Rule_4          : [ v => !!v || "To pole jest wymagane"],
 
     }
+  },
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
   },
 
   mounted()
@@ -121,20 +171,27 @@ export default {
         })
   },
 
-
   methods: {
     close() {
       this.show=false;
     },
-
 
     addProduct()
     {
 
       const token = this.$cookie.get('token');
 
+      let formData = new FormData;
+
+      formData.append('photo', this.photo);
+      formData.append('name', this.name);
+      formData.append('manufacturer', this.manufacturer);
+      formData.append('description', this.description);
+      formData.append('price', this.price);
+      formData.append('quantity', this.quantity);
+
       axios.post('https://icnav.online/api/product/store/category/' +
-        this.selectedCategoryId, this.form, {
+        this.selectedCategoryId, formData, {
 
           headers: {
             'Authorization' : `Bearer ${token}`,
@@ -147,7 +204,18 @@ export default {
 
         })
 
+        .catch(err => {
+          if (err.response.status == 422) {
+            this.loading = false;
+            alert('Uzupełnij wszystkie pola')
+          }
 
+        })
+
+    },
+
+    handleFileUpload(){
+      this.photo = this.$refs.file.files[0];
     }
 
   },
@@ -155,7 +223,6 @@ export default {
 };
 
 </script>
-
 
 <style>
 
@@ -168,6 +235,43 @@ export default {
 .add_product_form {
   margin-left:30px;
   margin-right:30px;
+}
+
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 </style>

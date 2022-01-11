@@ -54,7 +54,7 @@
 
       </div>
 
-      <div class="store-comment">
+      <div class="store-comment" v-if="!admin && admin!=null">
 
         <div class="comment-input">
 
@@ -92,13 +92,31 @@
             :disabled="!Valid || loading"
 
             @click="loader = 'loading',addRate(), addComment()"
-            color="success">Dodaj komentarz</v-btn>
+            color="success">Dodaj komentarz
+
+            <template v-slot:loader>
+              <span class="custom-loader">
+                <fa icon="spinner" size="2x"/>
+              </span>
+            </template>
+
+          </v-btn>
 
         </div>
 
       </div>
 
-      <v-btn @click="checkIfCommentsExist() ,loadComments()" color="normal" block>Załaduj komentarze</v-btn>
+      <v-btn
+        :loading="loading"
+        @click="loader = 'loading', checkIfCommentsExist() ,loadComments()" color="normal" block>Załaduj komentarze
+
+        <template v-slot:loader>
+          <span class="custom-loader">
+            <fa icon="spinner" size="2x"/>
+          </span>
+        </template>
+
+      </v-btn>
       <v-snackbar
         v-model="snackbar"
         :timeout="timeout"
@@ -143,11 +161,13 @@
                                 color="black"></v-rating>
 
           </div>
-
         </div>
       </div>
 
+      <v-btn @click="checkAdmin()">{{admin}}</v-btn>
+
     </v-card>
+
   </v-dialog>
 
 </template>
@@ -155,6 +175,7 @@
 <script>
 
 import axios from "axios";
+import {globalStore} from '../../main.js'
 
 export default {
 
@@ -165,21 +186,23 @@ export default {
 
   data() {
     return {
-      show            : this.showDialog,
-      refresh_category: 0,
-      products        : [],
-      comments        : [],
-      comments_exist  : true,
-      snackbar        : false,
-      text            : 'Ten produkt nie posiada jeszcze komentarzy ( ◔ ʖ̯ ◔ )',
-      timeout         : 1500,
-      product_id      : null,
-      toggle_comments : false,
-      loader          : null,
-      loading         : false,
-      Valid           : true,
-      Field_1         : '',
-      Rule_1          : [ v => v.length <= 250 && v.length >= 2 || "Możesz wpisać maksymalnie"
+      show  : this.showDialog,
+      admin : globalStore.is_admin,
+
+      refresh_category                   : 0,
+      products                           : [],
+      comments                           : [],
+      comments_exist                     : true,
+      snackbar                           : false,
+      text                               : 'Ten produkt nie posiada jeszcze komentarzy ( ◔ ʖ̯ ◔ )',
+      timeout                            : 1500,
+      product_id                         : null,
+      toggle_comments                    : false,
+      loader                             : null,
+      loading                            : false,
+      Valid                              : true,
+      Field_1                            : '',
+      Rule_1                             : [ v => v.length <= 250 && v.length >= 2 || "Możesz wpisać maksymalnie"
         + ' 250 znaków i minimum 2',  ],
 
       form: {
@@ -210,6 +233,13 @@ export default {
       console.log('Elo');
     },
 
+    checkAdmin()
+    {
+      const add = this.$cookie.get('is_admin');
+      this.admin = add ;
+      console.log(this.admin);
+    },
+
     close() {
       this.show=false;
       this.$root.$emit('refreshCategory', this.refresh_category += 1);
@@ -225,6 +255,8 @@ export default {
         .then(res => {
           this.products = res.data;
           this.comments = res.data[0].comments;
+          this.loading    = false;
+
         })
 
       console.log(this.comments);
@@ -299,6 +331,7 @@ export default {
         })
 
     },
+
   },
 
   beforeMount(){
@@ -411,5 +444,44 @@ export default {
 .cart-button {
   margin:auto;
 }
+
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
 

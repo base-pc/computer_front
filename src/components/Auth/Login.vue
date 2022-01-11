@@ -111,7 +111,7 @@ export default {
 
           localStorage.setItem("user", res.data.user_avatar);
 
-          globalStore.user_avatar = this.user_avatar;
+          globalStore.is_admin = this.is_admin;
 
           if(this.is_admin)
           {

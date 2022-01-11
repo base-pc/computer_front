@@ -14,7 +14,7 @@
       </v-card-title>
 
       <div class="add_category_form">
-        <v-form v-model="Valid" lazy-validation>
+        <v-form v-model="Valid" lazy-validation ref="form">
           <v-text-field
             v-model="form.name"
             label="Nazwa kategorii"
@@ -88,6 +88,10 @@ export default {
       this[l] = !this[l]
 
       this.loader = null
+    },
+
+    show() {
+      this.$refs.form.reset();
     },
   },
 
@@ -169,7 +173,6 @@ export default {
     transform: rotate(360deg);
   }
 }
-
 
 </style>
 

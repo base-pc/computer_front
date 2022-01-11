@@ -17,29 +17,50 @@
       </v-card-title>
 
       <div class="register_form">
-        <v-form>
+        <v-form v-model="Valid" lazy-validation ref="form">
           <v-text-field
+            clearable
             v-model="form.email"
             label="Adres email"
+            :min="3"
+            :counter="30"
+            :value="Field_1"
+            :rules="Rule_1"
             type="email"
             required
+            @change="validateEmail(form.email)"
             ></v-text-field>
 
           <v-text-field
+            clearable
             v-model="form.fullname"
+            :min="2"
+            :counter="25"
+            :value="Field_1"
+            :rules="Rule_2"
             label="Imię i nazwisko"
             required
             ></v-text-field>
 
           <v-text-field
+            clearable
             v-model="form.password"
+            :min="2"
+            :counter="25"
+            :value="Field_1"
+            :rules="Rule_3"
             label="Hasło"
             type="password"
             required
             ></v-text-field>
 
           <v-text-field
+            clearable
             v-model="form.password_confirmation"
+            :min="2"
+            :counter="25"
+            :value="Field_1"
+            :rules="Rule_4"
             label="Powtórz hasło"
             type="password"
             required
@@ -49,6 +70,14 @@
             :label="`Uprawniania administratora`"
             ></v-switch>
         </v-form>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="timeout"
+          light
+          centered
+          elevation
+          color="#FBF1C7"
+          >{{text}}</v-snackbar>
       </div>
 
       <v-card-actions>
@@ -56,15 +85,17 @@
         <v-btn
           class="ma-2"
           :loading="loading"
-          :disabled="loading"
+          :disabled="!Valid || loading"
+
           color="info"
-          @click="loader = 'loading', submitForm()"
+          @click="loader = 'loading', submitForm(), clearForm()"
           >
           Rejestracja
           <template v-slot:loader>
             <span class="custom-loader">
               <fa icon="spinner" size="2x"/>
             </span>
+
           </template>
         </v-btn>
       </v-card-actions>
@@ -88,8 +119,27 @@ export default {
   data() {
     return {
       register_dialog : null,
+      snackbar        : false,
+      text            : 'Podany adres email jest zajęty : (',
+      timeout         : 1500,
+
       loader          : null,
       loading         : false,
+      valid_email     : '',
+      Valid           : false,
+      Field_1         : '',
+      Rule_1          : [ v=>!!v || 'To pole jest wymagane', v =>
+        /.+@.+/.test(v) || 'Błędny adres email', v=> !!v],
+
+      Rule_2          : [ v=>!!v || 'To pole jest wymagane', v => v.length <= 25
+        || 'Możesz wpisać maksymalnie 25 znaków', v=>v.length>=2 ||
+        'Musisz wpisać minumum 2 znaki'],
+
+      Rule_3 : [ v => !!v || 'To pole jest wymagane', v=> v.length >= 6||
+        'Hasło musi posiadać minimum 6 znaków' ],
+
+      Rule_4: [ v => !!v || 'Potwierdź hasło', v => v === this.form.password ||
+        'Hasła nie są jednakowe'],
 
       form: {
         email                 : '',
@@ -109,11 +159,31 @@ export default {
 
       this.loader = null
     },
+
+    register_dialog() {
+      this.$refs.form.reset()
+    }
   },
 
   methods: {
     close() {
       this.register_dialog=this.dialog;
+    },
+
+    validateEmail(email) {
+
+      var re = /^[^\s@]+@[^\s@]+$/;
+
+      if (re.test(email)) {
+
+        console.log(email + " is a valid email address");
+        this.valid_email = true;
+      }
+
+      else {
+        console.log(email + " is an invalid email address");
+        this.valid_email = false;
+      }
     },
 
     submitForm()
@@ -124,7 +194,18 @@ export default {
           this.register_dialog = false
 
         })
-    }
+
+        .catch(err => {
+          if (err.response.status == 422) {
+            this.snackbar   = true;
+            this.loading    = false;
+            this.form.email = '';
+
+          }
+
+        })
+    },
+
   },
 
 };

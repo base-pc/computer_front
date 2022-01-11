@@ -30,6 +30,15 @@
             required
             ></v-text-field>
         </v-form>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="timeout"
+          light
+          centered
+          elevation
+          color="#FBF1C7"
+          >{{text}}</v-snackbar>
+
       </div>
 
       <v-card-actions>
@@ -72,6 +81,10 @@ export default {
   data() {
     return {
       login_dialog : null,
+      snackbar     : false,
+      text         : 'Błędne dane logowania',
+      timeout      : 2000,
+
       token        : null,
       loader       : null,
       loading      : false,
@@ -123,10 +136,27 @@ export default {
           }
 
         })
-    },
 
-  },
-}
+        .catch(err => {
+          if (err.response.status == 401) {
+            this.text = 'Błędne dane logowania';
+            this.snackbar   = true;
+            this.loading    = false;
+            this.form.email = '';
+            this.form.password = '';
+
+          }else if(err.response.status==422)
+          {
+            this.text = 'Uzupełnij dane logowania';
+            this.snackbar = true;
+            this.loading = false;
+
+          }
+
+        })
+    }
+  }
+};
 
 </script>
 

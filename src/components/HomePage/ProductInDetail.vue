@@ -73,6 +73,7 @@
 
             </v-container>
           </v-form>
+
         </div>
 
         <div class="comment-submit">
@@ -164,8 +165,6 @@
         </div>
       </div>
 
-      <v-btn @click="checkAdmin()">{{admin}}</v-btn>
-
     </v-card>
 
   </v-dialog>
@@ -194,7 +193,7 @@ export default {
       comments                           : [],
       comments_exist                     : true,
       snackbar                           : false,
-      text                               : 'Ten produkt nie posiada jeszcze komentarzy ( ◔ ʖ̯ ◔ )',
+      text                               : '',
       timeout                            : 1500,
       product_id                         : null,
       toggle_comments                    : false,
@@ -228,18 +227,6 @@ export default {
 
   methods: {
 
-    test()
-    {
-      console.log('Elo');
-    },
-
-    checkAdmin()
-    {
-      const add = this.$cookie.get('is_admin');
-      this.admin = add ;
-      console.log(this.admin);
-    },
-
     close() {
       this.show=false;
       this.$root.$emit('refreshCategory', this.refresh_category += 1);
@@ -255,7 +242,7 @@ export default {
         .then(res => {
           this.products = res.data;
           this.comments = res.data[0].comments;
-          this.loading    = false;
+          this.loading  = false;
 
         })
 
@@ -275,6 +262,7 @@ export default {
       if(this.comments.length == 0)
       {
         this.comments_exist = false;
+        this.text = 'Ten produkt nie posiada jeszcze komentarzy';
         this.snackbar = true;
       }
     },
@@ -294,9 +282,16 @@ export default {
         .then(() => {
 
           this.getProductById();
-          this.form.opinion = "",
-            this.loading    = false;
+          this.form.opinion = "";
+          this.loading      = false;
 
+        })
+
+        .catch(err => {
+          if (err.response.status == 422) {
+            this.text = 'Uzupełnij pole jeżeli chcesz dodać komentarz';
+            this.snackbar = true;
+          }
         })
 
     },
@@ -322,10 +317,12 @@ export default {
 
         .catch(err => {
           if (err.response.status == 422) {
-            alert('Wymagana ocena produktu')
+            this.text = 'Wymagana ocena produktu';
+            this.snackbar = true;
           } else if(err.response.status == 403)
           {
-            alert('Oceniłeś ten produkt wcześniej')
+            this.text = 'Oceniłeś ten produkt wcześniej';
+            this.snackbar = true;
           }
 
         })

@@ -46,9 +46,22 @@
 
         </div>
 
-        <div class="cart-button">
+        <div class="cart-button" v-if="!admin && admin!=null">
 
           <v-btn color="primary"> <i class="fab fa-shopping-cart fa-2x"></i> Dodaj do koszyka</v-btn>
+
+        </div>
+
+        <div class="update-button" v-if="admin">
+
+          <v-btn color="success"> <i class="fas fa-pen-square
+          fa-2x"></i>Aktualizuj</v-btn>
+
+        </div>
+
+        <div class="delete-button" v-if="admin">
+
+          <DeleteProductPopup />
 
         </div>
 
@@ -175,6 +188,7 @@
 
 import axios from "axios";
 import {globalStore} from '../../main.js'
+import DeleteProductPopup from '../Admin/DeleteProductPopup.vue'
 
 export default {
 
@@ -215,6 +229,9 @@ export default {
 
     }
   },
+
+
+  components: {DeleteProductPopup},
 
   watch: {
     loader () {
@@ -341,6 +358,19 @@ export default {
 
 <style>
 
+.update-button
+{
+  margin-left:20%;
+  flex:4;
+}
+
+.delete-button
+{
+
+  flex: 2;
+}
+
+
 .store-comment {
   display:flex;
 }
@@ -429,6 +459,7 @@ export default {
 
 .flex-container2 {
   display:flex;
+  align-items: center;
 }
 
 .datail-rating {

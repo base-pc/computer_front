@@ -55,12 +55,11 @@
                   @click="handleSelectItem(item)"
 
                   @click.stop="toggleCategory(),
-                  toggleProduct()"
+                  toggleProduct(), toggleDeleteCategory()"
                   >
 
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
-
 
                 <Category
                   :show-dialog="true"
@@ -68,17 +67,19 @@
 
                   />
 
+                <DeleteCategory
+                  :show-dialog="true"
+                  v-if="showDeleteCategory && selectItem==1"
+                  />
+
                 <Product
                   :show-dialog="true"
-                  v-if="showProduct && selectItem==1"
+                  v-if="showProduct && selectItem==2"
 
                   />
 
-
               </v-list>
             </v-menu>
-
-
 
           </v-tab>
           <v-tab @click="logout()"><v-btn>Wyloguj</v-btn>
@@ -96,7 +97,6 @@
             </v-tab>
           </div>
 
-
         </v-tabs>
       </template>
     </v-app-bar>
@@ -107,30 +107,30 @@
 
 import Category from "../Admin/AddCategory.vue";
 import Product  from "../Admin/AddProduct.vue";
-
-
+import DeleteCategory  from "../Admin/DeleteCategory.vue";
 
 export default {
 
   name: "AdminNav",
 
   data: () => ({
-    showCategory   : false,
-    showProduct    : false,
-    selectItem     : null,
-    search_product : '',
-
-
+    showCategory       : false,
+    showProduct        : false,
+    showDeleteCategory : false,
+    selectItem         : null,
+    search_product     : '',
 
     items: [
       { message: 'Foo', title:'Dodaj kategorię', id:0},
-      { message: 'Foo', title:'Dodaj produkt', id:1},
+      { message: 'Foo', title:'Usuń kategorię', id:1},
+      { message: 'Foo', title:'Dodaj produkt', id:2},
     ]
 
   }),
 
   components: {
     Category,
+    DeleteCategory,
     Product
   },
 
@@ -146,6 +146,10 @@ export default {
       this.showProduct = !this.showProduct;
     },
 
+    toggleDeleteCategory()
+    {
+      this.showDeleteCategory = !this.showDeleteCategory;
+    },
 
     handleSelectItem(item)
     {
@@ -174,7 +178,6 @@ export default {
       this.$router.push(this.$route.query.redirect || '/home')
 
     }
-
 
   }
 };
@@ -226,5 +229,4 @@ export default {
 }
 
 </style>
-
 

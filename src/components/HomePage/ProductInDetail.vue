@@ -235,7 +235,6 @@ export default {
     }
   },
 
-
   components: {DeleteProductPopup},
 
   watch: {
@@ -364,7 +363,6 @@ export default {
     })
   },
 
-
   beforeMount(){
     this.getProductById();
   },
@@ -386,7 +384,6 @@ export default {
 
   flex: 2;
 }
-
 
 .store-comment {
   display:flex;

@@ -69,7 +69,7 @@ export default {
 
   mounted: function () {
     this.$root.$on('myEvent', (text) => {
-      this.refresh = text;
+      this.refresh += text;
     })
   },
 

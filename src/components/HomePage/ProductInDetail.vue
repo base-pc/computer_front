@@ -61,7 +61,12 @@
 
         <div class="delete-button" v-if="admin">
 
-          <DeleteProductPopup />
+          <DeleteProductPopup
+
+            :product-id="product_id"
+            @close-dialog="closeDialog"
+
+            />
 
         </div>
 
@@ -244,6 +249,11 @@ export default {
 
   methods: {
 
+    closeDialog()
+    {
+      this.show = false;
+    },
+
     close() {
       this.show=false;
       this.$root.$emit('refreshCategory', this.refresh_category += 1);
@@ -347,6 +357,13 @@ export default {
     },
 
   },
+
+  mounted: function () {
+    this.$root.$on('close-dialog', (text) => {
+      this.show = text;
+    })
+  },
+
 
   beforeMount(){
     this.getProductById();

@@ -151,10 +151,9 @@ export default {
 
   mounted: function () {
     this.$root.$on('refreshCategory', (text) => {
-      this.refresh = text;
+      this.refresh += text;
     })
   },
-
 
   beforeMount()
   {

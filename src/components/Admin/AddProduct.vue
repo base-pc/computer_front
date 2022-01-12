@@ -127,6 +127,7 @@ export default {
       dbOptions          : [],
       loading            : false,
       loader             : null,
+      refresh_category_products: 0,
 
       photo        : '',
       name         : '',
@@ -200,6 +201,7 @@ export default {
         })
 
         .then(() => {
+          this.$root.$emit('refreshCategory', this.refresh_category_products += 1);
           this.loading = false;
 
         })

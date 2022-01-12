@@ -38,7 +38,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="dialog = false"
+            @click="checkId(), deleteProduct()"
             >
             Tak
           </v-btn>
@@ -49,12 +49,59 @@
 </template>
 
 <script>
+
+import axios from "axios";
+
 export default {
+
+  props: {
+    productId  : Number,
+  },
+
   data () {
     return {
-      dialog: false,
+      dialog     : false,
+      product_id : this.productId,
+      refresh_category_products: 0,
     }
   },
+
+  methods: {
+
+    closeDialog()
+    {
+      this.$emit('close-dialog')
+    },
+
+    checkId()
+    {
+      console.log(this.product_id);
+    },
+
+    deleteProduct()
+    {
+      const token = this.$cookie.get('token');
+
+      axios.delete('https://icnav.online/api/product/' + this.product_id +
+        '/destroy'
+        , {
+
+          headers: {
+            'Authorization' : `Bearer ${token}`,
+          }
+        })
+
+        .then(() => {
+          this.$root.$emit('refreshCategory', this.refresh_category_products += 1);
+          this.closeDialog();
+          this.dialog = false;
+
+        })
+
+    },
+
+  }
+
 }
 </script>
 

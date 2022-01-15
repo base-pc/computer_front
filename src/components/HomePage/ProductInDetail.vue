@@ -54,8 +54,11 @@
 
         <div class="update-button" v-if="admin">
 
-          <v-btn color="success"> <i class="fas fa-pen-square
-          fa-2x"></i>Aktualizuj</v-btn>
+
+          <UpdateProduct
+            :product-id="product_id"
+            @close-dialog="closeDialog"
+            />
 
         </div>
 
@@ -194,6 +197,7 @@
 import axios from "axios";
 import {globalStore} from '../../main.js'
 import DeleteProductPopup from '../Admin/DeleteProductPopup.vue'
+import UpdateProduct from '../Admin/UpdateProduct.vue'
 
 export default {
 
@@ -235,7 +239,7 @@ export default {
     }
   },
 
-  components: {DeleteProductPopup},
+  components: {DeleteProductPopup, UpdateProduct},
 
   watch: {
     loader () {

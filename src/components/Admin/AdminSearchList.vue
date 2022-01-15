@@ -198,6 +198,8 @@ export default {
 .rating {
   width:20%;
   margin:auto;
+  padding-right:15px;
+  flex: 1;
 }
 
 .cart {

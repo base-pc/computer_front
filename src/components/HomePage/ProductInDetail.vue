@@ -208,8 +208,9 @@ export default {
 
   data() {
     return {
-      show  : this.showDialog,
-      admin : globalStore.is_admin,
+      show    : this.showDialog,
+      admin   : globalStore.is_admin,
+      refresh : 0,
 
       refresh_category                   : 0,
       products                           : [],
@@ -248,6 +249,11 @@ export default {
 
       this.loader = null
     },
+
+    refresh()
+    {
+      this.getProductById();
+    }
   },
 
   methods: {
@@ -364,7 +370,12 @@ export default {
   mounted: function () {
     this.$root.$on('close-dialog', (text) => {
       this.show = text;
-    })
+    }),
+
+      this.$root.$on('refresh_product_detail', (text) => {
+        this.refresh += text;
+      })
+
   },
 
   beforeMount(){

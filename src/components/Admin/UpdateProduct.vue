@@ -15,12 +15,6 @@
 
     <v-card>
 
-      <div class="close">
-        <fa icon="times" size="2x" @click="close()"
-
-                         />
-      </div>
-
       <div class="dialog-title-update">
 
         <i class="fas fa-pen-square fa-2x"></i>
@@ -28,31 +22,14 @@
 
       </div>
 
-
-
-
       <div class="add_product_form">
         <v-form v-model="Valid" v-for="product in products" :key="product.id" lazy-validation>
-
-          <v-select
-            :items="dbOptions"
-            v-model="selectedCategoryId"
-            :min="0"
-            :value="Field_1"
-            :rules="Rule_4"
-
-            item-text="name"
-            item-value="id"
-            label="Kategoria"
-            >
-          </v-select>
 
           <v-text-field
             :placeholder="product.name"
             v-model="name"
             :min="5"
             :counter="20"
-            :value="Field_1"
             :rules="Rule_1"
             label="Nazwa produktu"
             type="text"
@@ -62,7 +39,6 @@
             v-model="manufacturer"
             :min="2"
             :counter="20"
-            :value="Field_1"
             :rules="Rule_2"
             label="Producent"
             type="text"
@@ -72,8 +48,6 @@
             v-model="description"
             :min="2"
             :counter="3000"
-            :value="Field_1"
-            :rules="Rule_3"
             label="Opis"
             type="text"
             ></v-text-field>
@@ -81,8 +55,6 @@
             :placeholder="product.price"
             v-model="price"
             :min="1"
-            :value="Field_1"
-            :rules="Rule_4"
             label="Cena"
             type="numeric"
             ></v-text-field>
@@ -90,16 +62,14 @@
             :placeholder="product.quantity"
             v-model="quantity"
             :min="1"
-            :value="Field_1"
-            :rules="Rule_4"
             label="Ilość"
             type="text"
             ></v-text-field>
+          <p v-if="photo">TEST</p>
 
           <v-file-input
+            :disabled="!file"
             :min="0"
-            :value="Field_1"
-            :rules="Rule_4"
             type="file"
             @change="handleFileUpload()"
             v-model="photo"
@@ -112,12 +82,13 @@
       </div>
 
       <v-card-actions>
+        <v-btn @click="getProductName(), close()">Anuluj</v-btn>
         <v-spacer></v-spacer>
         <v-btn class="justify-center"
                color="primary"
                :loading="loading"
                :disabled="!Valid || loading"
-               @click.stop=" loader='loading', addProduct()">Aktualizuj
+               @click.stop=" loader='loading', updateProduct()">{{photo}}
 
                <template v-slot:loader>
                  <span class="custom-loader">
@@ -127,7 +98,6 @@
 
         </v-btn>
 
-        <v-btn @click="getProductById()">Pobierz produkt</v-btn>
       </v-card-actions>
 
     </v-card>
@@ -152,13 +122,12 @@ export default {
   data() {
     return {
       show               : this.showDialog,
-      selectedCategoryId : '',
       loading            : false,
       loader             : null,
       refresh_category_products: 0,
+      refresh_product_detail: 0,
+      product: '',
       products: [],
-      dbOptions          : [],
-
 
       photo        : '',
       name         : '',
@@ -169,11 +138,11 @@ export default {
 
       Valid           : true,
       Field_1         : '',
-      Rule_1          : [ v => v.length <= 20 && v.length >= 5 || "Możesz wpisać maksymalnie "
+      Rule_1          : [ v => v.length <= 20 || "Możesz wpisać maksymalnie "
         + '20 znaków i minimum 5',  ],
-      Rule_2          : [ v => v.length <= 20 && v.length >= 2 || "Możesz wpisać maksymalnie "
+      Rule_2          : [ v => v.length <= 20 || "Możesz wpisać maksymalnie "
         + '20 znaków i minimum 2',  ],
-      Rule_3          : [ v => v.length <= 3000 && v.length >= 2 || "Możesz wpisać maksymalnie "
+      Rule_3          : [ v => v.length <= 3000 || "Możesz wpisać maksymalnie "
         + '3000 znaków i minimum 2',  ],
       Rule_4          : [ v => !!v || "To pole jest wymagane"],
 
@@ -192,30 +161,26 @@ export default {
   mounted()
   {
     this.getProductById();
-    this.fetchCategories();
-  },
 
+  },
 
   methods: {
     close() {
       this.show=false;
     },
 
-    fetchCategories()
+    enable()
     {
-      axios.get('https://icnav.online/api/category/all')
 
-        .then(r => {
-          for (let i = 0; i < r.data.length; i++) {
-            this.dbOptions.push(r.data[i])
-          }
-        },
-          error => {
-            console.error(error)
-          })
+      this.file = false;
+      console.log("elo")
+
     },
 
-
+    getProductName()
+    {
+      console.log(this.product);
+    },
 
     getProductById()
     {
@@ -224,8 +189,18 @@ export default {
       axios
         .get("https://icnav.online/api/product/show/" + this.product_id)
         .then(res => {
+
           this.products = res.data;
-          this.loading  = false;
+
+          this.name         = res.data[0].name;
+          this.manufacturer = res.data[0].manufacturer;
+          this.description  = res.data[0].description;
+          this.price        = res.data[0].price;
+          this.description  = res.data[0].description;
+          this.quantity     = res.data[0].quantity;
+
+          this.close();
+          this.loading = false;
 
         })
 
@@ -233,8 +208,7 @@ export default {
 
     },
 
-
-    addProduct()
+    updateProduct()
     {
 
       const token = this.$cookie.get('token');
@@ -248,8 +222,8 @@ export default {
       formData.append('price', this.price);
       formData.append('quantity', this.quantity);
 
-      axios.post('https://icnav.online/api/product/store/category/' +
-        this.selectedCategoryId, formData, {
+      axios.post('https://icnav.online/api/product/' +
+        this.product_id + '/update', formData, {
 
           headers: {
             'Authorization' : `Bearer ${token}`,
@@ -259,6 +233,7 @@ export default {
 
         .then(() => {
           this.$root.$emit('refreshCategory', this.refresh_category_products += 1);
+          this.$root.$emit('refresh_product_detail', this.refresh_product_detail += 1);
           this.loading = false;
 
         })
@@ -291,6 +266,7 @@ export default {
   background-color:#47A44B;
   color:white;
   align-items: center;
+  margin-bottom:3%;
 }
 .dialog-title-update h3
 {
@@ -306,7 +282,6 @@ export default {
 {
   flex:1;
 }
-
 
 .close {
   text-align:right;

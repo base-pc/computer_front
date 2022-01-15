@@ -183,11 +183,14 @@ export default {
   margin-right:20px;
   align-items:center;
   justify-content:center;
+  flex:1;
 }
 
 .rating {
   width:20%;
   margin:auto;
+  padding-right:15px;
+  flex: 1;
 }
 
 .cart {
@@ -197,6 +200,7 @@ export default {
   margin-right:50px;
   align-items:center;
   justify-content:right;
+  flex: 1;
 
 }
 .addToCart {

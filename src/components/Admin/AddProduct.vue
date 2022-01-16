@@ -45,15 +45,16 @@
             label="Producent"
             type="text"
             ></v-text-field>
-          <v-text-field
+          <v-textarea
             v-model="description"
             :min="2"
+            filled
             :counter="3000"
             :value="Field_1"
             :rules="Rule_3"
             label="Opis"
             type="text"
-            ></v-text-field>
+            ></v-textarea>
           <v-text-field
             v-model="price"
             :min="1"
@@ -129,12 +130,12 @@ export default {
       loader             : null,
       refresh_category_products: 0,
 
-      photo        : '',
-      name         : '',
-      manufacturer : '',
-      description  : '',
-      price        : '',
-      quantity     : '',
+      photo        : [],
+      name         : [],
+      manufacturer : [],
+      description  : [],
+      price        : [],
+      quantity     : [],
 
       Valid           : true,
       Field_1         : '',
@@ -169,7 +170,9 @@ export default {
       },
         error => {
           console.error(error)
-        })
+        }),
+
+      this.handleFileUpload();
   },
 
   methods: {

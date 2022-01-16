@@ -101,6 +101,8 @@ export default {
       this.$cookie.delete('token');
       localStorage.removeItem('user');
       globalStore.is_admin = null;
+      globalStore.logged_in = false;
+
 
       this.$router.push(this.$route.query.redirect || '/home')
 

@@ -28,6 +28,7 @@
           <v-text-field
             :placeholder="product.name"
             v-model="name"
+            value="name"
             :min="5"
             :counter="20"
             :rules="Rule_1"
@@ -43,42 +44,39 @@
             label="Producent"
             type="text"
             ></v-text-field>
-          <v-text-field
+          <v-textarea
             :placeholder="product.description"
             v-model="description"
+            filled
             :min="2"
             :counter="3000"
             label="Opis"
             type="text"
-            ></v-text-field>
+            ></v-textarea>
           <v-text-field
-            :placeholder="product.price"
+            :placeholder="product.price.toString()"
             v-model="price"
             :min="1"
             label="Cena"
             type="numeric"
             ></v-text-field>
           <v-text-field
-            :placeholder="product.quantity"
+            :placeholder="product.quantity.toString()"
             v-model="quantity"
             :min="1"
             label="Ilość"
             type="text"
             ></v-text-field>
-          <p v-if="photo">TEST</p>
-
-          <v-file-input
-            :disabled="!file"
-            :min="0"
-            type="file"
-            @change="handleFileUpload()"
-            v-model="photo"
-            placeholder="Dodaj zdjęcie"
-            prepend-icon="fa-camera"
-            label="Zdjęcie poglądowe"
-            ></v-file-input>
 
         </v-form>
+        <v-file-input
+          type="file"
+          @change="handleFileUpload()"
+          placeholder="Dodaj zdjęcie"
+          prepend-icon="fa-camera"
+          v-model="photo"
+          label="Zdjęcie poglądowe"
+          ></v-file-input>
       </div>
 
       <v-card-actions>
@@ -88,7 +86,7 @@
                color="primary"
                :loading="loading"
                :disabled="!Valid || loading"
-               @click.stop=" loader='loading', updateProduct()">{{photo}}
+               @click.stop=" loader='loading', updateProduct()">Aktualizuj
 
                <template v-slot:loader>
                  <span class="custom-loader">
@@ -121,20 +119,20 @@ export default {
 
   data() {
     return {
-      show               : this.showDialog,
-      loading            : false,
-      loader             : null,
-      refresh_category_products: 0,
-      refresh_product_detail: 0,
-      product: '',
-      products: [],
+      show                      : this.showDialog,
+      loading                   : false,
+      loader                    : null,
+      refresh_category_products : 0,
+      refresh_product_detail    : 0,
+      product                   : '',
+      products                  : [],
 
-      photo        : '',
-      name         : '',
-      manufacturer : '',
-      description  : '',
-      price        : '',
-      quantity     : '',
+      photo        : [],
+      name         : [],
+      manufacturer : [],
+      description  : [],
+      price        : [],
+      quantity     : [],
 
       Valid           : true,
       Field_1         : '',

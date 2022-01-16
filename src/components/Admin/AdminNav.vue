@@ -108,6 +108,7 @@
 import Category from "../Admin/AddCategory.vue";
 import Product  from "../Admin/AddProduct.vue";
 import DeleteCategory  from "../Admin/DeleteCategory.vue";
+import {globalStore} from '../../main.js'
 
 export default {
 
@@ -173,6 +174,7 @@ export default {
     logout()
     {
       this.$cookie.delete('token');
+      globalStore.logged_in = false;
       localStorage.removeItem('user');
       localStorage.removeItem('permissions');
       this.$router.push(this.$route.query.redirect || '/home')

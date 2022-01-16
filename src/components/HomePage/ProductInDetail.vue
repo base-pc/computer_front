@@ -463,6 +463,7 @@ export default {
   text-align:left;
   margin:auto;
   padding-right:20px;
+  padding-left: 20px;
   text-align:justify;
 
 }
@@ -484,6 +485,7 @@ export default {
 .title p {
   font-size: 1.7em;
   color:black;
+  width:400px;
 }
 
 .flex-container2 {

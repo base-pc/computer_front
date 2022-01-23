@@ -67,16 +67,16 @@
             label="Ilość"
             type="text"
             ></v-text-field>
+          <v-file-input
+            type="file"
+            @change="handleFileUpload()"
+            placeholder="Dodaj zdjęcie"
+            prepend-icon="fa-camera"
+            v-model="photo"
+            label="Zdjęcie poglądowe"
+            ></v-file-input>
 
         </v-form>
-        <v-file-input
-          type="file"
-          @change="handleFileUpload()"
-          placeholder="Dodaj zdjęcie"
-          prepend-icon="fa-camera"
-          v-model="photo"
-          label="Zdjęcie poglądowe"
-          ></v-file-input>
       </div>
 
       <v-card-actions>
@@ -213,12 +213,19 @@ export default {
 
       let formData = new FormData;
 
-      formData.append('photo', this.photo);
+      if(this.photo)
+      {
+        formData.append('photo', this.photo);
+
+      }
+
       formData.append('name', this.name);
       formData.append('manufacturer', this.manufacturer);
       formData.append('description', this.description);
       formData.append('price', this.price);
       formData.append('quantity', this.quantity);
+
+      formData.append('_method', 'put');
 
       axios.post('https://icnav.online/api/product/' +
         this.product_id + '/update', formData, {

@@ -325,7 +325,12 @@ export default {
 
         .catch(err => {
           if (err.response.status == 422) {
-            this.text = 'Uzupełnij pole jeżeli chcesz dodać komentarz';
+            this.text     = 'Uzupełnij pole jeżeli chcesz dodać komentarz';
+            this.snackbar = true;
+          }
+
+          if(err.response.status == 403) {
+            this.text     = 'Wystawiłeś opinię o tym produkcie wcześniej';
             this.snackbar = true;
           }
         })
@@ -353,11 +358,11 @@ export default {
 
         .catch(err => {
           if (err.response.status == 422) {
-            this.text = 'Wymagana ocena produktu';
+            this.text     = 'Wymagana ocena produktu';
             this.snackbar = true;
           } else if(err.response.status == 403)
           {
-            this.text = 'Oceniłeś ten produkt wcześniej';
+            this.text     = 'Oceniłeś ten produkt wcześniej';
             this.snackbar = true;
           }
 

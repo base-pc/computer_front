@@ -54,7 +54,6 @@
 
         <div class="update-button" v-if="admin">
 
-
           <UpdateProduct
             :product-id="product_id"
             @close-dialog="closeDialog"
@@ -90,6 +89,7 @@
                 :counter="250"
                 :value="Field_1"
                 :rules="Rule_1"
+                :disabled="!form1.rate"
                 ></v-textarea>
 
             </v-container>
@@ -113,7 +113,7 @@
             :loading="loading"
             :disabled="!Valid || loading"
 
-            @click="loader = 'loading',addRate(), addComment()"
+            @click="loader = 'loading',someAsync()"
             color="success">Dodaj komentarz
 
             <template v-slot:loader>
@@ -303,11 +303,11 @@ export default {
       }
     },
 
-    addComment()
+    async addComment()
     {
       const token = this.$cookie.get('token');
 
-      axios.post('https://icnav.online/api/product/comment/' +
+      return axios.post('https://icnav.online/api/product/comment/' +
         this.product_id + '/' + 'store', this.form, {
 
           headers: {
@@ -332,11 +332,11 @@ export default {
 
     },
 
-    addRate()
+    async addRate()
     {
       const token = this.$cookie.get('token');
 
-      axios.post('https://icnav.online/api/product/rate/' +
+      return axios.post('https://icnav.online/api/product/rate/' +
         this.product_id, this.form1, {
 
           headers: {
@@ -364,6 +364,13 @@ export default {
         })
 
     },
+
+    async someAsync()
+    {
+      await this.addRate();
+      await this.addComment();
+      this.loadComments();
+    }
 
   },
 

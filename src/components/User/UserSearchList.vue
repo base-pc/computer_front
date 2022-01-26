@@ -46,7 +46,8 @@
                                                                        <v-btn
                                                                          color="primary"
                                                                          :disabled=!cartPermissions x-small
-                                                                         @click="getProducts()">Dodaj</v-btn>
+                                                                         @click="handleSelectItem(product),
+                                                                         addToCart()">Dodaj</v-btn>
 
                                                                      </div>
 
@@ -57,6 +58,15 @@
 
           </v-col>
         </v-row>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="timeout"
+          light
+          centered
+          elevation
+          color="#FBF1C7"
+          >{{text}}</v-snackbar>
+
       </v-container>
     </v-item-group>
     <ProductInDetail
@@ -109,6 +119,10 @@ export default {
     showProduct : false,
     products    : [],
     refresh     : 0,
+    refresh_navbar : 0,
+    snackbar       : false,
+    text           : '',
+    timeout        : 1500,
 
     form: {
       id           : undefined,
@@ -165,6 +179,34 @@ export default {
     {
       this.form.id   = product.id;
       this.form.name = product.name;
+
+    },
+
+    addToCart()
+    {
+      event.cancelBubble = true;
+
+      if(event.stopPropagation) event.stopPropagation();
+
+      const token = this.$cookie.get('token');
+
+      axios({
+        method: 'POST',
+        url: 'https://icnav.online/api/cart/' + this.form.id + '/store',
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+          'Accept' : 'application/json'
+
+        }
+
+      })
+        .then(() => {
+          this.snackbar      = true;
+          this.text = 'Produkt został dodany do koszyka';
+
+          this.$root.$emit('refresh_item_counter', this.refresh_navbar += 1);
+
+        })
 
     },
 

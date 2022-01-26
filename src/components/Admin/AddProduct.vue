@@ -63,14 +63,6 @@
             label="Cena"
             type="numeric"
             ></v-text-field>
-          <v-text-field
-            v-model="quantity"
-            :min="1"
-            :value="Field_1"
-            :rules="Rule_4"
-            label="Ilość"
-            type="text"
-            ></v-text-field>
 
           <v-file-input
             :min="0"
@@ -135,7 +127,6 @@ export default {
       manufacturer : [],
       description  : [],
       price        : [],
-      quantity     : [],
 
       Valid           : true,
       Field_1         : '',
@@ -192,7 +183,6 @@ export default {
       formData.append('manufacturer', this.manufacturer);
       formData.append('description', this.description);
       formData.append('price', this.price);
-      formData.append('quantity', this.quantity);
 
       axios.post('https://icnav.online/api/product/store/category/' +
         this.selectedCategoryId, formData, {

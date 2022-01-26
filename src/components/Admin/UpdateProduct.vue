@@ -60,13 +60,6 @@
             label="Cena"
             type="numeric"
             ></v-text-field>
-          <v-text-field
-            :placeholder="product.quantity.toString()"
-            v-model="quantity"
-            :min="1"
-            label="Ilość"
-            type="text"
-            ></v-text-field>
           <v-file-input
             type="file"
             @change="handleFileUpload()"
@@ -132,7 +125,6 @@ export default {
       manufacturer : [],
       description  : [],
       price        : [],
-      quantity     : [],
 
       Valid           : true,
       Field_1         : '',
@@ -195,7 +187,6 @@ export default {
           this.description  = res.data[0].description;
           this.price        = res.data[0].price;
           this.description  = res.data[0].description;
-          this.quantity     = res.data[0].quantity;
 
           this.close();
           this.loading = false;
@@ -223,7 +214,6 @@ export default {
       formData.append('manufacturer', this.manufacturer);
       formData.append('description', this.description);
       formData.append('price', this.price);
-      formData.append('quantity', this.quantity);
 
       formData.append('_method', 'put');
 

@@ -10,8 +10,7 @@
 
               <v-card class="d-flex justify-center flex-row" light height="150"
                                                                    width="900px"
-                                                                   @click="handleSelectItem(product)"
-                                                                   @click.native.stop="
+                                                                   @click="handleSelectItem(product),
                                                                    toggleProduct()"
                                                                    >
 
@@ -148,11 +147,6 @@ export default {
       this.showProduct = !this.showProduct;
     },
 
-    toggle()
-    {
-      this.toggleProduct();
-    },
-
     handleSelectItem(product)
     {
       this.form.id   = product.id;
@@ -162,6 +156,10 @@ export default {
 
     addToCart()
     {
+      event.cancelBubble = true;
+
+      if(event.stopPropagation) event.stopPropagation();
+
       const token = this.$cookie.get('token');
 
       axios({
@@ -176,7 +174,7 @@ export default {
       })
         .then(() => {
           this.snackbar      = true;
-          this.text = 'Dodano do koszyka';
+          this.text = 'Produkt został dodany do koszyka';
 
           this.$root.$emit('refresh_item_counter', this.refresh_navbar += 1);
 

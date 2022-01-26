@@ -45,7 +45,8 @@
                                                                        <v-btn
                                                                          color="primary"
                                                                          :disabled=!cartPermissions x-small
-                                                                         @click="getHotPorducts()">Dodaj</v-btn>
+                                                                         @click="handleSelectItem(hot),
+                                                                         addToCart()">Dodaj</v-btn>
 
                                                                      </div>
 
@@ -56,6 +57,15 @@
 
           </v-col>
         </v-row>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="timeout"
+          light
+          centered
+          elevation
+          color="#FBF1C7"
+          >{{text}}</v-snackbar>
+
       </v-container>
     </v-item-group>
     <ProductInDetail
@@ -83,9 +93,13 @@ export default {
   },
 
   data: () => ({
-    logged      : false,
-    hots        : [],
-    showProduct : false,
+    logged         : false,
+    hots           : [],
+    showProduct    : false,
+    refresh_navbar : 0,
+    snackbar       : false,
+    text           : '',
+    timeout        : 1500,
 
     form: {
       id           : undefined,
@@ -97,7 +111,7 @@ export default {
 
   methods: {
 
-    async getHotPorducts()
+    getHotPorducts()
     {
 
       axios
@@ -124,7 +138,35 @@ export default {
       this.form.id   = hot.id;
       this.form.name = hot.name;
 
-    }
+    },
+
+    addToCart()
+    {
+      event.cancelBubble = true;
+
+      if(event.stopPropagation) event.stopPropagation();
+
+      const token = this.$cookie.get('token');
+
+      axios({
+        method: 'POST',
+        url: 'https://icnav.online/api/cart/' + this.form.id + '/store',
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+          'Accept' : 'application/json'
+
+        }
+
+      })
+        .then(() => {
+          this.snackbar      = true;
+          this.text = 'Produkt został dodany do koszyka';
+
+          this.$root.$emit('refresh_item_counter', this.refresh_navbar += 1);
+
+        })
+
+    },
 
   },
 

@@ -48,7 +48,18 @@
 
         <div class="cart-button" v-if="!admin && admin!=null">
 
-          <v-btn color="primary"> <i class="fab fa-shopping-cart fa-2x"></i> Dodaj do koszyka</v-btn>
+          <v-btn color="primary" @click="addToCart(), loader = 'loading_cart'"
+                 :loading="loading_cart"
+
+                 >
+
+                 <template v-slot:loader>
+                   <span class="custom-loader">
+                     <fa icon="spinner" size="2x"/>
+                   </span>
+                 </template>
+
+                 <i class="fab fa-shopping-cart fa-2x"></i> Dodaj do koszyka</v-btn>
 
         </div>
 
@@ -213,6 +224,7 @@ export default {
       refresh : 0,
 
       refresh_category                   : 0,
+      refresh_navbar                     : 0,
       products                           : [],
       comments                           : [],
       comments_exist                     : true,
@@ -222,6 +234,7 @@ export default {
       product_id                         : null,
       toggle_comments                    : false,
       loader                             : null,
+      loading_cart                       : false,
       loading                            : false,
       Valid                              : true,
       Field_1                            : '',
@@ -281,8 +294,6 @@ export default {
           this.loading  = false;
 
         })
-
-      console.log(this.comments);
 
     },
 
@@ -370,18 +381,42 @@ export default {
 
     },
 
+    addToCart()
+    {
+      const token = this.$cookie.get('token');
+
+      axios({
+        method: 'POST',
+        url: 'https://icnav.online/api/cart/' + this.product_id + '/store',
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+          'Accept' : 'application/json'
+
+        }
+
+      })
+        .then(() => {
+          this.loading_cart      = false;
+          this.$root.$emit('refresh_item_counter', this.refresh_navbar += 1);
+
+
+          console.log("Dupa");
+        })
+
+    },
+
     async someAsync()
     {
       await this.addRate();
       await this.addComment();
       this.loadComments();
-    }
+    },
 
   },
 
   mounted: function () {
     this.$root.$on('close-dialog', (text) => {
-      this.show = text;
+      this.show += text;
     }),
 
       this.$root.$on('refresh_product_detail', (text) => {

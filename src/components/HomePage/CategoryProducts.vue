@@ -45,7 +45,13 @@
                                                                        <v-btn
                                                                          color="primary"
                                                                          :disabled=!cartPermissions x-small
-                                                                         @click="getProducts()">Dodaj</v-btn>
+
+                                                                         @click="
+                                                                         handleSelectItem(product),
+                                                                         addToCart()"
+                                                                         >Dodaj
+
+                                                                       </v-btn>
 
                                                                      </div>
 
@@ -56,6 +62,15 @@
 
           </v-col>
         </v-row>
+        <v-snackbar
+          v-model="snackbar"
+          :timeout="timeout"
+          light
+          centered
+          elevation
+          color="#FBF1C7"
+          >{{text}}</v-snackbar>
+
       </v-container>
     </v-item-group>
     <ProductInDetail
@@ -86,7 +101,6 @@ export default {
   watch : {
     categoryId() {
 
-      console.log('Zmiana wartosci');
       this.getProducts();
 
     },
@@ -94,14 +108,19 @@ export default {
     refresh()
     {
       this.getProducts();
-    }
+    },
+
   },
 
   data: () => ({
-    logged      : false,
-    products    : [],
-    showProduct : false,
-    refresh     : 0,
+    logged         : false,
+    products       : [],
+    showProduct    : false,
+    refresh        : 0,
+    refresh_navbar : 0,
+    snackbar       : false,
+    text           : '',
+    timeout        : 1500,
 
     form: {
       id           : undefined,
@@ -122,13 +141,6 @@ export default {
           this.products    = res.data[0].products;
         })
 
-      console.log(this.products);
-
-    },
-
-    getHotName(hotName)
-    {
-      console.log(hotName);
     },
 
     toggleProduct()
@@ -147,6 +159,31 @@ export default {
       this.form.name = product.name;
 
     },
+
+    addToCart()
+    {
+      const token = this.$cookie.get('token');
+
+      axios({
+        method: 'POST',
+        url: 'https://icnav.online/api/cart/' + this.form.id + '/store',
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+          'Accept' : 'application/json'
+
+        }
+
+      })
+        .then(() => {
+          this.snackbar      = true;
+          this.text = 'Dodano do koszyka';
+
+          this.$root.$emit('refresh_item_counter', this.refresh_navbar += 1);
+
+        })
+
+    },
+
   },
 
   mounted: function () {
@@ -216,6 +253,44 @@ export default {
   justify-content:center;
   margin:auto;
   padding-top:10px;
+}
+
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 </style>

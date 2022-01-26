@@ -50,8 +50,6 @@ export default {
           this.categories = res.data;
         })
 
-      console.log(this.categories);
-
     },
 
     showData()

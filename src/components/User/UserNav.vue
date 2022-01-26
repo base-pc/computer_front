@@ -41,7 +41,7 @@
           <div class="cart">
             <v-tab>
               <fa icon="shopping-cart" size="2x"/>
-              <span class="counter">3</span>
+              <span class="counter">{{cart_item_counter}}</span>
             </v-tab>
 
           </div>
@@ -68,16 +68,26 @@
 
 <script>
 
+import axios from 'axios';
 import {globalStore} from '../../main.js'
-
 
 export default {
   name: "UserNav",
 
+  watch : {
+
+    refresh()
+    {
+      this.cartItemCounter();
+    }
+  },
+
   data() {
     return {
-      search_product : '',
-      user_avatar: localStorage.getItem('user'),
+      search_product    : '',
+      user_avatar       : localStorage.getItem('user'),
+      cart_item_counter : 0,
+      refresh: 0,
     }
   },
 
@@ -85,7 +95,6 @@ export default {
 
     getSearchInput()
     {
-      console.log(this.search_product);
 
       this.$emit('searchPhase', this.search_product);
       this.$emit('triggerSearch', true)
@@ -103,12 +112,42 @@ export default {
       globalStore.is_admin = null;
       globalStore.logged_in = false;
 
-
       this.$router.push(this.$route.query.redirect || '/home')
 
+    },
+
+    cartItemCounter()
+    {
+
+      const token = this.$cookie.get('token');
+
+      return axios.get('https://icnav.online/api/cart/counter', {
+
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+        }
+      })
+
+        .then((res) => {
+
+          this.cart_item_counter = res.data;
+
+        })
     }
 
   },
+
+  mounted: function () {
+    this.$root.$on('refresh_item_counter', (text) => {
+      this.refresh += text;
+    })
+  },
+
+
+  beforeMount(){
+    this.cartItemCounter();
+  },
+
 };
 
 </script>
@@ -143,7 +182,6 @@ export default {
 
   padding-top:4px;
 }
-
 
 </style>
 

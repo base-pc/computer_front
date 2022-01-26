@@ -3,7 +3,6 @@
     <v-item-group align="center">
       <v-container>
 
-
         <v-row justify="center">
 
           <v-col align-self="center" v-for="hot in hots" :key="hot.id" cols="12" md="10">
@@ -108,13 +107,6 @@ export default {
           this.hots    = res.data;
         })
 
-      console.log(this.hots);
-
-    },
-
-    getHotName(hotName)
-    {
-      console.log(hotName);
     },
 
     toggleProduct()

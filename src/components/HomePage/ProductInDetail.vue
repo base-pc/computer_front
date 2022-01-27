@@ -59,7 +59,9 @@
                    </span>
                  </template>
 
-                 <i class="fab fa-shopping-cart fa-2x"></i> Dodaj do koszyka</v-btn>
+                 <fa icon="shopping-cart" size="2x"/>Dodaj do koszyka
+
+          </v-btn>
 
         </div>
 
@@ -140,8 +142,8 @@
       </div>
 
       <v-btn
-        :loading="loading"
-        @click="loader = 'loading', checkIfCommentsExist() ,loadComments()" color="normal" block>Załaduj komentarze
+        :loading="loading_comments"
+        @click="loader = 'loading_comments', checkIfCommentsExist() ,loadComments()" color="normal" block>Załaduj komentarze
 
         <template v-slot:loader>
           <span class="custom-loader">
@@ -235,6 +237,7 @@ export default {
       toggle_comments                    : false,
       loader                             : null,
       loading_cart                       : false,
+      loading_comments                   : false,
       loading                            : false,
       Valid                              : true,
       Field_1                            : '',
@@ -289,9 +292,9 @@ export default {
       axios
         .get("https://icnav.online/api/product/show/" + this.product_id)
         .then(res => {
-          this.products = res.data;
-          this.comments = res.data[0].comments;
-          this.loading  = false;
+          this.products         = res.data;
+          this.comments         = res.data[0].comments;
+          this.loading_comments = false;
 
         })
 
@@ -327,8 +330,6 @@ export default {
         })
 
         .then(() => {
-
-          this.getProductById();
           this.form.opinion = "";
           this.loading      = false;
 
@@ -398,7 +399,6 @@ export default {
         .then(() => {
           this.loading_cart      = false;
           this.$root.$emit('refresh_item_counter', this.refresh_navbar += 1);
-
 
           console.log("Dupa");
         })

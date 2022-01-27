@@ -39,10 +39,7 @@
           </v-tab>
 
           <div class="cart">
-            <v-tab>
-              <fa icon="shopping-cart" size="2x"/>
-              <span class="counter">{{cart_item_counter}}</span>
-            </v-tab>
+            <v-tab><Cart /></v-tab>
 
           </div>
 
@@ -69,27 +66,19 @@
 <script>
 
 import axios from 'axios';
-import {globalStore} from '../../main.js'
+import {globalStore} from '../../main.js';
+import Cart from './Cart.vue';
 
 export default {
   name: "UserNav",
-
-  watch : {
-
-    refresh()
-    {
-      this.cartItemCounter();
-    }
-  },
 
   data() {
     return {
       search_product    : '',
       user_avatar       : localStorage.getItem('user'),
-      cart_item_counter : 0,
-      refresh: 0,
     }
   },
+  components: {Cart},
 
   methods: {
 
@@ -137,22 +126,12 @@ export default {
 
   },
 
-  mounted: function () {
-    this.$root.$on('refresh_item_counter', (text) => {
-      this.refresh += text;
-    })
-  },
-
-
-  beforeMount(){
-    this.cartItemCounter();
-  },
-
 };
 
 </script>
 
 <style>
+
 .title {
   width: 200px !important;
 }
@@ -168,11 +147,12 @@ export default {
 
 .counter {
   height: 17px;
-  width: 17px;
+  width: 20px;
   margin-bottom:17px;
   margin-left:2px;
   margin-top:10px;
   background-color: #bbb;
+  border-color:red;
   color:black;
   border-radius: 50%;
   display: inline-block;
@@ -181,6 +161,10 @@ export default {
 .avatar {
 
   padding-top:4px;
+}
+
+.cart {
+  margin-top:18px;
 }
 
 </style>

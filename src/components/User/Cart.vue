@@ -1,58 +1,63 @@
 <template>
-  <v-row justify="center">
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="400"
-      >
+  <div class="dialog">
 
-      <div class="dialog-title">
+    <v-row justify="center">
+      <v-dialog
+        color="rgb(255, 0, 0, 1)"
+        v-model="dialog"
+        persistent
+        max-width="900px"
+        max-height="100px"
+        >
 
-        <div class="cart-icon">
+        <div class="dialog-title">
 
-          <fa icon="shopping-cart" size="2x"/>
+          <v-container>
+            <div class="close">
+              <fa icon="times" size="2x" @click="close()"
+
+                               />
+            </div>
+            <div class="cart_items">
+              <v-item-group align="left">
+                <v-col align-self="center" v-for="item in items" :key="item.id" cols="12" md="10">
+                  <v-card color="rgb(255, 255, 255, 1)" class="d-flex
+                  justify-left flex-row" light height="110"
+                                               >
+                                               <div
+                                                 class="item_img">
+                                                 <v-img
+                                                   max-height="80"
+                                                   max-width="80"
+                                                   :src="item.buyable.photo_url"
+                                                   ></v-img>
+                                               </div>
+                                               <div
+                                                 class="item_name">{{item.buyable.name}}</div>
+
+                  </v-card>
+                </v-col>
+
+              </v-item-group>
+            </div>
+          </v-container>
 
         </div>
 
-
-        <h3>Koszyk</h3>
-
-      </div>
-
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          v-bind="attrs"
-          v-on="on">
-
-          <fa icon="shopping-cart" size="2x"/>
-          <span class="counter">{{cart_item_counter}}</span>
-
-        </v-btn>
-
-      </template>
-      <v-card>
-        <v-card-text class="text-h5">Na pewno chcesz usunąć tą kategorię
-          produktów?</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
+        <v-btn @click="getCartItems()">getItemcs</v-btn>
+        <template v-slot:activator="{ on, attrs }">
           <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-            >
-            Nie
+            v-bind="attrs"
+            v-on="on">
+
+            <fa icon="shopping-cart" size="2x"/>
+            <span class="counter">{{cart_item_counter}}</span>
           </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="getCartItems()"
-            >
-            Pobierz itemy z koszyka
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+        </template>
+
+      </v-dialog>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -83,6 +88,10 @@ export default {
   },
 
   methods: {
+
+    close() {
+      this.dialog=false;
+    },
 
     closeDialog()
     {
@@ -121,7 +130,7 @@ export default {
       })
 
         .then((res) => {
-          this.items = res.data;
+          this.items = res.data.items;
           console.log(this.items);
         })
 
@@ -144,8 +153,41 @@ export default {
 
 <style>
 
+.close {
+  color:black;
+  margin-top:-13px;
+}
+
+.dialog-title
+{
+  background-color:#FBF1C7;
+  color:white;
+  align-items: center;
+  border: 1px black solid;
+}
+
 .cart {
   margin-top:6px;
+}
+
+.cart_items {
+  border: 1px black solid;
+}
+
+.item_name {
+  display:flex;
+  text-align:center;
+  margin-left:20px;
+  margin-right:20px;
+  align-items:center;
+  justify-content:center;
+  border: 1px black solid;
+}
+.item_img {
+  text-align: left;
+  margin-left: 20px;
+  padding-top: 20px;
+  border: 1px black solid;
 }
 
 .counter {
@@ -158,30 +200,6 @@ export default {
   color:black;
   border-radius: 50%;
   display: inline-block;
-}
-
-.dialog-title
-{
-  display:flex;
-  background-color:#7cd;
-  color:white;
-  align-items: center;
-}
-
-.dialog-title h3
-{
-  color:white;
-  text-align:justify;
-  vertical-align:middle;
-  margin-top:5px;
-  margin-left:10px;
-  flex:5;
-}
-
-
-.dialog-title i
-{
-  flex:1;
 }
 
 </style>

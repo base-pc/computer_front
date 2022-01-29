@@ -6,45 +6,110 @@
         color="rgb(255, 0, 0, 1)"
         v-model="dialog"
         persistent
-        max-width="900px"
-        max-height="100px"
+        max-width="800px"
         >
 
         <div class="dialog-title">
 
-          <v-container>
-            <div class="close">
-              <fa icon="times" size="2x" @click="close()"
+          <div class="cart-title-icon">
 
-                               />
-            </div>
+            <fa icon="shopping-cart" size="2x"/>
+
+          </div>
+          <div class="cart-label">
+            <h3>Koszyk</h3>
+
+          </div>
+
+          <div class="close">
+            <fa icon="times" size="2x" @click="close()"
+
+                             />
+          </div>
+
+        </div>
+
+        <div class="dialog-content">
+
+          <v-container>
             <div class="cart_items">
               <v-item-group align="left">
-                <v-col align-self="center" v-for="item in items" :key="item.id" cols="12" md="10">
-                  <v-card color="rgb(255, 255, 255, 1)" class="d-flex
-                  justify-left flex-row" light height="110"
-                                               >
-                                               <div
-                                                 class="item_img">
-                                                 <v-img
-                                                   max-height="80"
-                                                   max-width="80"
-                                                   :src="item.buyable.photo_url"
-                                                   ></v-img>
-                                               </div>
-                                               <div
-                                                 class="item_name">{{item.buyable.name}}</div>
+                <v-col align-self="center" v-for="item in items" :key="item.id"
+                                           cols="13" md="15">
+                  <v-card elevation="2" class="d-flex
+                  justify-centered flex-row" light height="110"
+                                                   >
+                                                   <div
+                                                     class="item_img">
+                                                     <v-img
+                                                       max-height="80"
+                                                       max-width="80"
+                                                       :src="item.buyable.photo_url"
+                                                       ></v-img>
+                                                   </div>
+                                                   <div
+                                                     class="item_name">
+
+                                                     {{item.buyable.name}}
+
+                                                   </div>
+
+                                                   <div class="cart-rating">
+                                                     <v-rating  readonly background-color="black"
+                                                                         half-increments
+                                                                         size="13"
+                                                                         :value="item.buyable.rate"
+                                                                         color="black"></v-rating>
+
+                                                                       {{item.buyable.rate}}({{item.buyable.rates_time}})
+
+                                                   </div>
+
+                                                   <div class="item-quantity">
+
+                                                     <p>Ilość</p>
+
+                                                     <p>{{item.quantity}} szt</p>
+
+                                                   </div>
+
+                                                   <div class="item-price">
+
+                                                     <p>Cena</p>
+                                                     <p>{{item.buyable.price}} PLN</p>
+
+                                                   </div>
+
+                                                   <div class="buttons-containter">
+
+                                                     <div class="item-button">
+                                                       <v-btn color="success"
+                                                              small>Dodaj</v-btn></div>
+
+                                                     <div class="item-button">
+                                                       <v-btn color="error"
+                                                              small>Usuń</v-btn></div>
+
+                                                   </div>
 
                   </v-card>
+                  <v-divider class="mx-10"></v-divider>
                 </v-col>
 
               </v-item-group>
+
+            </div>
+            <v-divider class="mx-10"></v-divider>
+            <div class="total-price">
+
+              <h3>Koszt zakupów: {{total_cost}} PLN </h3>
+
             </div>
           </v-container>
 
         </div>
 
-        <v-btn @click="getCartItems()">getItemcs</v-btn>
+        <v-btn color="primary" @click="getCartItems()">Zapłać</v-btn>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             v-bind="attrs"
@@ -72,6 +137,8 @@ export default {
     refresh()
     {
       this.cartItemCounter();
+      this.getCartItems();
+      this.getTotalItemsPrice();
     }
   },
 
@@ -84,6 +151,7 @@ export default {
       cart_item_counter : 0,
       refresh           : 0,
       items             : [],
+      total_cost: 0,
     }
   },
 
@@ -134,6 +202,24 @@ export default {
           console.log(this.items);
         })
 
+    },
+
+    getTotalItemsPrice()
+    {
+      const token = this.$cookie.get('token');
+
+      axios.get('https://icnav.online/api/cart/total', {
+
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+        }
+      })
+
+        .then((res) => {
+          this.total_cost = res.data;
+          console.log(this.items);
+        })
+
     }
 
   },
@@ -146,6 +232,8 @@ export default {
 
   beforeMount(){
     this.cartItemCounter();
+    this.getCartItems();
+    this.getTotalItemsPrice();
   },
 
 }
@@ -153,41 +241,89 @@ export default {
 
 <style>
 
-.close {
-  color:black;
-  margin-top:-13px;
+.dialog-title {
+  display:flex;
+  padding-left:6px;
+  background-color:#ff7733;
 }
 
-.dialog-title
+.close {
+  flex:2;
+  color:black;
+  margin-top:-8px;
+
+}
+
+.cart-label {
+  padding-left:10px;
+  flex:1;
+
+}
+
+.dialog-content
 {
   background-color:#FBF1C7;
   color:white;
-  align-items: center;
-  border: 1px black solid;
-}
-
-.cart {
-  margin-top:6px;
 }
 
 .cart_items {
-  border: 1px black solid;
+  align-self:center;
+
 }
 
 .item_name {
   display:flex;
+  flex: 2;
+  align-content: center;
   text-align:center;
   margin-left:20px;
-  margin-right:20px;
   align-items:center;
   justify-content:center;
-  border: 1px black solid;
 }
 .item_img {
   text-align: left;
   margin-left: 20px;
   padding-top: 20px;
-  border: 1px black solid;
+}
+
+.cart-rating {
+  margin:auto;
+  text-align:center;
+  flex: 2;
+
+}
+
+.item-quantity {
+  margin:auto;
+  flex:2;
+  text-align:center;
+}
+
+.item-price {
+  text-align:center;
+  flex:2;
+  margin:auto;
+
+}
+
+.buttons-containter {
+
+  text-align:center;
+
+}
+
+.item-button {
+  margin:auto;
+  margin-top:15px;
+  margin-bottom:10px;
+  margin-right:15px;
+}
+
+.total-price  h3{
+  border-top: 2px black solid;
+  margin-top:10px;
+  color:black;
+  text-align:right;
 }
 
 .counter {

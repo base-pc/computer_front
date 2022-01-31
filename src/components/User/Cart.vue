@@ -73,6 +73,28 @@
 
                                                    </div>
 
+                                                   <div class="quantity-container">
+                                                     <div id="increment-quantity"
+                                                          @click="handleSelectItem(item),
+                                                          incrementCartItemQuantity()">
+
+                                                       <i class="fas fa-plus
+                                                       fa-1x"></i>
+
+                                                     </div>
+
+                                                     <div id="decrement-quantity"
+                                                          @click="handleSelectItem(item),
+                                                          decrementCartItemQuantity()"
+                                                          >
+
+                                                          <i class="fas fa-minus
+                                                          fa-1x"></i>
+
+                                                     </div>
+
+                                                   </div>
+
                                                    <div class="item-price">
 
                                                      <p>Cena</p>
@@ -80,22 +102,12 @@
 
                                                    </div>
 
-                                                   <div class="buttons-containter">
-
-                                                     <div class="item-button">
-                                                       <v-btn
-                                                         @click="handleSelectItem(item),
-                                                         updateCartItemQuantity()" color="success"
-                                                                                   small>Dodaj</v-btn></div>
-
-                                                     <div class="item-button">
-                                                       <v-btn
-                                                         @click="handleSelectItem(item),
-                                                         deleteCartItem()"
-                                                         color="error"
-                                                         small>Usuń</v-btn></div>
-
-                                                   </div>
+                                                   <div class="item-button">
+                                                     <v-btn
+                                                       @click="handleSelectItem(item),
+                                                       deleteCartItem()"
+                                                       color="error"
+                                                       small>Usuń</v-btn></div>
 
                   </v-card>
                   <v-divider class="mx-10"></v-divider>
@@ -111,7 +123,6 @@
                 elevation
                 color="#FBF1C7"
                 >{{text}}</v-snackbar>
-
 
             </div>
             <v-divider class="mx-10"></v-divider>
@@ -178,7 +189,6 @@ export default {
 
       },
 
-
     }
   },
 
@@ -195,7 +205,9 @@ export default {
 
     handleSelectItem(item)
     {
-      this.item_id   = item.id;
+      this.item_id       = item.id;
+      this.item_quantity = item.quantity;
+
       console.log(this.item_id);
     },
 
@@ -232,7 +244,6 @@ export default {
 
         .then((res) => {
           this.items = res.data.items;
-          console.log(res);
         })
 
     },
@@ -249,14 +260,14 @@ export default {
       })
 
         .then(() => {
-          this.refresh += 1;
-          this.snackbar = true;
-          this.text="Usunięto przedmiot z koszyka";
+          this.refresh  += 1;
+          this.snackbar  = true;
+          this.text      = "Usunięto przedmiot z koszyka";
         })
 
     },
 
-    updateCartItemQuantity()
+    incrementCartItemQuantity()
     {
       this.form.quantity += 1;
 
@@ -272,18 +283,33 @@ export default {
 
         .then(() => {
           this.refresh += 1;
+          this.form.quantity = 0;
           this.snackbar = true;
           this.text="Ilość zwiększono zamówienie o 1 szt";
-          this.form.quantity = 0;
         })
 
+    },
 
+    decrementCartItemQuantity()
+    {
+      this.form.quantity -= 1;
 
+      const token = this.$cookie.get('token');
 
+      axios.post('https://icnav.online/api/cart/update/' + this.item_id,
+        this.form,{
 
+          headers: {
+            'Authorization' : `Bearer ${token}`,
+          }
+        })
 
-
-
+        .then(() => {
+          this.refresh      += 1;
+          this.form.quantity = 0;
+          this.snackbar      = true;
+          this.text          = "Zmniejszono zamówienie o 1 szt";
+        })
 
     },
 
@@ -389,17 +415,9 @@ export default {
 
 }
 
-.buttons-containter {
-
-  text-align:center;
-
-}
-
 .item-button {
   margin:auto;
-  margin-top:15px;
-  margin-bottom:10px;
-  margin-right:15px;
+  padding-right:15px;
 }
 
 .total-price  h3{
@@ -419,6 +437,31 @@ export default {
   color:black;
   border-radius: 50%;
   display: inline-block;
+}
+
+.quantity-container {
+  display:flex;
+  align-items:center;
+}
+
+#increment-quantity:active
+{
+  background-color:green;
+
+}
+
+#decrement-quantity:active
+{
+  background-color:red;
+
+}
+
+.fa-plus {
+  color:lightgreen;
+}
+
+.fa-minus {
+  color:red;
 }
 
 </style>

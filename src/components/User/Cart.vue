@@ -83,12 +83,17 @@
                                                    <div class="buttons-containter">
 
                                                      <div class="item-button">
-                                                       <v-btn color="success"
-                                                              small>Dodaj</v-btn></div>
+                                                       <v-btn
+                                                         @click="handleSelectItem(item),
+                                                         updateCartItemQuantity()" color="success"
+                                                                                   small>Dodaj</v-btn></div>
 
                                                      <div class="item-button">
-                                                       <v-btn color="error"
-                                                              small>Usuń</v-btn></div>
+                                                       <v-btn
+                                                         @click="handleSelectItem(item),
+                                                         deleteCartItem()"
+                                                         color="error"
+                                                         small>Usuń</v-btn></div>
 
                                                    </div>
 
@@ -97,6 +102,16 @@
                 </v-col>
 
               </v-item-group>
+
+              <v-snackbar
+                v-model="snackbar"
+                :timeout="timeout"
+                light
+                centered
+                elevation
+                color="#FBF1C7"
+                >{{text}}</v-snackbar>
+
 
             </div>
             <v-divider class="mx-10"></v-divider>
@@ -151,7 +166,19 @@ export default {
       cart_item_counter : 0,
       refresh           : 0,
       items             : [],
-      total_cost: 0,
+      item_id           : undefined,
+      total_cost        : 0,
+      snackbar          : false,
+      text              : '',
+      timeout           : 1700,
+      item_quantity     : 0,
+
+      form: {
+        quantity         : 0,
+
+      },
+
+
     }
   },
 
@@ -164,6 +191,12 @@ export default {
     closeDialog()
     {
       this.$emit('close-dialog')
+    },
+
+    handleSelectItem(item)
+    {
+      this.item_id   = item.id;
+      console.log(this.item_id);
     },
 
     cartItemCounter()
@@ -199,8 +232,58 @@ export default {
 
         .then((res) => {
           this.items = res.data.items;
-          console.log(this.items);
+          console.log(res);
         })
+
+    },
+
+    deleteCartItem()
+    {
+      const token = this.$cookie.get('token');
+
+      axios.delete('https://icnav.online/api/cart/destroy/' + this.item_id, {
+
+        headers: {
+          'Authorization' : `Bearer ${token}`,
+        }
+      })
+
+        .then(() => {
+          this.refresh += 1;
+          this.snackbar = true;
+          this.text="Usunięto przedmiot z koszyka";
+        })
+
+    },
+
+    updateCartItemQuantity()
+    {
+      this.form.quantity += 1;
+
+      const token = this.$cookie.get('token');
+
+      axios.post('https://icnav.online/api/cart/update/' + this.item_id,
+        this.form,{
+
+          headers: {
+            'Authorization' : `Bearer ${token}`,
+          }
+        })
+
+        .then(() => {
+          this.refresh += 1;
+          this.snackbar = true;
+          this.text="Ilość zwiększono zamówienie o 1 szt";
+          this.form.quantity = 0;
+        })
+
+
+
+
+
+
+
+
 
     },
 

@@ -46,7 +46,7 @@
 
         </div>
 
-        <div class="cart-button" v-if="!admin && admin!=null">
+        <div class="cart-button" v-if="!admin && logged_in">
 
           <v-btn color="primary" @click="addToCart(), loader = 'loading_cart'"
                  :loading="loading_cart"
@@ -87,7 +87,7 @@
 
       </div>
 
-      <div class="store-comment" v-if="!admin && admin!=null">
+      <div class="store-comment" v-if="!admin && logged_in">
 
         <div class="comment-input">
 
@@ -221,9 +221,10 @@ export default {
 
   data() {
     return {
-      show    : this.showDialog,
-      admin   : globalStore.is_admin,
-      refresh : 0,
+      show      : this.showDialog,
+      admin     : globalStore.is_admin,
+      logged_in : globalStore.logged_in,
+      refresh   : 0,
 
       refresh_category                   : 0,
       refresh_navbar                     : 0,

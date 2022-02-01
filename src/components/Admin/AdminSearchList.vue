@@ -50,7 +50,7 @@
                                                                        <v-btn
                                                                          color="primary"
                                                                          :disabled=!cartPermissions x-small
-                                                                         @click="handleSelectItem(hot),
+                                                                         @click="handleSelectItem(product),
                                                                          addToCart()">
                                                                          <i
                                                                            class="fab
@@ -224,13 +224,11 @@ export default {
   margin-right:50px;
   align-items:center;
   justify-content:right;
-  border: 1px black solid;
 
 }
 .buttons-container {
   display:flex;
   flex-direction:column;
-  border: 1px black solid;
   margin:auto;
   padding-right:20px;
   justify-content:space-around;
@@ -242,7 +240,6 @@ export default {
   align-items:center;
   justify-content:center;
   margin:auto;
-  border: 1px black solid;
 }
 
 </style>

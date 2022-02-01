@@ -39,18 +39,29 @@
                                                                      <div class="price">
                                                                        <p>{{hot.price}} PLN</p>
                                                                      </div>
-                                                                     <fa icon="shopping-cart" size="2x"/>
+                                                                   </div>
 
-                                                                     <div class="addToCart">
+                                                                   <div
+                                                                     class="buttons-container">
+
+                                                                     <div class="add-to-cart">
+
                                                                        <v-btn
                                                                          color="primary"
                                                                          :disabled=!cartPermissions x-small
                                                                          @click="handleSelectItem(hot),
-                                                                         addToCart()">Dodaj</v-btn>
+                                                                         addToCart()">
+                                                                         <i
+                                                                           class="fab
+                                                                           fa-shopping-cart
+                                                                           fa-2x"></i>Dodaj
+
+                                                                       </v-btn>
 
                                                                      </div>
 
                                                                    </div>
+
                                                                    <v-scroll-y-transition> </v-scroll-y-transition>
               </v-card>
             </v-item>
@@ -196,6 +207,7 @@ export default {
   margin-right:20px;
   align-items:center;
   justify-content:center;
+  flex:1;
 }
 
 .rating {
@@ -208,17 +220,22 @@ export default {
 
 .cart {
   display:flex;
+  margin:auto;
   width: 20%;
   padding-right:15px;
   margin-right:50px;
   align-items:center;
   justify-content:right;
+  border: 1px black solid;
 
 }
-.addToCart {
+.buttons-container {
   display:flex;
-  width:3px;
-  height:20px;
+  flex-direction:column;
+  border: 1px black solid;
+  margin:auto;
+  padding-right:20px;
+  justify-content:space-around;
 
 }
 .price {
@@ -227,7 +244,7 @@ export default {
   align-items:center;
   justify-content:center;
   margin:auto;
-  padding-top:10px;
+  border: 1px black solid;
 }
 
 </style>

@@ -42,8 +42,23 @@
       </div>
 
       <v-card-actions>
-        <v-btn @click="getGlobal()"> <i class="fab fa-google fa-2x"></i>Google</v-btn>
+        <v-btn> <i class="fab fa-google fa-2x"></i>
+
+          <GoogleLogin
+            :params="params"
+            :onSuccess="getTokenGoogle"
+            >GOOGLE
+
+          </GoogleLogin>
+
+        </v-btn>
+
         <v-spacer></v-spacer>
+
+
+
+
+
 
         <v-btn
           class="justify-center"
@@ -70,6 +85,7 @@
 <script>
 
 import axios from 'axios';
+import GoogleLogin from 'vue-google-login'
 import {globalStore} from '../../main.js'
 
 export default {
@@ -77,6 +93,11 @@ export default {
   name: 'Login',
 
   props: ["dialog"],
+
+  components: {
+    GoogleLogin,
+  },
+
 
   data() {
     return {
@@ -95,6 +116,15 @@ export default {
         email    : '',
         password : '',
       },
+
+      params: {
+        client_id: process.env.VUE_APP_CLIENT_ID
+      },
+
+      socialUser: {
+        _token: null,
+        _provider: null
+      },
     }
   },
 
@@ -108,6 +138,20 @@ export default {
   },
 
   methods: {
+
+    getTokenGoogle(googleUser)
+    {
+      this.socialUser._token    = googleUser.wc.access_token;
+      this.socialUser._provider = 'google'
+
+      console.log(this.socialUser._token);
+
+
+    },
+
+
+
+
     close() {
       this.login_dialog=this.dialog;
     },

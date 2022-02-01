@@ -55,11 +55,6 @@
 
         <v-spacer></v-spacer>
 
-
-
-
-
-
         <v-btn
           class="justify-center"
           :loading="loading"
@@ -98,7 +93,6 @@ export default {
     GoogleLogin,
   },
 
-
   data() {
     return {
       login_dialog : null,
@@ -122,8 +116,8 @@ export default {
       },
 
       socialUser: {
-        _token: null,
-        _provider: null
+        _token    : null,
+        _provider : null
       },
     }
   },
@@ -139,6 +133,10 @@ export default {
 
   methods: {
 
+    close() {
+      this.login_dialog=this.dialog;
+    },
+
     getTokenGoogle(googleUser)
     {
       this.socialUser._token    = googleUser.wc.access_token;
@@ -146,14 +144,30 @@ export default {
 
       console.log(this.socialUser._token);
 
+      axios.post('https://icnav.online/api/provider/callback', this.socialUser)
 
-    },
+        .then((res) => {
+          this.loading     = false;
+          this.token       = this.$cookie.set('token', res.data.access_token)
+          this.is_admin    = res.data.is_admin;
+          this.user_avatar = res.data.user_avatar;
 
+          localStorage.setItem("user", res.data.user_avatar);
 
+          globalStore.is_admin = this.is_admin;
+          globalStore.logged_in = true;
 
+          if(this.is_admin)
+          {
+            this.$router.push(this.$route.query.redirect || '/admin')
 
-    close() {
-      this.login_dialog=this.dialog;
+          }else {
+            this.$router.push(this.$route.query.redirect || '/user')
+
+          }
+
+        })
+
     },
 
     onSubmit()

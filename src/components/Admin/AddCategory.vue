@@ -36,7 +36,7 @@
         <v-btn
           class="justify-center"
           :loading="loading"
-          :disabled="!Valid || loading"
+          :disabled="!Valid || loading || !enable_form"
 
           color="info"
           @click="loader = 'loading', addCategory()"
@@ -72,6 +72,7 @@ export default {
       loader          : null,
       loading         : false,
       refresh_sidebar : 0,
+      enable_form     : false,
       Valid           : true,
       Field_1         : '',
       Rule_1          : [ v => v.length <= 30 && v.length >= 3 || "Możesz wpisać maksymalnie "
@@ -94,6 +95,16 @@ export default {
     show() {
       this.$refs.form.reset();
     },
+
+    form: {
+      deep: true,
+
+      handler()
+      {
+        this.enable_form = true
+      }
+    }
+
   },
 
   methods: {

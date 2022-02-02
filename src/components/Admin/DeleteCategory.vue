@@ -2,6 +2,7 @@
 <template>
 
   <v-dialog v-model="show" max-width="600px" persistent>
+
     <v-card>
 
       <div class="close">
@@ -110,26 +111,6 @@ export default {
     closeDialog() {
       this.show=false;
     },
-
-    addCategory()
-    {
-      const token = this.$cookie.get('token');
-
-      axios.post('https://icnav.online/api/category/store', this.form, {
-
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-        .then(() => {
-          this.loading = false;
-          this.$root.$emit('myEvent', this.refresh_sidebar += 1);
-
-        })
-
-    },
-
   },
 }
 
@@ -138,7 +119,6 @@ export default {
 <style>
 
 .delete-category{
-  border: 1px black solid;
   margin-bottom:10px;
   margin-right:10px;
 }

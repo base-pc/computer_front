@@ -16,8 +16,8 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="error"
-          dark
           v-bind="attrs"
+          :disabled="!categoryId"
           v-on="on"
           ><i class="fas fa-trash-alt fa-2x"></i>
           Usuń

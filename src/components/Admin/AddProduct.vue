@@ -28,7 +28,7 @@
           </v-select>
 
           <v-text-field
-            v-model="name"
+            v-model="form.name"
             :min="5"
             :counter="20"
             :value="Field_1"
@@ -37,7 +37,7 @@
             type="text"
             ></v-text-field>
           <v-text-field
-            v-model="manufacturer"
+            v-model="form.manufacturer"
             :min="2"
             :counter="20"
             :value="Field_1"
@@ -46,7 +46,7 @@
             type="text"
             ></v-text-field>
           <v-textarea
-            v-model="description"
+            v-model="form.description"
             :min="2"
             filled
             :counter="3000"
@@ -56,12 +56,11 @@
             type="text"
             ></v-textarea>
           <v-text-field
-            v-model="price"
-            :min="1"
+            v-model="form.price"
             :value="Field_1"
             :rules="Rule_4"
             label="Cena"
-            type="numeric"
+            type="number"
             ></v-text-field>
 
           <v-file-input
@@ -70,7 +69,7 @@
             :rules="Rule_4"
             type="file"
             @change="handleFileUpload()"
-            v-model="photo"
+            v-model="form.photo"
             placeholder="Dodaj zdjęcie"
             prepend-icon="fa-camera"
             label="Zdjęcie poglądowe"
@@ -84,19 +83,30 @@
         <v-btn class="justify-center"
                color="primary"
                :loading="loading"
-               :disabled="!Valid || loading"
-               @click.stop=" loader='loading', addProduct()">Dodaj
+               :disabled="!Valid || loading || !enable_form ||
+               !selectedCategoryId || form.photo.length<1"
+                                                         @click.stop=" loader='loading', addProduct()">Dodaj
 
-               <template v-slot:loader>
-                 <span class="custom-loader">
-                   <fa icon="spinner" size="2x"/>
-                 </span>
-               </template>
+                                                         <template v-slot:loader>
+                                                           <span class="custom-loader">
+                                                             <fa icon="spinner" size="2x"/>
+                                                           </span>
+                                                         </template>
 
         </v-btn>
+
       </v-card-actions>
 
     </v-card>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      light
+      centered
+      elevation
+      color="#FBF1C7"
+      >{{text}}</v-snackbar>
+
   </v-dialog>
 
 </template>
@@ -113,6 +123,8 @@ export default {
     showDialog: Boolean,
   },
 
+
+
   data() {
     return {
       show               : this.showDialog,
@@ -122,11 +134,19 @@ export default {
       loader             : null,
       refresh_category_products: 0,
 
-      photo        : [],
-      name         : [],
-      manufacturer : [],
-      description  : [],
-      price        : [],
+      snackbar     : false,
+      text         : '',
+      timeout      : 1500,
+      enable_form: false,
+
+      form : {
+        photo        : [],
+        name         : [],
+        manufacturer : [],
+        description  : [],
+        price        : [],
+
+      },
 
       Valid           : true,
       Field_1         : '',
@@ -136,7 +156,7 @@ export default {
         + '20 znaków i minimum 2',  ],
       Rule_3          : [ v => v.length <= 3000 && v.length >= 2 || "Możesz wpisać maksymalnie "
         + '3000 znaków i minimum 2',  ],
-      Rule_4          : [ v => !!v || "To pole jest wymagane"],
+      Rule_4          : [ v => !!v || "To pole musi być liczbą"],
 
     }
   },
@@ -148,6 +168,16 @@ export default {
 
       this.loader = null
     },
+
+    form: {
+      deep: true,
+
+      handler()
+      {
+        this.enable_form = true
+      }
+    }
+
   },
 
   mounted()
@@ -178,11 +208,11 @@ export default {
 
       let formData = new FormData;
 
-      formData.append('photo', this.photo);
-      formData.append('name', this.name);
-      formData.append('manufacturer', this.manufacturer);
-      formData.append('description', this.description);
-      formData.append('price', this.price);
+      formData.append('photo', this.form.photo);
+      formData.append('name', this.form.name);
+      formData.append('manufacturer', this.form.manufacturer);
+      formData.append('description', this.form.description);
+      formData.append('price', this.form.price);
 
       axios.post('https://icnav.online/api/product/store/category/' +
         this.selectedCategoryId, formData, {
@@ -201,8 +231,10 @@ export default {
 
         .catch(err => {
           if (err.response.status == 422) {
-            this.loading = false;
-            alert('Uzupełnij wszystkie pola')
+            this.loading  = false;
+            this.snackbar = true;
+            this.text = 'Uzupełnij wszystkie pola';
+            this.Valid = false;
           }
 
         })
@@ -210,7 +242,7 @@ export default {
     },
 
     handleFileUpload(){
-      this.photo = this.$refs.file.files[0];
+      this.form.photo = this.$refs.file.files[0];
     }
 
   },

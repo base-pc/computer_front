@@ -49,13 +49,13 @@
 
               <v-list>
                 <v-list-item
+                  @click.stop="toggleCategory(),
+                  toggleProduct(), toggleDeleteCategory()"
 
                   v-for="(item, id) in items"
                   :key="id"
                   @click="handleSelectItem(item)"
 
-                  @click.stop="toggleCategory(),
-                  toggleProduct(), toggleDeleteCategory()"
                   >
 
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -63,7 +63,7 @@
 
                 <Category
                   :show-dialog="true"
-                  v-if="showCategory && selectItem==0"
+                  v-if="selectItem==0"
 
                   />
 

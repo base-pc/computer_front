@@ -137,7 +137,7 @@
 
           <v-btn
             :loading="loading"
-            :disabled="!Valid || loading"
+            :disabled="!Valid || loading || !enable_form"
 
             @click="loader = 'loading',someAsync()"
             color="success">Dodaj komentarz
@@ -233,10 +233,11 @@ export default {
 
   data() {
     return {
-      show      : this.showDialog,
-      admin     : globalStore.is_admin,
-      logged_in : globalStore.logged_in,
-      refresh   : 0,
+      show        : this.showDialog,
+      admin       : globalStore.is_admin,
+      logged_in   : globalStore.logged_in,
+      refresh     : 0,
+      enable_form : false,
 
       refresh_category                   : 0,
       refresh_navbar                     : 0,
@@ -282,7 +283,17 @@ export default {
     refresh()
     {
       this.getProductById();
+    },
+
+    form: {
+      deep: true,
+
+      handler()
+      {
+        this.enable_form = true
+      }
     }
+
   },
 
   methods: {

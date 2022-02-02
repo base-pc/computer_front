@@ -58,7 +58,7 @@
         <v-btn
           class="justify-center"
           :loading="loading"
-          :disabled="loading"
+          :disabled="loading || !enable_form"
           color="info"
           @click="loader = 'loading', onSubmit()"
           >
@@ -98,7 +98,8 @@ export default {
       login_dialog : null,
       snackbar     : false,
       text         : 'Błędne dane logowania',
-      timeout      : 2000,
+      timeout      : 1500,
+      enable_form  : false,
 
       token        : null,
       loader       : null,
@@ -129,6 +130,16 @@ export default {
 
       this.loader = null
     },
+
+    form: {
+      deep: true,
+
+      handler()
+      {
+        this.enable_form = true
+      }
+    }
+
   },
 
   methods: {

@@ -85,7 +85,7 @@
         <v-btn
           class="ma-2"
           :loading="loading"
-          :disabled="!Valid || loading"
+          :disabled="!Valid || loading || !enable_form"
 
           color="info"
           @click="loader = 'loading', submitForm(), clearForm()"
@@ -122,6 +122,7 @@ export default {
       snackbar        : false,
       text            : 'Podany adres email jest zajęty : (',
       timeout         : 1500,
+      enable_form     : false,
 
       loader          : null,
       loading         : false,
@@ -159,6 +160,16 @@ export default {
 
       this.loader = null
     },
+
+    form: {
+      deep: true,
+
+      handler()
+      {
+        this.enable_form = true
+      }
+    },
+
 
     register_dialog() {
       this.$refs.form.reset()

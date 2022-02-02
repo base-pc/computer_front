@@ -11,9 +11,6 @@
 
               <v-card class="d-flex justify-center flex-row" light height="150"
                                                                    width="900px"
-                                                                   @click="handleSelectItem(product)"
-                                                                   @click.native.stop="
-                                                                   toggleProduct()"
                                                                    >
 
                                                                    <div class="img">
@@ -45,6 +42,13 @@
                                                                    <div
                                                                      class="buttons-container">
 
+                                                                     <div class="product-detail">
+                                                                       <ProductInDetail
+                                                                         :product-id="product.id"
+                                                                         />
+
+                                                                     </div>
+
                                                                      <div class="add-to-cart">
 
                                                                        <v-btn
@@ -57,14 +61,11 @@
                                                                            fa-shopping-cart
                                                                            fa-2x"></i>Dodaj
 
-
                                                                        </v-btn>
 
                                                                      </div>
 
-
                                                                    </div>
-
 
                                                                    <v-scroll-y-transition> </v-scroll-y-transition>
               </v-card>
@@ -74,12 +75,6 @@
         </v-row>
       </v-container>
     </v-item-group>
-    <ProductInDetail
-      v-if="showProduct"
-      :show-dialog="true"
-      :product-id="form.id"
-
-      />
   </div>
 </template>
 
@@ -112,7 +107,6 @@ export default {
     {
       this.getProducts();
     },
-
 
     categoryId() {
 
@@ -195,7 +189,6 @@ export default {
     })
   },
 
-
   beforeMount()
   {
     this.getSearchProducts();
@@ -243,13 +236,11 @@ export default {
   margin-right:50px;
   align-items:center;
   justify-content:right;
-  border: 1px black solid;
 
 }
 .buttons-container {
   display:flex;
   flex-direction:column;
-  border: 1px black solid;
   margin:auto;
   padding-right:20px;
   justify-content:space-around;
@@ -261,7 +252,6 @@ export default {
   align-items:center;
   justify-content:center;
   margin:auto;
-  border: 1px black solid;
 }
 
 </style>

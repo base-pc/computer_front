@@ -11,9 +11,6 @@
 
               <v-card class="d-flex justify-center flex-row" light height="150"
                                                                    width="900px"
-                                                                   @click="handleSelectItem(hot)"
-                                                                   @click.native.stop="
-                                                                   toggleProduct()"
                                                                    >
 
                                                                    <div class="img">
@@ -44,6 +41,14 @@
                                                                    <div
                                                                      class="buttons-container">
 
+                                                                     <div class="product-detail">
+                                                                       <ProductInDetail
+                                                                         :product-id="hot.id"
+                                                                         />
+
+
+                                                                     </div>
+
                                                                      <div class="add-to-cart">
 
                                                                        <v-btn
@@ -57,6 +62,7 @@
                                                                            fa-2x"></i>Dodaj
 
                                                                        </v-btn>
+
 
                                                                      </div>
 
@@ -79,12 +85,7 @@
 
       </v-container>
     </v-item-group>
-    <ProductInDetail
-      v-if="showProduct"
-      :show-dialog="true"
-      :product-id="form.id"
 
-      />
   </div>
 </template>
 

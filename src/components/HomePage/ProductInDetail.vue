@@ -1,6 +1,19 @@
 <template>
 
   <v-dialog v-model="show" max-width="1080" persistent>
+
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        color="success"
+        dark
+        x-small
+        v-bind="attrs"
+        v-on="on"
+        >
+        Szczegóły
+      </v-btn>
+    </template>
+
     <v-card v-for="product in products" :key="product.id">
 
       <div class="close">
@@ -215,7 +228,6 @@ import UpdateProduct from '../Admin/UpdateProduct.vue'
 export default {
 
   props: {
-    showDialog : Boolean,
     productId  : Number,
   },
 

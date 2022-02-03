@@ -134,8 +134,16 @@
           </v-container>
 
         </div>
+        <PayPal
+          amount="0.10"
+          currency="PLN"
+          :client="credentials"
+          env="sandbox">
+        </PayPal>
 
-        <v-btn color="primary" @click="getCartItems()">Zapłać</v-btn>
+
+
+        <!--<v-btn color="primary" @click="getCartItems()">Zapłać</v-btn>-->
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             v-bind="attrs"
@@ -154,6 +162,7 @@
 <script>
 
 import axios from "axios";
+import PayPal from 'vue-paypal-checkout'
 
 export default {
   name: "Cart",
@@ -189,7 +198,17 @@ export default {
 
       },
 
+      credentials: {
+        sandbox: 'ASrjB0ZSDjwYWUHM256xUq4wH1IH9w3JZAUruE7w1gpqqDJLBBMV_xsCPGZCLqnDwPpzSfQQFiQqXGVd',
+        production: '<production client id>'
+      },
+
+
+
     }
+  },
+  components: {
+    PayPal
   },
 
   methods: {

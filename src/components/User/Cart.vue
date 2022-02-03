@@ -131,19 +131,34 @@
               <h3>Koszt zakupów: {{total_cost}} PLN </h3>
 
             </div>
+
+            <div class="loading-payment" v-if="!paypal">
+
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                ></v-progress-circular>
+
+            </div>
+
+            <div class="paypal" v-if="paypal">
+
+              <PayPal
+                :amount="total_cost"
+                currency="PLN"
+                :client="credentials"
+                :button-style="myStyle"
+                v-on:payment-cancelled="test()"
+                env="sandbox"
+                >
+              </PayPal>
+
+            </div>
+
           </v-container>
 
         </div>
-        <PayPal
-          amount="0.10"
-          currency="PLN"
-          :client="credentials"
-          env="sandbox">
-        </PayPal>
 
-
-
-        <!--<v-btn color="primary" @click="getCartItems()">Zapłać</v-btn>-->
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             v-bind="attrs"
@@ -180,6 +195,7 @@ export default {
   data () {
     return {
       dialog            : false,
+      paypal            : false,
       category_id       : this.categoryId,
       refresh_sidebar   : 0,
       enable            : false,
@@ -198,12 +214,17 @@ export default {
 
       },
 
+      myStyle: {
+        label: 'checkout',
+        size:  'responsive',
+        shape: 'rect',
+        color: 'blue'
+      },
+
       credentials: {
         sandbox: 'ASrjB0ZSDjwYWUHM256xUq4wH1IH9w3JZAUruE7w1gpqqDJLBBMV_xsCPGZCLqnDwPpzSfQQFiQqXGVd',
         production: '<production client id>'
       },
-
-
 
     }
   },
@@ -212,6 +233,21 @@ export default {
   },
 
   methods: {
+    setShow() {
+      setTimeout(() => {
+        this.paypal = true;
+      }, 10000);
+    },
+
+    test()
+    {
+      this.elo=true;
+    },
+
+    togglePaypal()
+    {
+      this.paypal = true;
+    },
 
     close() {
       this.dialog=false;
@@ -304,7 +340,7 @@ export default {
           this.refresh += 1;
           this.form.quantity = 0;
           this.snackbar = true;
-          this.text="Ilość zwiększono zamówienie o 1 szt";
+          this.text="Zwiększono zamówienie o 1 szt";
         })
 
     },
@@ -355,7 +391,8 @@ export default {
   mounted: function () {
     this.$root.$on('refresh_item_counter', (text) => {
       this.refresh += text;
-    })
+    }),
+      this.setShow();
   },
 
   beforeMount(){

@@ -132,7 +132,13 @@
 
             </div>
 
-            <div class="loading-payment" v-if="!paypal">
+            <div class="empty-cart" v-if="cart_item_counter == 0">
+
+              <h1>Twój koszyk jest pusty</h1>
+
+            </div>
+
+            <div class="loading-payment" v-if="!paypal && cart_item_counter>0">
 
               <v-progress-circular
                 indeterminate
@@ -141,14 +147,13 @@
 
             </div>
 
-            <div class="paypal" v-if="paypal">
-
+            <div class="paypal" v-if="paypal &&  cart_item_counter>0">
               <PayPal
                 :amount="total_cost"
                 currency="PLN"
                 :client="credentials"
                 :button-style="myStyle"
-                v-on:payment-cancelled="test()"
+                v-on:payment-completed="paymentSuccess()"
                 env="sandbox"
                 >
               </PayPal>
@@ -189,6 +194,11 @@ export default {
       this.cartItemCounter();
       this.getCartItems();
       this.getTotalItemsPrice();
+    },
+
+    dialog()
+    {
+      this.setShow();
     }
   },
 
@@ -206,7 +216,7 @@ export default {
       total_cost        : 0,
       snackbar          : false,
       text              : '',
-      timeout           : 1700,
+      timeout           : 2000,
       item_quantity     : 0,
 
       form: {
@@ -216,13 +226,13 @@ export default {
 
       myStyle: {
         label: 'checkout',
-        size:  'responsive',
+        size:  'medium',
         shape: 'rect',
         color: 'blue'
       },
 
       credentials: {
-        sandbox: 'ASrjB0ZSDjwYWUHM256xUq4wH1IH9w3JZAUruE7w1gpqqDJLBBMV_xsCPGZCLqnDwPpzSfQQFiQqXGVd',
+        sandbox: process.env.VUE_APP_PAYPAL_CLIENT_ID,
         production: '<production client id>'
       },
 
@@ -233,20 +243,23 @@ export default {
   },
 
   methods: {
+
     setShow() {
       setTimeout(() => {
-        this.paypal = true;
-      }, 10000);
-    },
-
-    test()
-    {
-      this.elo=true;
+        this.togglePaypal();
+      }, 3000);
     },
 
     togglePaypal()
     {
       this.paypal = true;
+
+    },
+
+    paymentSuccess()
+    {
+      this.snackbar = true;
+      this.text = 'Transakcja przebiegła pomyślnie';
     },
 
     close() {
@@ -263,7 +276,6 @@ export default {
       this.item_id       = item.id;
       this.item_quantity = item.quantity;
 
-      console.log(this.item_id);
     },
 
     cartItemCounter()
@@ -391,8 +403,8 @@ export default {
   mounted: function () {
     this.$root.$on('refresh_item_counter', (text) => {
       this.refresh += text;
-    }),
-      this.setShow();
+    })
+
   },
 
   beforeMount(){
@@ -417,6 +429,11 @@ export default {
   color:black;
   margin-top:-8px;
 
+}
+
+.empty-cart h1
+{
+  color:black;
 }
 
 .cart-label {

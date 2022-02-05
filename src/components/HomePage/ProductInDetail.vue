@@ -4,11 +4,12 @@
 
     <template v-slot:activator="{ on, attrs }">
       <v-btn
-        color="success"
+        color="#b8bb26"
         dark
         x-small
         v-bind="attrs"
         v-on="on"
+        retain-focus-on-click
         >
         Szczegóły
       </v-btn>
@@ -22,7 +23,7 @@
                          />
       </div>
 
-      <div class="title">
+      <div class="detail-title">
         <p>{{product.name}}</p>
       </div>
 
@@ -61,18 +62,19 @@
 
         <div class="cart-button" v-if="!admin && logged_in">
 
-          <v-btn color="primary" @click="addToCart(), loader = 'loading_cart'"
-                 :loading="loading_cart"
+          <v-btn  class="white--text" color="#458588" @click="addToCart(), loader = 'loading_cart'"
 
-                 >
+                                      :loading="loading_cart"
 
-                 <template v-slot:loader>
-                   <span class="custom-loader">
-                     <fa icon="spinner" size="2x"/>
-                   </span>
-                 </template>
+                                      >
 
-                 <fa icon="shopping-cart" size="2x"/>Dodaj do koszyka
+                                      <template v-slot:loader>
+                                        <span class="custom-loader">
+                                          <fa icon="spinner" size="2x"/>
+                                        </span>
+                                      </template>
+
+                                      <fa icon="shopping-cart" size="2x"/>Dodaj do koszyka
 
           </v-btn>
 
@@ -136,11 +138,12 @@
           </div>
 
           <v-btn
+            class="white--text"
             :loading="loading"
             :disabled="!Valid || loading || !enable_form"
 
             @click="loader = 'loading',someAsync()"
-            color="success">Dodaj komentarz
+            color="#b8bb26">Dodaj komentarz
 
             <template v-slot:loader>
               <span class="custom-loader">
@@ -548,15 +551,15 @@ export default {
   margin-left: 7%;
 }
 
-.title {
+.detail-title {
   margin:auto;
 
 }
 
-.title p {
-  font-size: 1.7em;
+.detail-title p {
+  font-size: 2.3em;
   color:black;
-  width:400px;
+  font-weight:bold;
 }
 
 .flex-container2 {

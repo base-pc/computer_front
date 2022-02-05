@@ -12,9 +12,9 @@
       >
 
       <template v-slot:extension>
-        <v-app-title class="title"> BASE-PC </v-app-title>
+        <v-app-title id="title"> BASE-PC </v-app-title>
 
-        <div class="search">
+        <div id="search">
           <v-text-field id="s"
                         v-model="search_product"
                         @keyup.enter="getSearchInput(), clearSearchField()"
@@ -30,34 +30,33 @@
                         ></v-text-field>
         </div>
 
-        <v-tabs optional>
 
-          <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
 
-          <v-tab>
-            <v-btn @click="logout()">Wyloguj</v-btn>
-          </v-tab>
+        <div class="logout">
+          <v-btn @click="logout()">Wyloguj</v-btn>
 
-          <div class="cart">
-            <v-tab><Cart /></v-tab>
 
-          </div>
+        </div>
 
-          <div class="avatar">
-            <v-tab  light readonly>
 
-              <v-avatar size="37">
+        <div class="cart">
+          <Cart />
 
-                <img
-                  :src="user_avatar"
-                  alt="">
+        </div>
 
-              </v-avatar>
+        <div class="avatar">
 
-            </v-tab>
+          <v-avatar size="37">
 
-          </div>
-        </v-tabs>
+            <img
+              :src="user_avatar"
+              alt="">
+
+          </v-avatar>
+
+
+        </div>
       </template>
     </v-app-bar>
   </v-container>
@@ -132,18 +131,22 @@ export default {
 
 <style>
 
-.title {
-  width: 200px !important;
+#title {
+  width:7em;
+  font-size:23px;
 }
 #s {
   width: 400px;
-  color:black;
+  color:white;
+  font-weight:bold;
+  font-size:20px;
 }
 
-.search {
+#search {
   padding-top:20px;
-  padding-left:10px
+  padding-left:0.5em;
 }
+
 
 .counter {
   height: 17px;
@@ -151,25 +154,18 @@ export default {
   margin-bottom:17px;
   margin-left:2px;
   margin-top:10px;
-  background-color: #bbb;
-  border-color:red;
-  color:black;
+  background-color: #458588;
+  color:white;
   border-radius: 50%;
   display: inline-block;
 }
-
 .avatar {
-
-  padding-top:4px;
+  padding-left:1.5em;
+  padding-bottom:5px;
 }
-
 .cart {
-  margin-top:18px;
+  padding-left:0.65em;
 }
-
 </style>
 
-<style lang="scss">
-$input-font-size: 72px;
-</style>
 

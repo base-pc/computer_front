@@ -104,9 +104,10 @@
 
                                                    <div class="item-button">
                                                      <v-btn
+                                                       class="white--text"
                                                        @click="handleSelectItem(item),
                                                        deleteCartItem()"
-                                                       color="error"
+                                                       color="#fb4934"
                                                        small>Usuń</v-btn></div>
 
                   </v-card>
@@ -421,7 +422,11 @@ export default {
 .dialog-title {
   display:flex;
   padding-left:6px;
-  background-color:#ff7733;
+  background-color:#fabd2f;
+}
+
+.dialog-title h3{
+  color:black;
 }
 
 .close {
@@ -455,10 +460,9 @@ export default {
 
 .item_name {
   display:flex;
-  flex: 2;
+  flex: 1;
   align-content: center;
   text-align:center;
-  margin-left:20px;
   align-items:center;
   justify-content:center;
 }
@@ -470,20 +474,25 @@ export default {
 
 .cart-rating {
   margin:auto;
+  margin:auto;
+  padding-top:1em;
   text-align:center;
-  flex: 2;
+  flex: 1;
 
 }
 
 .item-quantity {
   margin:auto;
-  flex:2;
+  height:10em;
+  flex:1;
   text-align:center;
+
 }
 
 .item-price {
+  height:10em;
   text-align:center;
-  flex:2;
+  flex:1;
   margin:auto;
 
 }
@@ -519,22 +528,22 @@ export default {
 
 #increment-quantity:active
 {
-  background-color:green;
+  background-color:#b8bb26;
 
 }
 
 #decrement-quantity:active
 {
-  background-color:red;
+  background-color:#fb4934;
 
 }
 
 .fa-plus {
-  color:lightgreen;
+  color:#b8bb26;
 }
 
 .fa-minus {
-  color:red;
+  color:#fb4934;
 }
 
 </style>

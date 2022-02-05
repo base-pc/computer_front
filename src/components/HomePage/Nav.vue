@@ -10,16 +10,15 @@
       dark
       >
       <template v-slot:extension>
-        <v-app-title class="title"> BASE-PC </v-app-title>
+        <v-app-title id="title"> BASE-PC </v-app-title>
 
-        <div class="search">
+        <div id="search">
           <v-text-field id="s"
                         v-model="search_product"
                         @keyup.enter="getSearchInput(), clearSearchField()"
                         fixed
                         dense
                         background-color="#5c7067"
-                        color="white"
                         prepend-inner-icon="fa-search"
                         outlined
                         persistent-hint
@@ -28,11 +27,9 @@
                         ></v-text-field>
         </div>
 
-        <v-tabs optional>
-          <v-spacer></v-spacer>
-          <v-tab><Register /></v-tab>
-          <v-tab><Login /></v-tab>
-        </v-tabs>
+        <v-spacer></v-spacer>
+        <Register />
+        <Login />
       </template>
     </v-app-bar>
   </v-container>
@@ -76,17 +73,20 @@ export default {
 
 <style>
 
-.title {
-  width: 200px !important;
+#title {
+  width:7em;
+  font-size:23px;
 }
 #s {
   width: 400px;
   color:white;
+  font-weight:bold;
+  font-size:20px;
 }
 
-.search {
+#search {
   padding-top:20px;
-  padding-left:10px
+  padding-left:0.5em;
 }
 
 </style>

@@ -6,7 +6,7 @@
       max-width="400"
       >
 
-      <div class="dialog-title">
+      <div class="dialog-title-delete">
 
         <i class="fas fa-trash-alt fa-2x"></i>
         <h3>Usuń kategorię</h3>
@@ -15,7 +15,8 @@
 
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="error"
+          class="white--text"
+          color="#fb4934"
           v-bind="attrs"
           :disabled="!categoryId"
           v-on="on"
@@ -114,10 +115,10 @@ export default {
 
 <style>
 
-.dialog-title
+.dialog-title-delete
 {
   display:flex;
-  background-color:#FF6060;
+  background-color:#fb4934;
   color:white;
   align-items: center;
 }

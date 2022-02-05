@@ -6,7 +6,7 @@
       max-width="400"
       >
 
-      <div class="dialog-title">
+      <div class="dialog-title-popup">
 
         <i class="fas fa-trash-alt fa-2x"></i>
         <h3>Usuń produkt</h3>
@@ -15,7 +15,8 @@
 
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="error"
+          class="white--text"
+          color="#fb4934"
           dark
           v-bind="attrs"
           v-on="on"
@@ -107,10 +108,10 @@ export default {
 
 <style>
 
-.dialog-title
+.dialog-title-popup
 {
   display:flex;
-  background-color:#FF6060;
+  background-color:#fb4934;
   color:white;
   align-items: center;
 }
@@ -120,7 +121,7 @@ export default {
   color:white;
   text-align:justify;
   vertical-align:middle;
-  margin-top:5px;
+  margin-top:7px;
   flex:5;
 }
 

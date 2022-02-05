@@ -34,11 +34,11 @@
         <v-spacer></v-spacer>
 
         <v-btn
-          class="justify-center"
+          class="white--text"
+          color="#458588"
           :loading="loading"
           :disabled="!Valid || loading || !enable_form"
 
-          color="info"
           @click="loader = 'loading', addCategory()"
           >
           Dodaj

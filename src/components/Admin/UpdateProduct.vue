@@ -3,8 +3,8 @@
 
     <template v-slot:activator="{on, attrs}">
       <v-btn
-
-        color="success"
+        class="white--text"
+        color="#b8bb26"
         dark
         v-bind="attrs"
         v-on="on"
@@ -73,10 +73,10 @@
       </div>
 
       <v-card-actions>
-        <v-btn @click="getProductName(), close()">Anuluj</v-btn>
+        <v-btn class="white--text" color="#a89984" @click="getProductName(), close()">Anuluj</v-btn>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center"
-               color="primary"
+        <v-btn class="white--text"
+               color="#458588"
                :loading="loading"
                :disabled="!Valid || loading"
                @click.stop=" loader='loading', updateProduct()">Aktualizuj
@@ -258,7 +258,7 @@ export default {
 .dialog-title-update {
 
   display:flex;
-  background-color:#47A44B;
+  background-color:#b8bb26;
   color:white;
   align-items: center;
   margin-bottom:3%;

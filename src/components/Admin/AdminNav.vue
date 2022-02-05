@@ -11,9 +11,9 @@
       >
 
       <template v-slot:extension>
-        <v-app-title class="title"> BASE-PC </v-app-title>
+        <v-app-title id="title"> BASE-PC </v-app-title>
 
-        <div class="search">
+        <div id="search">
           <v-text-field id="s"
                         fixed
                         v-model="search_product"
@@ -29,75 +29,69 @@
                         ></v-text-field>
         </div>
 
-        <v-tabs optional>
-          <v-spacer></v-spacer>
-          <v-tab>
-            <v-menu
-              top
-              close-on-content-click
+        <v-spacer></v-spacer>
+        <v-menu
+          top
+          close-on-content-click
+          >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              dark
+              v-bind="attrs"
+              v-on="on"
+              ><i class="arrow down"></i>
+
+              Zarządzaj
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item
+              @click.stop="toggleCategory(),
+              toggleProduct(), toggleDeleteCategory()"
+
+              v-for="(item, id) in items"
+              :key="id"
+              @click="handleSelectItem(item)"
+
               >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  ><i class="arrow down"></i>
 
-                  Zarządzaj
-                </v-btn>
-              </template>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
 
-              <v-list>
-                <v-list-item
-                  @click.stop="toggleCategory(),
-                  toggleProduct(), toggleDeleteCategory()"
+            <Category
+              :show-dialog="true"
+              v-if="selectItem==0"
 
-                  v-for="(item, id) in items"
-                  :key="id"
-                  @click="handleSelectItem(item)"
+              />
 
-                  >
+            <DeleteCategory
+              :show-dialog="true"
+              v-if="showDeleteCategory && selectItem==1"
+              />
 
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
+            <Product
+              :show-dialog="true"
+              v-if="showProduct && selectItem==2"
 
-                <Category
-                  :show-dialog="true"
-                  v-if="selectItem==0"
+              />
 
-                  />
+          </v-list>
+        </v-menu>
 
-                <DeleteCategory
-                  :show-dialog="true"
-                  v-if="showDeleteCategory && selectItem==1"
-                  />
+        <v-btn @click="logout()">Wyloguj
+        </v-btn>
 
-                <Product
-                  :show-dialog="true"
-                  v-if="showProduct && selectItem==2"
+        <div class="avatar">
 
-                  />
+          <v-avatar size="37">
 
-              </v-list>
-            </v-menu>
+            <img
+              src="https://www.qatarliving.com/sites/all/themes/qatarliving_v3/images/avatar.jpeg"
+              alt="">
+          </v-avatar>
+        </div>
 
-          </v-tab>
-          <v-tab @click="logout()"><v-btn>Wyloguj</v-btn>
-          </v-tab>
-
-          <div class="avatar">
-            <v-tab>
-
-              <v-avatar size="37">
-
-                <img
-                  src="https://www.qatarliving.com/sites/all/themes/qatarliving_v3/images/avatar.jpeg"
-                  alt="">
-              </v-avatar>
-            </v-tab>
-          </div>
-
-        </v-tabs>
       </template>
     </v-app-bar>
   </v-container>
@@ -187,33 +181,26 @@ export default {
 </script>
 
 <style>
-.title {
-  width: 200px !important;
+
+#title {
+  width:7em;
+  font-size:23px;
 }
 #s {
   width: 400px;
   color:white;
+  font-weight:bold;
+  font-size:20px;
 }
 
-.search {
+#search {
   padding-top:20px;
-  padding-left:10px
-}
-
-.counter {
-  height: 17px;
-  width: 17px;
-  margin-bottom:17px;
-  margin-left:2px;
-  margin-top:10px;
-  background-color: #bbb;
-  color:black;
-  border-radius: 50%;
-  display: inline-block;
+  padding-left:0.5em;
 }
 
 .avatar {
-  padding-top:4px;
+  padding-left:1.5em;
+  padding-bottom:5px;
 }
 
 .arrow {

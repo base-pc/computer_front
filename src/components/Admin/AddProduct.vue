@@ -80,8 +80,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="justify-center"
-               color="primary"
+        <v-btn class="white--text"
+               color="#458588"
                :loading="loading"
                :disabled="!Valid || loading || !enable_form ||
                !selectedCategoryId || form.photo.length<1"

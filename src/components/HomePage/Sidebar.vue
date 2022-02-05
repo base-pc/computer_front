@@ -79,6 +79,7 @@ export default {
 </script>
 
 <style>
+
 .sidebar {
   height: 100%;
   width: auto;

@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog v-model="register_dialog" max-width="600px" persistent>
+  <v-dialog v-model="dialog" max-width="600px" persistent>
     <template v-slot:activator="{ on }">
       <v-btn v-on="on" >Rejestracja</v-btn>
     </template>
@@ -83,11 +83,11 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
-          class="ma-2"
+          class="white--text"
           :loading="loading"
           :disabled="!Valid || loading || !enable_form"
 
-          color="info"
+          color="#458588"
           @click="loader = 'loading', submitForm(), clearForm()"
           >
           Rejestracja
@@ -114,11 +114,10 @@ export default {
 
   name: 'Register',
 
-  props: ["dialog"],
 
   data() {
     return {
-      register_dialog : null,
+      register_dialog : this.dialog,
       snackbar        : false,
       text            : 'Podany adres email jest zajęty : (',
       timeout         : 1500,
@@ -179,6 +178,8 @@ export default {
   methods: {
     close() {
       this.register_dialog=this.dialog;
+      this.dialog = false;
+
     },
 
     validateEmail(email) {

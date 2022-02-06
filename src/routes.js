@@ -7,12 +7,23 @@ import {globalStore} from './main'
 
 export default [
 
-  { path: '/',   redirect:'/home',    },
+  { path: '/',   redirect:'/home',
+
+  },
 
   {
     path: '/home',
     name:'home',
     component: Home,
+
+    children: [
+      {
+        path:':path?',
+
+
+      },
+
+    ],
 
     beforeEnter: (to, from, next) => {
 

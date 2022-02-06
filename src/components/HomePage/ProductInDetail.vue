@@ -498,7 +498,7 @@ export default {
 .comment-form {
   display:flex;
   text-align: left;
-  background-color:#FBF1C7;
+  background-color:#f9f5d7;
   border-bottom: 2px black solid;
 }
 

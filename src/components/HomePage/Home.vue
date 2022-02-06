@@ -9,16 +9,21 @@
 
     <Sidebar @showMsg="getData($event)" @emitId="getId($event)"></Sidebar>
 
+    <ResetPasswordRequest :dialog="dialog"></ResetPasswordRequest>
+    <ResetPassword        :dialog="dialog2"></ResetPassword>
+
   </v-container>
 </template>
 
 <script>
 
-import Nav              from "../HomePage/Nav.vue";
-import Sidebar          from "../HomePage/Sidebar.vue";
-import HotProducts      from "../HomePage/HotProducts.vue";
-import CategoryProducts from "../HomePage/CategoryProducts.vue";
-import SearchList       from "../HomePage/SearchList.vue";
+import Nav                  from "../HomePage/Nav.vue";
+import Sidebar              from "../HomePage/Sidebar.vue";
+import HotProducts          from "../HomePage/HotProducts.vue";
+import CategoryProducts     from "../HomePage/CategoryProducts.vue";
+import SearchList           from "../HomePage/SearchList.vue";
+import ResetPasswordRequest from "../Auth/ResetPasswordRequest.vue";
+import ResetPassword        from "../Auth/ResetPassword.vue";
 
 export default {
 
@@ -27,9 +32,11 @@ export default {
   components: {
     Sidebar,
     Nav,
-    'hot-products'      : HotProducts,
-    'category-products' : CategoryProducts,
-    'search-list'       : SearchList,
+    ResetPasswordRequest,
+    ResetPassword,
+    "hot-products"      : HotProducts,
+    "category-products" : CategoryProducts,
+    "search-list"       : SearchList,
   },
 
   data(){
@@ -38,7 +45,21 @@ export default {
       search       : false,
       id           : null,
       search_input : null,
+      dialog       : false,
+      dialog2      : false,
     }
+  },
+
+  watch : {
+    $route()
+    {
+      this.checkModal();
+    },
+  },
+
+  created()
+  {
+    this.checkModal();
   },
 
   computed: {
@@ -78,8 +99,27 @@ export default {
     getSearch(data)
     {
       this.search = data;
+    },
+
+    checkModal()
+    {
+      if(this.$route.params.path == 'reset_password_request')
+      {
+        this.dialog = true;
+      }
+      else if(this.$route.params.path == 'password_reset')
+      {
+        this.dialog2 = true;
+      }
+
+      else {
+        this.dialog = false;
+        this.dialog2 = false;
+      }
+
     }
-  }
+  },
+
 };
 </script>
 

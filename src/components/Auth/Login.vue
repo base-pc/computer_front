@@ -56,10 +56,10 @@
         <v-spacer></v-spacer>
 
         <v-btn
-          class="justify-center"
+          class="white--text"
           :loading="loading"
           :disabled="loading || !enable_form"
-          color="info"
+          color="#458588"
           @click="loader = 'loading', onSubmit()"
           >
           Logowanie
@@ -70,7 +70,15 @@
           </template>
         </v-btn>
 
+
       </v-card-actions>
+
+      <div class="forgot-password">
+
+        <a href="http://localhost:8080/#/home/reset_password_request"
+           @click="close()">Zapomniałeś hasła?</a>
+
+      </div>
 
     </v-card>
   </v-dialog>
@@ -246,6 +254,16 @@ export default {
 i {
   margin-left:8px;
   padding-right:10px;
+}
+
+.forgot-password {
+  text-align:right;
+  padding-right:1em;
+}
+
+a {
+  font-size: 18px;
+  color:#000000 !important;
 }
 
 .custom-loader {

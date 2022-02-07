@@ -62,75 +62,93 @@
 </template>
 
 <script>
-//import axios from 'axios';
 
-  export default {
+import axios from 'axios';
 
-    name: 'ResetPasswordRequest',
+export default {
 
-    props: ["dialog"],
+  name: 'ResetPasswordRequest',
 
-    data() {
-      return {
-        snackbar    : false,
-        text        : '',
-        timeout     : 2000,
-        enable_form : false,
-        valid_email : '',
-        Valid       : false,
-        Field_1     : '',
+  props: ["dialog"],
 
-        loader       : null,
-        loading      : false,
+  data() {
+    return {
+      snackbar    : false,
+      text        : '',
+      timeout     : 2000,
+      enable_form : false,
+      valid_email : '',
+      Valid       : false,
+      Field_1     : '',
 
-        Rule_1          : [ v=>!!v || 'To pole jest wymagane', v =>
-          /.+@.+/.test(v) || 'Błędny adres email', v=> !!v],
+      loader       : null,
+      loading      : false,
 
-        form: {
-          email    : '',
-        },
+      Rule_1          : [ v=>!!v || 'To pole jest wymagane', v =>
+        /.+@.+/.test(v) || 'Błędny adres email', v=> !!v],
 
-      }
-    },
-
-    watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-
-        this.loader = null
+      form: {
+        email    : '',
       },
-
-    },
-
-    methods: {
-
-      close() {
-        this.$router.push(this.$route.query.redirect || '/home')
-      },
-
-      validateEmail(email) {
-
-        var re = /^[^\s@]+@[^\s@]+$/;
-
-        if (re.test(email)) {
-
-          this.valid_email = true;
-        }
-
-        else {
-          this.valid_email = false;
-        }
-      },
-
-      onSubmit()
-      {
-        this.snackbar = true;
-        this.text = "Na sprawdź swoją pocztę"
-      }
 
     }
-  };
+  },
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
+
+  },
+
+  methods: {
+
+    close() {
+      this.$router.push(this.$route.query.redirect || '/home')
+    },
+
+    validateEmail(email) {
+
+      var re = /^[^\s@]+@[^\s@]+$/;
+
+      if (re.test(email)) {
+
+        this.valid_email = true;
+      }
+
+      else {
+        this.valid_email = false;
+      }
+    },
+
+    onSubmit()
+    {
+      axios.post('http://localhost:8081/api/send/reset/link', this.form)
+        .then(() => {
+          this.loading  = false;
+          this.snackbar = true;
+          this.text = "Link restujący hasło został wysłany na Twoją pocztę";
+
+        })
+
+        .catch(err => {
+          if (err.response.status == 404) {
+            this.snackbar   = true;
+            this.text = "Podany adres email jest nieprawidłowy"
+            this.loading    = false;
+            this.form.email = '';
+
+          }
+
+        })
+
+    },
+
+  }
+};
 
 </script>
 

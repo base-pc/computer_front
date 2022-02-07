@@ -49,11 +49,6 @@
             required
             ></v-text-field>
 
-
-
-
-
-
         </v-form>
       </div>
 
@@ -65,7 +60,7 @@
           :loading="loading"
           :disabled="!Valid || loading "
           color="#458588"
-          @click="loader = 'loading', onSubmit()"
+          @click="loader = 'loading', submitForm()"
           >
           Resetuj hasło
           <template v-slot:loader>
@@ -93,83 +88,115 @@
 </template>
 
 <script>
-//import axios from 'axios';
+import axios from 'axios';
 
-  export default {
+export default {
 
-    name: 'ResetPasswordRequest',
+  name: 'ResetPasswordRequest',
 
-    props: ["dialog"],
+  props: ["dialog"],
 
-    data() {
-      return {
-        snackbar    : false,
-        text        : '',
-        timeout     : 2000,
-        enable_form : false,
-        valid_email : '',
-        Valid       : false,
-        Field_1     : '',
+  data() {
+    return {
+      snackbar    : false,
+      text        : '',
+      timeout     : 2000,
+      enable_form : false,
+      valid_email : '',
+      Valid       : false,
+      Field_1     : '',
 
-        loader       : null,
-        loading      : false,
+      loader       : null,
+      loading      : false,
 
-        Rule_1          : [ v=>!!v || 'To pole jest wymagane', v =>
-          /.+@.+/.test(v) || 'Błędny adres email', v=> !!v],
-        Rule_3 : [ v => !!v || 'To pole jest wymagane', v=> v.length >= 6||
-          'Hasło musi posiadać minimum 6 znaków' ],
-        Rule_4: [ v => !!v || 'Potwierdź hasło', v => v === this.form.password ||
-          'Hasła nie są jednakowe'],
+      Rule_1          : [ v=>!!v || 'To pole jest wymagane', v =>
+        /.+@.+/.test(v) || 'Błędny adres email', v=> !!v],
+      Rule_3 : [ v => !!v || 'To pole jest wymagane', v=> v.length >= 6||
+        'Hasło musi posiadać minimum 6 znaków' ],
+      Rule_4: [ v => !!v || 'Potwierdź hasło', v => v === this.form.password ||
+        'Hasła nie są jednakowe'],
 
-
-        form: {
-          email                 : '',
-          password              : '',
-          password_confirmation : '',
-        },
-
-      }
-    },
-
-    watch: {
-      loader () {
-        const l = this.loader
-        this[l] = !this[l]
-
-        this.loader = null
+      form: {
+        email                 : '',
+        password              : '',
+        password_confirmation : '',
+        reset_token           : '',
       },
-
-    },
-
-    methods: {
-
-      close() {
-        this.dialog = false;
-        this.$router.push(this.$route.query.redirect || '/home')
-      },
-
-      validateEmail(email) {
-
-        var re = /^[^\s@]+@[^\s@]+$/;
-
-        if (re.test(email)) {
-
-          this.valid_email = true;
-        }
-
-        else {
-          this.valid_email = false;
-        }
-      },
-
-      onSubmit()
-      {
-        this.snackbar = true;
-        this.text = "Na sprawdź swoją pocztę"
-      }
 
     }
-  };
+  },
+
+  watch: {
+    loader () {
+      const l = this.loader
+      this[l] = !this[l]
+
+      this.loader = null
+    },
+
+  },
+
+  mounted()
+  {
+    this.getTokenFromRoute();
+  },
+
+  methods: {
+
+    close() {
+      this.$router.push(this.$route.query.redirect || '/home')
+    },
+
+    setShowTimeout() {
+      setTimeout(() => {
+        this.close();
+      }, 2000);
+    },
+
+    getTokenFromRoute()
+    {
+      this.form.reset_token = this.$route.query.token;
+    },
+
+    validateEmail(email) {
+
+      var re = /^[^\s@]+@[^\s@]+$/;
+
+      if (re.test(email)) {
+
+        this.valid_email = true;
+      }
+
+      else {
+        this.valid_email = false;
+      }
+    },
+
+    submitForm()
+    {
+      axios.post('http://localhost:8081/api/reset/password', this.form)
+        .then(() => {
+          this.loading  = false;
+          this.snackbar = true;
+          this.text     = "Hasło zostało zresetowane";
+          this.setShowTimeout();
+
+        })
+
+        .catch(err => {
+          if (err.response.status == 404) {
+            this.snackbar   = true;
+            this.text       = "Podany adres email jest nieprawidłowy";
+            this.loading    = false;
+            this.form.email = '';
+
+          }
+
+        })
+    },
+
+  }
+};
 
 </script>
 

@@ -51,6 +51,15 @@
 
       </v-card-actions>
 
+      <v-snackbar
+        v-model="snackbar"
+        :timeout="timeout"
+        light
+        centered
+        elevation
+        color="#FBF1C7"
+        >{{text}}</v-snackbar>
+
     </v-card>
   </v-dialog>
 
@@ -72,6 +81,9 @@ export default {
       loader          : null,
       loading         : false,
       refresh_sidebar : 0,
+      snackbar        : false,
+      text            : '',
+      timeout         : 1500,
       enable_form     : false,
       Valid           : true,
       Field_1         : '',
@@ -127,6 +139,8 @@ export default {
         .then(() => {
           this.loading = false;
           this.$root.$emit('myEvent', this.refresh_sidebar += 1);
+          this.snackbar = true;
+          this.text = 'Kategoria została dodana';
 
         })
     },

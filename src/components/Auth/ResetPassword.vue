@@ -174,7 +174,7 @@ export default {
 
     submitForm()
     {
-      axios.post('http://localhost:8081/api/reset/password', this.form)
+      axios.post('https://icnav.online/api/reset/password', this.form)
         .then(() => {
           this.loading  = false;
           this.snackbar = true;

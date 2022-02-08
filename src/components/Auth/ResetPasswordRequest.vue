@@ -126,7 +126,7 @@ export default {
 
     onSubmit()
     {
-      axios.post('http://localhost:8081/api/send/reset/link', this.form)
+      axios.post('https://icnav.online/api/send/reset/link', this.form)
         .then(() => {
           this.loading  = false;
           this.snackbar = true;

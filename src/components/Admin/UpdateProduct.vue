@@ -91,6 +91,16 @@
 
       </v-card-actions>
 
+      <v-snackbar
+        v-model="snackbar"
+        :timeout="timeout"
+        light
+        centered
+        elevation
+        color="#FBF1C7"
+        >{{text}}</v-snackbar>
+
+
     </v-card>
   </v-dialog>
 
@@ -119,6 +129,9 @@ export default {
       refresh_product_detail    : 0,
       product                   : '',
       products                  : [],
+      snackbar                  : false,
+      text                      : '',
+      timeout                   : 1500,
 
       photo        : [],
       name         : [],
@@ -230,6 +243,8 @@ export default {
           this.$root.$emit('refreshCategory', this.refresh_category_products += 1);
           this.$root.$emit('refresh_product_detail', this.refresh_product_detail += 1);
           this.loading = false;
+          this.snackbar = true;
+          this.text = "Produkt zostal zaktualizowany";
 
         })
 

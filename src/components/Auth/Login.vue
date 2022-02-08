@@ -76,7 +76,7 @@
 
       <div class="forgot-password">
 
-        <a href="http://localhost:8080/#/home/reset_password_request"
+        <a href="https://basepc.store/#/home/reset_password_request"
            @click="close()">Zapomniałeś hasła?</a>
 
       </div>

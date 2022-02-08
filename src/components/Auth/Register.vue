@@ -71,8 +71,7 @@
             ></v-switch>
         </v-form>
 
-        <vue-recaptcha sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-        "
+        <vue-recaptcha sitekey="6LdxsmceAAAAADgl6ezjACMrkWB3buatIEsyQKEU"
                        @verify="verify()"
                        @error="errorMessage()"
                        >

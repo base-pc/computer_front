@@ -225,7 +225,9 @@ export default {
 
         .then(() => {
           this.$root.$emit('refreshCategory', this.refresh_category_products += 1);
-          this.loading = false;
+          this.loading  = false;
+          this.snackbar = true;
+          this.text = "Produkt został dodany";
 
         })
 

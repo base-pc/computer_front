@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog v-model="dialog" max-width="600px" persistent>
+  <v-dialog v-model="register_dialog" max-width="600px" ref="reset" persistent>
     <template v-slot:activator="{ on }">
       <v-btn v-on="on" >Rejestracja</v-btn>
     </template>
@@ -70,6 +70,14 @@
             :label="`Uprawniania administratora`"
             ></v-switch>
         </v-form>
+
+        <vue-recaptcha sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+        "
+                       @verify="verify()"
+                       @error="errorMessage()"
+                       >
+        </vue-recaptcha>
+
         <v-snackbar
           v-model="snackbar"
           :timeout="timeout"
@@ -85,7 +93,7 @@
         <v-btn
           class="white--text"
           :loading="loading"
-          :disabled="!Valid || loading || !enable_form"
+          :disabled="!Valid || loading || !enable_form || !verify_captcha"
 
           color="#458588"
           @click="loader = 'loading', submitForm(), clearForm()"
@@ -109,19 +117,21 @@
 <script>
 
 import axios from 'axios';
+import { VueRecaptcha } from 'vue-recaptcha';
 
 export default {
 
   name: 'Register',
 
-
   data() {
     return {
-      register_dialog : this.dialog,
+      register_dialog : null,
       snackbar        : false,
-      text            : 'Podany adres email jest zajęty : (',
+      text            : '',
       timeout         : 1500,
       enable_form     : false,
+      verify_captcha  : false,
+      siteKey: process.env.VUE_APP_CAPCHA,
 
       loader          : null,
       loading         : false,
@@ -152,6 +162,10 @@ export default {
     }
   },
 
+  components: {
+    VueRecaptcha
+  },
+
   watch: {
     loader () {
       const l = this.loader
@@ -169,7 +183,6 @@ export default {
       }
     },
 
-
     register_dialog() {
       this.$refs.form.reset()
     }
@@ -177,10 +190,28 @@ export default {
 
   methods: {
     close() {
-      this.register_dialog=this.dialog;
-      this.dialog = false;
+      this.register_dialog = this.dialog;
 
     },
+
+    setShowTimeout() {
+      setTimeout(() => {
+        this.close();
+      }, 2000);
+    },
+
+
+    verify()
+    {
+      this.verify_captcha = true;
+    },
+
+    errorMessage()
+    {
+      this.snackbar = true;
+      this.text('Jesteś robotem :(');
+    },
+
 
     validateEmail(email) {
 
@@ -202,16 +233,20 @@ export default {
     {
       axios.post('https://icnav.online/api/auth/register', this.form)
         .then(() => {
-          this.loading         = false;
-          this.register_dialog = false
+          this.loading  = false;
+          this.snackbar = true;
+          this.text     = "Konto zostało założone"
+          this.setShowTimeout();
 
         })
 
         .catch(err => {
           if (err.response.status == 422) {
-            this.snackbar   = true;
-            this.loading    = false;
-            this.form.email = '';
+            this.snackbar                 = true;
+            this.text                     = 'Podany adres email jest zajęty';
+            this.loading                  = false;
+            this.$refs.recaptcha.reset();
+            this.form.email               = '';
 
           }
 

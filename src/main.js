@@ -5,6 +5,8 @@ import vuetify from './plugins/vuetify'
 import VueRouter from 'vue-router'
 import Routes from './routes'
 import VueCookie from 'vue-cookie'
+import VueCompositionAPI from '@vue/composition-api'
+
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -23,6 +25,7 @@ window.Event = new Vue();
 
 Vue.use(VueRouter);
 Vue.use(VueCookie);
+Vue.use(VueCompositionAPI)
 
 const router = new VueRouter({
 

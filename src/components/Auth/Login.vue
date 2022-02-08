@@ -192,7 +192,7 @@ export default {
 
     onSubmit()
     {
-      axios.post('http://localhost:8081/api/auth/login', this.form)
+      axios.post('https://icnav.online/api/auth/login', this.form)
 
         .then((res) => {
           this.loading     = false;

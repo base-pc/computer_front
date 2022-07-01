@@ -12,7 +12,4 @@ describe('Login', () => {
 
         cy.url().should('include', 'user')
     })
-
-
-
 })

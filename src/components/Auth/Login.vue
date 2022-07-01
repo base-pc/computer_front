@@ -159,7 +159,7 @@ export default {
 
     getTokenGoogle(googleUser)
     {
-      this.socialUser._token    = googleUser.wc.access_token;
+      this.socialUser._token    = googleUser.Cc.access_token;
       this.socialUser._provider = 'google'
 
       console.log(this.socialUser._token);
@@ -218,17 +218,17 @@ export default {
 
         .catch(err => {
           if (err.response.status == 401) {
-            this.text = 'Błędne dane logowania';
-            this.snackbar   = true;
-            this.loading    = false;
-            this.form.email = '';
+            this.text          = 'Błędne dane logowania';
+            this.snackbar      = true;
+            this.loading       = false;
+            this.form.email    = '';
             this.form.password = '';
 
           }else if(err.response.status==422)
           {
-            this.text = 'Uzupełnij dane logowania';
+            this.text     = 'Uzupełnij dane logowania';
             this.snackbar = true;
-            this.loading = false;
+            this.loading  = false;
 
           }
 
